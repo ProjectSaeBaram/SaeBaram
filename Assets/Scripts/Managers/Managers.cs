@@ -12,14 +12,16 @@ public class Managers : MonoBehaviour
     // 기능별 매니저 인스턴스들
     // 새로운 Manager가 추가될 때, 아래에 하나씩 추가.
     private DataManager _data = new DataManager();
+    private GameManagerEx _game = new GameManagerEx();
     private InputManager _input = new InputManager();
     private PoolManager _pool = new PoolManager();
     private ResourceManger _resource = new ResourceManger();
     private SceneManagerEx _scene = new SceneManagerEx();
     private SoundManager _sound = new SoundManager();
     private UIManager _ui = new UIManager();
-
+    
     public static DataManager Data => Instance._data;
+    public static GameManagerEx Game => s_instance._game;
     public static InputManager Input => Instance._input;
     public static PoolManager Pool => Instance._pool;
     public static ResourceManger Resource => Instance._resource;

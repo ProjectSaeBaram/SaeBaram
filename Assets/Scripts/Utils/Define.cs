@@ -48,4 +48,13 @@ public class Define
         PointerUp,   // 포인터가 대상에서 올라가는 이벤트
         Click,       // 클릭 이벤트
     }
+    
+    // 게임에 등장하는 GameObject를 구분하기 위한 열거형.
+    // 지금은 다음과 같이 플레이어와 몬스터만 구분한다.
+    public enum WorldObject
+    {
+        Unknown,
+        Player,
+        Monster,
+    }
 }

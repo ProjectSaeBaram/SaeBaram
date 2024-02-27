@@ -32,4 +32,14 @@ public static class Extension
     {
         UI_Base.BindEvent(go,action, type);
     }
+    
+    /// <summary>
+    /// <see cref="Poolable"/>한 GameObject가 유효한지 검사하는 함수.
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
+    public static bool IsValid(this GameObject go)
+    {
+        return go != null && go.activeSelf == true;
+    }
 }
