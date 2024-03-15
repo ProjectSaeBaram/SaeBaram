@@ -41,7 +41,7 @@ public class UI_Inven : UI_Scene
             UI_Inven_Item invenItem = item.GetOrAddComponent<UI_Inven_Item>();
             
             // 아이템 정보를 설정합니다. 예시로 "집행검 {i}번"과 같은 이름을 사용함.
-            invenItem.SetInfo($"집행검 {i}번");
+            //invenItem.SetInfo($"집행검 {i}번");
         }
     }
 }

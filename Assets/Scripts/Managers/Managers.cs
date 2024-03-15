@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -36,7 +37,7 @@ public class Managers : MonoBehaviour
 
     private void Update()
     {
-        _input.OnUpdate();
+        //_input.OnUpdate();
     }
 
     /// <summary>
@@ -71,11 +72,17 @@ public class Managers : MonoBehaviour
     {   
         // DataManager는 Clear X
         Sound.Clear();
-        Input.Clear();
+        //Input.Clear();
         UI.Clear();
         Scene.Clear();
         
         Pool.Clear();       // 의도적으로 마지막에 Clear. 왜? 다른 Manager에서 pool 오브젝트를 사용할 수 있기 때문.
+    }
+
+    private void OnApplicationQuit()
+    {
+        // 인벤토리 데이터를 바이너리 파일로 저장하도록
+        Managers.Data.OnClose.Invoke();
     }
 }
 
