@@ -28,7 +28,7 @@ public class UI_InventoryPopup : UI_Popup
         VisualizeItemsInTheGrid();
 
         Managers.Data.OnClose = null;
-        Managers.Data.OnClose += ExportInventoryData;
+        //Managers.Data.OnClose += ExportInventoryData; TODO
         Managers.Data.OnClose += Managers.Data.SaveInventoryData;
     }
 
@@ -52,9 +52,27 @@ public class UI_InventoryPopup : UI_Popup
                 visualizedItems.Add(null);
                 continue;
             }
-            visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
-            visualizedItems[i].SetInfo(item.Name, item.Count);
-            visualizedItems[i]._uiInventoryPopup = this;
+
+            switch (item)
+            {
+                case ITool:
+                {
+                    Tool tool = item as Tool;
+                    visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
+                    visualizedItems[i].ToolInit(tool!.Name, tool!.Durability, tool!.ReinforceCount);
+                    visualizedItems[i]._uiInventoryPopup = this;
+                    break;
+                }
+                case IStackable:
+                {
+                    Ingredient ingredient = item as Ingredient;
+                    visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
+                    visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Amount);
+                    visualizedItems[i]._uiInventoryPopup = this;
+                    break;
+                }
+            }
+            
 
             itemSlots[i].Item = visualizedItems[i];
         }
@@ -63,11 +81,11 @@ public class UI_InventoryPopup : UI_Popup
     /// <summary>
     /// 인벤토리가 열려있는 중에, 아이템 목록의 변화가 일어났을 때 갱신하고, 다시 시각화해주는 기능.
     /// </summary>
-    private void RefreshItemUI()
-    {
-        for (int i = 0; i < _itemDataList.Count; i++)
-            visualizedItems[i].SetInfo(_itemDataList[i].Name, _itemDataList[i].Count);
-    }
+    // private void RefreshItemUI() TODO
+    // {
+    //     for (int i = 0; i < _itemDataList.Count; i++)
+    //         visualizedItems[i].SetInfo(_itemDataList[i].Name, _itemDataList[i].Count);
+    // }
 
     /// <summary>
     /// DataManager를 통해 캐싱된 데이터를 읽어오는 기능
@@ -77,26 +95,26 @@ public class UI_InventoryPopup : UI_Popup
         _itemDataList = Managers.Data.ItemInfos();
     }
 
-    /// <summary>
+    /// <summary> TODO
     /// 팝업이 닫힐 때는 인벤토리 정보를 다시 바이너리 파일로 저장
     /// </summary>
-    public void ExportInventoryData()
-    {
-        for (int i = 0; i < numberOfItemSlots; i++)
-        {
-            if (itemSlots[i].Item == null)
-            {
-                // 여기서 갯수를 1로 지정하지 않으면 바이너리 파일에 0만 찍혀서 저장되지 않는다.
-                // 빈 공간으로도 인식되지 못한다
-                _itemDataList[i] = new ItemData("NONE", 1);
-            }
-            else
-            {
-                UI_Inven_Slot slot = itemSlots[i];
-                _itemDataList[i] = new ItemData(slot.Item.Name, slot.Item.Count);
-            }
-        }
-
-        Managers.Data.TransDataListIntoArray(_itemDataList);
-    }
+    // public void ExportInventoryData()
+    // {
+    //     for (int i = 0; i < numberOfItemSlots; i++)
+    //     {
+    //         if (itemSlots[i].Item == null)
+    //         {
+    //             // 여기서 갯수를 1로 지정하지 않으면 바이너리 파일에 0만 찍혀서 저장되지 않는다.
+    //             // 빈 공간으로도 인식되지 못한다
+    //             _itemDataList[i] = new ItemData("NONE", 1);
+    //         }
+    //         else
+    //         {
+    //             UI_Inven_Slot slot = itemSlots[i];
+    //             _itemDataList[i] = new ItemData(slot.Item.Name, slot.Item.Count);
+    //         }
+    //     }
+    //
+    //     Managers.Data.TransDataListIntoArray(_itemDataList);
+    // }
 }

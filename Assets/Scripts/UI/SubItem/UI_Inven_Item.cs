@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /// <summary>
@@ -10,11 +11,11 @@ using UnityEngine.UI;
 /// </summary>
 public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    // GameObjects 열거형은 인벤토리 아이템 UI 내에서 관리할 게임 오브젝트를 정의합니다.
-    enum GameObjects
+    enum Texts
     {
-        ItemNameText,   // 아이템 이름 표시 텍스트
-        ItemNumberText, // 아이템 갯수 표시 텍스트
+        ItemNameText,           // 아이템 이름 표시 텍스트
+        ItemAmountText,         // 아이템 갯수 표시 텍스트
+        ItemReinforceCount,     // 아이템 강화 횟수 표시 텍스트
     }
 
     enum Images
@@ -22,10 +23,19 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemIcon,       // 아이템 아이콘 이미지
     }
 
-    [Header("UI")] [SerializeField] public UI_InventoryPopup _uiInventoryPopup;
+    enum Sliders
+    {
+        ItemDurabilitySlider,       // 아이템 내구도 표시 슬라이더
+    }
+
+    [Header("UI")] 
+    [SerializeField] public UI_InventoryPopup _uiInventoryPopup;
     [SerializeField] private Image image;
-    [SerializeField] public string Name;   // 아이템의 이름을 저장하는 필드
-    [SerializeField] public int Count;    // 아이템의 갯수를 저장하는 필드
+    [SerializeField] public string Name;                // 아이템의 이름을 저장하는 필드
+    [SerializeField] public int Amount = 0;             // 아이템의 갯수를 저장하는 필드
+    [SerializeField] public int Durability = 1;         // 아이템의 내구도를 저장하는 필드
+    public float maxDurability = 15f;
+    [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드
     
     // 드래그 이후 부모 Transform을 저장하기 위함
     [SerializeField] public Transform parentAfterDrag;
@@ -35,28 +45,55 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     /// </summary>
     public override void Init()
     {
-        // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
-        Bind<GameObject>(typeof(GameObjects)); 
-        Bind<Image>(typeof(Images));
-        
-        // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
-        Get<GameObject>((int)GameObjects.ItemNameText).GetComponent<TextMeshProUGUI>().text = Name;
-        Get<GameObject>((int)GameObjects.ItemNumberText).GetComponent<TextMeshProUGUI>().text = Count.ToString();
-
-        image = Get<Image>((int)Images.ItemIcon);
     }
 
     /// <summary>
-    /// 아이템 정보를 설정하는 메서드.
+    /// 이 아이템이 도구인 경우는 갯수를 표시할 필요가 없다.
     /// </summary>
-    /// <param name="name">설정할 아이템의 이름.</param>
-    /// <param name="number">설정할 아이템의 갯수</param>
-    public void SetInfo(string name, int number)
+    public void ToolInit(string name, int durability, int reinforceCount)
     {
-        Name = name;           // 아이템 이름을 저장.
-        Count = number;       // 아이템 갯수를 저장.
+        // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
+        Bind<TextMeshProUGUI>(typeof(Texts)); 
+        Bind<Image>(typeof(Images));
+        Bind<Slider>(typeof(Sliders));
+        
+        Name = name;                        // 아이템 이름을 저장.
+        Durability = durability;            // 아이템 내구도를 저장.
+        ReinforceCount = reinforceCount;    // 아이템의 강화 횟수를 저장.
+        
+        // 이미지 설정
+        image = Get<Image>((int)Images.ItemIcon);
+        
+        // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
+        Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
+        Get<TextMeshProUGUI>((int)Texts.ItemAmountText).gameObject.SetActive(false);
+        Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
+        Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
     }
 
+    /// <summary>
+    /// 이 아이템이 재료인 경우에는, 내구도와 강화횟수를 표시할 필요가 없고, 갯수를 표시해야 한다.
+    /// </summary>
+    public void IngredientInit(string name, int amount)
+    {
+        // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
+        Bind<TextMeshProUGUI>(typeof(Texts)); 
+        Bind<Image>(typeof(Images));
+        Bind<Slider>(typeof(Sliders));
+        
+        Name = name;                        // 아이템 이름을 저장.
+        Amount = amount;                    // 아이템 갯수를 저장.
+        
+        // 이미지 설정
+        image = Get<Image>((int)Images.ItemIcon);
+        
+        // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
+        Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
+        Get<Slider>((int)Sliders.ItemDurabilitySlider).gameObject.SetActive(false);
+        Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).gameObject.SetActive(false);
+        Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
+    }
+    
     #region Drag and Drop
 
     private Vector3 DragOffset;

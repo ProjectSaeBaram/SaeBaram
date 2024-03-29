@@ -20,21 +20,6 @@ public interface ILoader<TKey, TValue>
 }
 
 /// <summary>
-/// 아이템의 정보를 인벤토리 팝업에서 읽기 위한 클래스
-/// </summary>
-public class ItemData
-{
-    public int Count { get; }
-    public string Name { get; }
-
-    public ItemData(string name, int count)
-    {
-        Name = name;
-        Count = count;
-    }
-}
-
-/// <summary>
 /// 데이터를 관리하는 매니저.
 /// </summary>
 public class DataManager
@@ -62,13 +47,15 @@ public class DataManager
     public ushort[] InventoryTable;
     
     /// <summary>
-    /// 아이템 코드에 해당하는 아이템의 이름을 저장하는 딕셔너리
+    /// 아이템 id에 해당하는 아이템의 이름을 저장하는 딕셔너리
     /// </summary>
     Dictionary<int, string> itemCodeDict = new Dictionary<int, string>()
     {
         {0, "NONE" },
         {1, "Sword" },
-        {2,  "Bow"  }
+        {2,  "Bow"  },
+        {100, "Wood" },
+        {101, "Stone" },
     };
     
     /// <summary>
@@ -78,9 +65,13 @@ public class DataManager
     {
         {"NONE", 0 },
         {"Sword", 1 },
-        {"Bow", 2  }
+        {"Bow", 2  },
+        {"Wood", 100},
+        {"Stone", 101 },
     };
 
+    public const int BOUNDARY = 100;
+    
     public UnityAction OnClose = null;
     
     /// <summary>
@@ -127,12 +118,15 @@ public class DataManager
     /// </summary>
     public void MakeItemTest()
     {
+        // 테스트용 더미 데이터 
         InventoryTable[0] = (ushort)0;
-        InventoryTable[1] = (ushort)64;               // Sword 1개
-        InventoryTable[2] = (ushort)129;              // Bow 1개
-        InventoryTable[3] = (ushort)191;              // Bow 64개
+        InventoryTable[1] = (ushort)49279;            // 종결옵 Sword (퀄리티 최상, 풀내구도, 풀강)
+        InventoryTable[2] = (ushort)160;              // 똥 활 (퀄리티 최하, 내구도 절반, 0강)
+        InventoryTable[3] = (ushort)39169;            // 나무 재료 (중간 퀄리티, 2개)
+        InventoryTable[4] = (ushort)39295;            // 돌 재료 (중간 퀄리티, 64개)
+
         // 나머지는 빈값으로 채우기
-        for (int i = 4; i < 10; i++)
+        for (int i = 5; i < 10; i++)
             InventoryTable[i] = (ushort)0;
 
         DebugEx.Log("makeItemTest ============== ");
@@ -212,19 +206,31 @@ public class DataManager
             DebugEx.Log("############# ItemDescription ##############");
         for(int i = 0; i < NumberOfInventorySlots; i++)
         {
-            // 1. 아이템 갯수 구하기
-            int count = (InventoryTable[i] & 63) + 1;             // 뒤 6비트로 갯수를 파악 (숫자를 1~64로 받기위해 + 1)
-            // 2. 아이템 종류 구하기
-            int temp = ((int)InventoryTable[i] >> 6);      
-            string name = itemCodeDict[temp];
+            // 1. 아이템 종류 구하기
+            int id = ((int)InventoryTable[i] >> 6) & 255;      
+            string name = itemCodeDict[id];
+            
+            // 2. 아이템 퀄리티 구하기
+            int quality = (InventoryTable[i] >> 8);
 
+            // 3. 아이템 내구도, 강화도 (갯수) 구하기
+            int durability = (InventoryTable[i] & 63) >> 2;
+            int numOfReinforce = InventoryTable[i] & 3;
+            
+            // amount = durability * 4 + numOfReinforce              // 뒤 6비트로 갯수를 파악 (숫자를 1~64로 받기위해 + 1)
+            
             if (printConsole)
             {
-                string data = $"{name} {count} 개";
+                string data = $"{name} {durability * 4 + numOfReinforce} 개";
                 DebugEx.Log(data);
             }
             
-            itemDatas.Add(new ItemData(name, count));
+            // 지금 읽어온 아이템이 Tool인지, Material인지 구분해야한다.
+            if (id >= BOUNDARY)
+                itemDatas.Add(new Ingredient(id, name, quality, durability * 4 + numOfReinforce));
+            else
+                itemDatas.Add(new Tool(id, name, quality, durability, numOfReinforce));
+            
         }
         if(printConsole)
             DebugEx.Log("############# ItemDescription ##############");
@@ -243,10 +249,10 @@ public class DataManager
             int itemCode = reverseItemCodeDict[inventory[i].Name];
             
             // 갯수 조정 (1을 빼서 0~63 범위로 맞춤)
-            int adjustedItemCount = inventory[i].Count - 1;
-            ushort item = (ushort)((itemCode << 6) | adjustedItemCount);
+            //int adjustedItemCount = inventory[i].Count - 1; TODO
+            //ushort item = (ushort)((itemCode << 6) | adjustedItemCount);
 
-            _inventoryTable[i] = item;
+            //_inventoryTable[i] = item;
         }
         InventoryTable = _inventoryTable;
     }
