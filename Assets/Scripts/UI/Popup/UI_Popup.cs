@@ -1,3 +1,5 @@
+using UnityEngine.EventSystems;
+
 /// <summary>
 /// 팝업 UI를 관리하는 기본 클래스.
 /// UI_Base를 상속받아, 팝업 UI의 기본적인 초기화와 닫기 동작을 구현.

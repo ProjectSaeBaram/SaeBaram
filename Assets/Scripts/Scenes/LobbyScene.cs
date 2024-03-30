@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// 게임 씬을 관리하는 샘플 클래스.
 /// BaseScene을 상속받아 게임 씬에 특화된 초기화 및 정리 로직을 구현.
@@ -15,6 +17,8 @@ public class LobbyScene : BaseScene
 
         // 현재 씬의 타입을 게임 씬으로 설정.
         SceneType = Define.Scene.LobbyScene;
+        Managers.UI.ShowSceneUI<UI_Lobby>();
+        DebugEx.Log("MainMenu");
     }
 
     /// <summary>
