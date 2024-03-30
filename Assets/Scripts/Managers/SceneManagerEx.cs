@@ -6,6 +6,21 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SceneManagerEx
 {
+    // 현재 Scene의 종류
+    private Define.Scene _curSceneType = Define.Scene.Unknown;
+    
+    // 현재 Scene의 종류에 접근하는 프로퍼티
+    public Define.Scene CurrentSceneType
+    {
+        get
+        {
+            if (_curSceneType != Define.Scene.Unknown)
+                return _curSceneType;
+            return CurrentScene.SceneType;
+        }
+        set => _curSceneType = value;
+    }
+    
     /// <summary>
     /// 현재 활성화된 Scene의 BaseScene타입의 인스턴스
     /// </summary>
@@ -34,6 +49,14 @@ public class SceneManagerEx
         return name;
     }
 
+    public void ChangeScene(Define.Scene type)
+    {
+        CurrentScene.Clear();
+
+        _curSceneType = type;
+        SceneManager.LoadScene(GetSceneName(type));
+    }
+    
     /// <summary>
     /// 현재 Scene의 Clear를 호출하는 함수. Scene 전환시 필요한 정리작업을 수행하는 함수.
     /// </summary>
