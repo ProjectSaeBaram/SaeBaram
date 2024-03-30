@@ -19,7 +19,7 @@ public abstract class UI_Base : MonoBehaviour
     /// </summary>
     public abstract void Init();
 
-    /// <summary>
+    /// <summary>   
     /// UI_Base를 상속하는 클래스들은, Init()함수를 Start() 함수 내에서 호출시킬 필요없이, 자동으로 호출되게 만든다.
     /// Init이 Start를 대신함
     /// </summary>
