@@ -13,7 +13,7 @@ public class Managers : MonoBehaviour
     // 새로운 Manager가 추가될 때, 아래에 하나씩 추가.
     private DataManager _data = new DataManager();
     private GameManagerEx _game = new GameManagerEx();
-    private InputManager _input = new InputManager();
+    //private InputManager _input = new InputManager();
     private PoolManager _pool = new PoolManager();
     private ResourceManger _resource = new ResourceManger();
     private SceneManagerEx _scene = new SceneManagerEx();
@@ -22,7 +22,7 @@ public class Managers : MonoBehaviour
     
     public static DataManager Data => Instance._data;
     public static GameManagerEx Game => s_instance._game;
-    public static InputManager Input => Instance._input;
+    //public static InputManager Input => Instance._input;
     public static PoolManager Pool => Instance._pool;
     public static ResourceManger Resource => Instance._resource;
     public static SceneManagerEx Scene => Instance._scene;
@@ -36,7 +36,7 @@ public class Managers : MonoBehaviour
 
     private void Update()
     {
-        _input.OnUpdate();
+        //_input.OnUpdate();
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class Managers : MonoBehaviour
     {   
         // DataManager는 Clear X
         Sound.Clear();
-        Input.Clear();
+        //Input.Clear();
         UI.Clear();
         Scene.Clear();
         
