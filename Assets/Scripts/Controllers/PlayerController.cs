@@ -7,13 +7,18 @@ using Vector2 = UnityEngine.Vector2;
 [RequireComponent(typeof(Rigidbody2D))] [RequireComponent(typeof(CapsuleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
+    // Player의 컨트롤은 State에 기반해 이를 변경하는 방식으로 구현.
+    // 현재 Player의 State는 Idle, Walk, Run, Jump, Fall, Attack 총 6개의 State로 구분.
+    // 새로운 State를 추가할 때는 IPlayerState 인터페이스를 상속받는 클래스를 정의하고,
+    // PlayerController가 해당 클래스의 인스턴스를 들고있도록 수정하면 바로 적용할 수 있다.
+    
     private interface IPlayerState
     {
         void Enter(PlayerController player);
         void Execute();
         void Exit();
     }
-
+    
     private class PlayerIdleState : IPlayerState
     {
         private PlayerController _playerController;
