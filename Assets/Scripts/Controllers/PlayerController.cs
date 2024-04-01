@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using VInspector;
 using Vector2 = UnityEngine.Vector2;
 
-[RequireComponent(typeof(Rigidbody2D))] [RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))] [RequireComponent(typeof(CapsuleCollider2D))] [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
     // Player의 컨트롤은 State에 기반해 이를 변경하는 방식으로 구현.
