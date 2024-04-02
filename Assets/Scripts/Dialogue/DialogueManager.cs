@@ -45,7 +45,7 @@ public class DialogueManager : MonoBehaviour
         {
             return;
         }
-        if (Player.GetInstance().GetInteractPressed())
+        if (PlayerController.GetInstance().GetInteractPressed())
         {
             ContinueStory();
         }
@@ -108,7 +108,7 @@ public class DialogueManager : MonoBehaviour
                     popup.portraitImage.sprite = npcdata.npcPortrait[int.Parse(tagvalue)];
                     break;
                 case PLAYER_TAG:
-                    popup.portraitImage.sprite = Player.GetInstance().getplayerPortrait(int.Parse(tagvalue));
+                    popup.portraitImage.sprite = PlayerController.GetInstance().getplayerPortrait(int.Parse(tagvalue));
                     break;
                 default:
                     Debug.LogWarning("Tag exists but not handled");
