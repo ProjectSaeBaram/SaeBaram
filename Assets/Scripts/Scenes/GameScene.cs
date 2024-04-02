@@ -1,3 +1,6 @@
+using Cinemachine;
+using UnityEngine;
+
 /// <summary>
 /// 게임 씬을 관리하는 샘플 클래스.
 /// BaseScene을 상속받아 게임 씬에 특화된 초기화 및 정리 로직을 구현.
@@ -17,13 +20,14 @@ public class GameScene : BaseScene
         SceneType = Define.Scene.GameScene;
         
         // 게임 씬에 필요한 UI를 표시합니다. 여기서는 인벤토리 UI를 예로 들고 있음.
-        // Managers.UI.ShowPopupUI<UI_InventoryPopup>();
+        //Managers.UI.ShowPopupUI<UI_InventoryPopup>();
 
         // 게임 데이터 매니저로부터 캐릭터의 통계 데이터 딕셔너리를 가져옴.
         // 이 데이터는 게임 내에서 캐릭터의 능력치 등을 관리하는 데 사용될 수 있음.
         // Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
 
-        // gameObject.GetOrAddComponent<CursorController>();
+        GameObject player = Managers.Game.Spawn(Define.WorldObject.Player, "Player");
+        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.Follow = player.transform;     // virtual camera의 Follow에 플레이어 등록
     }
     
     /// <summary>
