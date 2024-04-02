@@ -12,14 +12,14 @@ public class PlayerController : MonoBehaviour
     // 새로운 State를 추가할 때는 IPlayerState 인터페이스를 상속받는 클래스를 정의하고,
     // PlayerController가 해당 클래스의 인스턴스를 들고있도록 수정하면 바로 적용할 수 있다.
     
-    private interface IPlayerState
+    public interface IPlayerState
     {
         void Enter(PlayerController player);
         void Execute();
         void Exit();
     }
     
-    private class PlayerIdleState : IPlayerState
+    public class PlayerIdleState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private class PlayerWalkState : IPlayerState
+    public class PlayerWalkState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private class PlayerRunState : IPlayerState
+    public class PlayerRunState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private class PlayerJumpState : IPlayerState
+    public class PlayerJumpState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private class PlayerFallState : IPlayerState
+    public class PlayerFallState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private class PlayerAttackState : IPlayerState
+    public class PlayerAttackState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -168,10 +168,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool shiftToggled = false;
     [SerializeField] private IPlayerState _currentState;
     [SerializeField]
-    private IPlayerState CurrentState
+    public IPlayerState CurrentState
     {
         get => _currentState;
-        set
+        private set
         {
             if(_currentState?.GetType() == value.GetType())  //  상태가 변하지 않았다면 업데이트하지 않는다. 
             {

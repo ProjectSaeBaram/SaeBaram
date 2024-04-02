@@ -684,6 +684,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_LocalScale.x
       value: 100
@@ -857,7 +861,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -896,9 +900,7 @@ MonoBehaviour:
   isJumpable: 0
   jumpForced: 0
   shiftToggled: 0
-  _currentState: 0
   _rigidbody2D: {fileID: 0}
-  _capsuleCollider2D: {fileID: 0}
   _animator: {fileID: 0}
   _rightHandBone: {fileID: 7936561779221067104}
 --- !u!4 &7936561779221067104 stripped
