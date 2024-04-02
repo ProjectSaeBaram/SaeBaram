@@ -22,18 +22,6 @@ public class UI_DialoguePopup : UI_Popup
 
     public static UI_DialoguePopup instance;
 
-    enum UIs
-    {
-        DialoguePanel,
-        DialogueChoices
-    }
-
-    enum Buttons
-    {
-        Choice0, 
-        Choice1, 
-        Choice2
-    }
 
     public override void Init()
     {
@@ -58,14 +46,6 @@ public class UI_DialoguePopup : UI_Popup
 
     }
 
-    private void Start()
-    {
-        for (int i = 0; i < choices.Length; i++)
-        {
-            int id = i;
-            choiceButton[i].onClick.AddListener(() => makeChoice(id));
-        }
-    }
 
     public static UI_DialoguePopup GetInstance()
     {
@@ -73,11 +53,6 @@ public class UI_DialoguePopup : UI_Popup
     }
 
 
-    public void makeChoice(int choice)
-    {
-        //Player.GetInstance().select = choice;
-        DebugEx.Log(choice);
-    }
 
    
 }

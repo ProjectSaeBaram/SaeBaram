@@ -15,6 +15,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool jumpForced = false;
     [SerializeField] private bool shiftToggled = false;
     [SerializeField] private State _currentState = PlayerController.State.Idle;
+    [SerializeField] private Sprite[] playerPortrait;
+    [Tab("Quest & Dialogue")]
+    [SerializeField] private QuestManager _questManager;
+    private bool interactPressed = false;
+    private static PlayerController instance;
+    public static PlayerController GetInstance() { return instance; }
+    public Sprite getplayerPortrait(int num)
+    {
+        return playerPortrait[num];
+    }
     [SerializeField] private State CurrentState
     {
         get => _currentState;
@@ -315,6 +325,14 @@ public class PlayerController : MonoBehaviour
     void InteractPerformed(InputAction.CallbackContext context)
     {
         DebugEx.Log($"InteractPerformed {context}");
+        interactPressed = true;
+    }
+
+    public bool GetInteractPressed()
+    {
+        bool result = interactPressed;
+        interactPressed = false;
+        return result;
     }
     void InteractCanceled(InputAction.CallbackContext context)
     {
