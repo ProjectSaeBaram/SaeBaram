@@ -22,13 +22,13 @@ public class Managers : MonoBehaviour
     private UIManager _ui = new UIManager();
     
     public static DataManager Data => Instance._data;
-    public static GameManagerEx Game => s_instance._game;
+    public static GameManagerEx Game => Instance._game;
     //public static InputManager Input => Instance._input;
     public static PoolManager Pool => Instance._pool;
     public static ResourceManger Resource => Instance._resource;
     public static SceneManagerEx Scene => Instance._scene;
     public static SoundManager Sound => Instance._sound;
-    public static UIManager UI => s_instance._ui;
+    public static UIManager UI => Instance._ui;
     
     void Start()
     {
