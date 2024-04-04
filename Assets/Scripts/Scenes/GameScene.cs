@@ -16,7 +16,7 @@ public class GameScene : BaseScene
 
         // 현재 씬의 타입을 게임 씬으로 설정.
         SceneType = Define.Scene.GameScene;
-        
+
         // 게임 씬에 필요한 UI를 표시합니다. 여기서는 인벤토리 UI를 예로 들고 있음.
         //Managers.UI.ShowPopupUI<UI_InventoryPopup>();
         Managers.UI.ShowSceneUI<UI_DialoguePopup>();

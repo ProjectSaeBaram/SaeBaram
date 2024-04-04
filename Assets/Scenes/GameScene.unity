@@ -5318,12 +5318,16 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: npcName
+      value: "\uB8E8\uB2E4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: questIndex
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: questId.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: dialogue.Array.size
@@ -5335,16 +5339,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: questId.Array.data[0]
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: questId.Array.data[1]
-      value: 20
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: dialogue.Array.data[0]
       value: 
-      objectReference: {fileID: 4900000, guid: 4b86fb034a8e3994785599ad87a9837b, type: 3}
+      objectReference: {fileID: 4900000, guid: a11efdd3e4d8f9d4a8b3e0aa5b45d014, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: dialogue.Array.data[1]
       value: 
@@ -5352,7 +5356,7 @@ PrefabInstance:
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: dialogue.Array.data[2]
       value: 
-      objectReference: {fileID: 4900000, guid: 4b86fb034a8e3994785599ad87a9837b, type: 3}
+      objectReference: {fileID: 4900000, guid: 5463e6458b703534f9f63df28fbcce61, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.size
       value: 3
@@ -5471,7 +5475,7 @@ PrefabInstance:
     - target: {fileID: 908189072290955293, guid: 67087b5bc904d9244a0a7f527838c92f, type: 3}
       propertyPath: _questManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8178310703521705546, guid: 579ee51f6129542409d4aa2dbe29d000, type: 3}
     - target: {fileID: 7903175597512562551, guid: 67087b5bc904d9244a0a7f527838c92f, type: 3}
       propertyPath: m_Name
       value: Player
@@ -5539,7 +5543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6138017707382750469, guid: 75c1b18b3774385489c4419bf411f825, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.000035
+      value: 11.999839
       objectReference: {fileID: 0}
     - target: {fileID: 6138017707382750469, guid: 75c1b18b3774385489c4419bf411f825, type: 3}
       propertyPath: m_LocalPosition.y

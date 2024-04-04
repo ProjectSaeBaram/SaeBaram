@@ -25,7 +25,7 @@ public class UI_DialoguePopup : UI_Scene
 
     public override void Init()
     {
-        
+
         DialoguePopup = this.gameObject;
         dialoguePanel = DialoguePopup.transform.GetChild(0).gameObject;
         dialogueText = dialoguePanel.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
@@ -35,17 +35,23 @@ public class UI_DialoguePopup : UI_Scene
 
         choicep = dialoguePanel.transform.GetChild(2).gameObject;
         choices = new GameObject[2] { dialoguePanel.transform.GetChild(2).GetChild(0).gameObject, dialoguePanel.transform.GetChild(2).GetChild(1).gameObject };
-        choicesText = new TextMeshProUGUI[2] { choices[0].GetComponent<TextMeshProUGUI>(), choices[1].GetComponent<TextMeshProUGUI>() };
+        choicesText = new TextMeshProUGUI[2] { choices[0].GetComponentInChildren<TextMeshProUGUI>(), choices[1].GetComponentInChildren<TextMeshProUGUI>() };
         choiceButton = new Button[2] { choices[0].GetComponent<Button>(), choices[1].GetComponent<Button>() };
     }
 
     private void Awake()
     {
         instance = this;
-        dialoguePanel.SetActive(false);
         DialogueManager.GetInstance().popup = this;
     }
-
+    private void Start()
+    {
+        for (int i = 0; i < choices.Length; i++)
+        {
+            int id = i;
+            choiceButton[i].onClick.AddListener(() => DialogueManager.GetInstance().makeChoice(id));
+        }
+    }
 
     public static UI_DialoguePopup GetInstance()
     {
@@ -54,5 +60,6 @@ public class UI_DialoguePopup : UI_Scene
 
 
 
-   
+
+
 }

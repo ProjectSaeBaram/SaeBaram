@@ -184,23 +184,25 @@ public class PlayerController : MonoBehaviour
     {
         // do nothing...
         if (inputVector.x == 0) return;
+        //
         if (shiftToggled)
             CurrentState = State.Run;
         CurrentState = State.Walk;
     }
     private void UpdateWalk()
     {
-        _rigidbody2D.velocity = new Vector2(inputVector.x * speed, _rigidbody2D.velocity.y);
+        _rigidbody2D.velocity = DialogueManager.GetInstance().dialogueIsPlaying ?  Vector2.zero: new Vector2(inputVector.x * speed, _rigidbody2D.velocity.y);
     }
     
     private void UpdateRun()
     {
-        _rigidbody2D.velocity = new Vector2(inputVector.x * runningSpeed, _rigidbody2D.velocity.y);
+        _rigidbody2D.velocity = DialogueManager.GetInstance().dialogueIsPlaying ? Vector2.zero : new Vector2(inputVector.x * runningSpeed, _rigidbody2D.velocity.y);
     }
     
     private void UpdateJump()
     {
         if (jumpForced) return;
+        else if (DialogueManager.GetInstance().dialogueIsPlaying) return;
         _rigidbody2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         jumpForced = true;
     }
@@ -323,27 +325,23 @@ public class PlayerController : MonoBehaviour
     #region Interact
     void InteractStarted(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"InteractStarted {context}");
+        //DebugEx.Log($"InteractStarted {context}");
     }
     void InteractPerformed(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"InteractPerformed {context}");
+        //DebugEx.Log($"InteractPerformed {context}");
         interactPressed = true;
     }
 
     public bool GetInteractPressed()
     {
         bool result = interactPressed;
-        if (result)
-        {
-            DebugEx.Log(interactPressed);
-        }
         interactPressed = false;
         return result;
     }
     void InteractCanceled(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"InteractCanceled {context}");
+        //DebugEx.Log($"InteractCanceled {context}");
     }
     #endregion
     

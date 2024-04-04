@@ -22,7 +22,7 @@ public class DialogueManager : MonoBehaviour
     private const string PORTRAIT_TAG = "portrait";
     private const string PLAYER_TAG = "player";
     private const string LAYOUT_TAG = "layout";
-    [SerializeField]public UI_DialoguePopup popup;
+    public UI_DialoguePopup popup;
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
     //퀘스트 진행상황은 퀘스트 메니저에서 관리
 
@@ -31,6 +31,7 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
     }
 
     public static DialogueManager GetInstance()
@@ -46,7 +47,6 @@ public class DialogueManager : MonoBehaviour
         }
         if (PlayerController.GetInstance().GetInteractPressed())
         {
-            
             ContinueStory();
         }
     }
