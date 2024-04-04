@@ -10,7 +10,6 @@ public class NpcData : MonoBehaviour
 {
     [Header("Visual Cue")]
     [SerializeField] private GameObject[] visualCue;
-    [SerializeField] private bool isQuest;
     [Header("NPC Inform")]
     [SerializeField] public int npcId;
     [SerializeField] public string npcName;
@@ -35,7 +34,6 @@ public class NpcData : MonoBehaviour
     private void Awake()
     {
         playerInRange = false;
-        isQuest = false;
         foreach (var c in visualCue)
         {
             c.gameObject.SetActive(false);
@@ -51,6 +49,10 @@ public class NpcData : MonoBehaviour
             {
                 DialogueManager.GetInstance().GetTalk2(this);
             }
+        }
+        else
+        {
+
         }
 
     }

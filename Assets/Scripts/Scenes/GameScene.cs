@@ -18,6 +18,8 @@ public class GameScene : BaseScene
         
         // 게임 씬에 필요한 UI를 표시합니다. 여기서는 인벤토리 UI를 예로 들고 있음.
         Managers.UI.ShowPopupUI<UI_InventoryPopup>();
+        Managers.UI.ShowSceneUI<UI_DialoguePopup>();
+        Managers.Resource.Instantiate("Dialogue/DialogueManager.prefab");
 
         // 게임 데이터 매니저로부터 캐릭터의 통계 데이터 딕셔너리를 가져옴.
         // 이 데이터는 게임 내에서 캐릭터의 능력치 등을 관리하는 데 사용될 수 있음.

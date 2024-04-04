@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_DialoguePopup : UI_Popup
+public class UI_DialoguePopup : UI_Scene
 {
     [SerializeField] private GameObject DialoguePopup;
     [SerializeField] public GameObject dialoguePanel;
@@ -42,8 +42,7 @@ public class UI_DialoguePopup : UI_Popup
     private void Awake()
     {
         instance = this;
-       
-
+        dialoguePanel.SetActive(false);
     }
 
 

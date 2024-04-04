@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite[] playerPortrait;
     [Tab("Quest & Dialogue")]
     [SerializeField] private QuestManager _questManager;
-    private bool interactPressed = false;
+    private bool interactPressed;
     private static PlayerController instance;
     public static PlayerController GetInstance() { return instance; }
     public Sprite getplayerPortrait(int num)
@@ -97,8 +97,11 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
         
         _localScale = transform.localScale;
-        
+
         _playerInputActions = new PlayerInputActions();
+
+        interactPressed = false;
+        instance = this;
     }
 
     /// <summary>
