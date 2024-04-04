@@ -43,6 +43,7 @@ public class UI_DialoguePopup : UI_Scene
     {
         instance = this;
         dialoguePanel.SetActive(false);
+        DialogueManager.GetInstance().popup = this;
     }
 
 

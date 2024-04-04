@@ -222,9 +222,9 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Jump.started += JumpStarted;
         _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
         _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
-        _playerInputActions.PlayerAction.Interact.started += InteractStarted;
+        //_playerInputActions.PlayerAction.Interact.started += InteractStarted;
         _playerInputActions.PlayerAction.Interact.performed += InteractPerformed;
-        _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
+        //_playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.Enable();
@@ -243,9 +243,9 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Jump.started -= JumpStarted;
         _playerInputActions.PlayerAction.Jump.performed -= JumpPerformed;
         _playerInputActions.PlayerAction.Jump.canceled -= JumpCanceled;
-        _playerInputActions.PlayerAction.Interact.started -= InteractStarted;
+       // _playerInputActions.PlayerAction.Interact.started -= InteractStarted;
         _playerInputActions.PlayerAction.Interact.performed -= InteractPerformed;
-        _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
+       // _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
         _playerInputActions.Disable();
@@ -334,6 +334,10 @@ public class PlayerController : MonoBehaviour
     public bool GetInteractPressed()
     {
         bool result = interactPressed;
+        if (result)
+        {
+            DebugEx.Log(interactPressed);
+        }
         interactPressed = false;
         return result;
     }
