@@ -5,19 +5,20 @@ using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using VInspector;
 
 public class NpcData : MonoBehaviour
 {
-    [Header("Visual Cue")]
+    [Tab("Visual Cue")]
     [SerializeField] private GameObject[] visualCue;
-    [Header("NPC Inform")]
+    [Tab("NPC Inform")]
     [SerializeField] public int npcId;
     [SerializeField] public string npcName;
     [SerializeField] public bool isNpc;
     [SerializeField] public Sprite[] npcPortrait;
     [SerializeField] public TextAsset[] dialogue;
     [SerializeField] public string loc;
-    [Header("Quest Inform")]
+    [Tab("Quest Inform")]
     [SerializeField] public int[] questId;
     [SerializeField] public int questIndex;                     //여러퀘스트를 가지고있을때 지금 진행가능한 퀘스트번호 
     [SerializeField] public QuestState qs;
