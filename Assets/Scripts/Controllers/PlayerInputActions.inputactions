@@ -73,8 +73,30 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "left",
+                    "name": "up",
                     "id": "8ae91cb6-6925-42a7-8304-b69a66b9a884",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "0d991032-011a-468e-8117-a586d6bf2a84",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "5842a17b-4002-4c79-bc5f-cf21f4664ccb",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -106,17 +128,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "left",
-                    "id": "b5c488a2-6a42-4e6b-b7aa-aecdd8539eaf",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "up",
                     "id": "0f87dc4c-9385-4b7a-a058-33666ae978ff",
                     "path": "<Keyboard>/upArrow",
@@ -131,6 +142,17 @@
                     "name": "down",
                     "id": "5deeabb3-b143-4053-9984-4fdff5002aa3",
                     "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "b5c488a2-6a42-4e6b-b7aa-aecdd8539eaf",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
