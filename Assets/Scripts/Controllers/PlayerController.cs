@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using VInspector;
 
@@ -330,6 +331,11 @@ public class PlayerController : MonoBehaviour
     void InteractPerformed(InputAction.CallbackContext context)
     {
         //DebugEx.Log($"InteractPerformed {context}");
+        //if (DialogueManager.GetInstance().choicelen > 1)
+        //{
+        //    int id = DialogueManager.GetInstance().curchoice;
+        //    UI_DialoguePopup.GetInstance().choiceButton[id].onClick.Invoke();
+        //}
         interactPressed = true;
     }
 
