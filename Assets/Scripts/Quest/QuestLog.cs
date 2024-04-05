@@ -24,10 +24,9 @@ public class QuestLog : MonoBehaviour
         size.y = 5000f;
         QuestScrollRect.content.sizeDelta = size;
 
-
     }
 
-    void addQuest(int id)
+    public void addQuest(int id)
     {
         GameObject qeust= Resources.Load("QuestButton") as GameObject;
         qd=QuestManager.GetInstance().GetQuestData(id);

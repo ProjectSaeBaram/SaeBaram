@@ -23,8 +23,6 @@ public class DialogueManager : MonoBehaviour
     private const string PLAYER_TAG = "player";
     private const string LAYOUT_TAG = "layout";
     public UI_DialoguePopup popup;
-    public int choicelen;
-    public int curchoice;
     
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
     //퀘스트 진행상황은 퀘스트 메니저에서 관리
@@ -34,7 +32,6 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
     }
 
     public static DialogueManager GetInstance()
@@ -124,7 +121,6 @@ public class DialogueManager : MonoBehaviour
     private void DisplayChoices()
     {
         List<Choice> currentChoices = currentStory.currentChoices;
-        choicelen = currentChoices.Count;
         if (currentChoices.Count > popup.choices.Length)           //현재 선택지의 개수가 버튼의 개수보다 많으면 오류 
         {
             Debug.LogError("More choices than ever");

@@ -7,7 +7,7 @@ public class QuestManager : MonoBehaviour
     public int[] questId;               //전체 아이디를 보관하는게 좋을까?
     public int questActionIndex;
     public int questIndex;
-
+    public QuestLog QuestLog;
     public Dictionary<int, QuestData> questList;
     private Dictionary<int, NpcData> questNpc;
 
