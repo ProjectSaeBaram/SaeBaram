@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class QuestButton : MonoBehaviour
 {
-    public QuestData qd;
-    public Button questButton;
-    public QuestInfoPanel questInfoPanel;
+    public TextMeshPro QuestName;
     public QuestData questData;
 
     private void Awake()
     {
-        questButton = this.GetComponent<Button>();
-        questButton.onClick.AddListener(() => QuestInfoPanel.GetInstance().setQuestInfo(qd));
+        this.name = QuestName.text;
+        //this.GetComponent<Button>().onClick.AddListener(() => QuestInfoPanel.GetInstance().setQuestInfo(qd));
+    }
+
+    public void SetQuestInfo(QuestData data)
+    {
+        QuestName.text = data.questName;
+        questData=data;
     }
 }

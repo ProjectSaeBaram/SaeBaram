@@ -5,41 +5,58 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 public class QuestLog : MonoBehaviour
-{
-    public QuestManager quest;                //ÀüÃ¼ ÆĞ³Î¿¡ ºÙÀÌ°í state¸¦ Ã¤Å©ÇØ¼­ additemÀ¸·Î Áö±İ ¼öÇàÇÏ°íÀÖ´Â Äù½ºÆ®¸¦ °¡Á®¿Â´Ù. 
-    public Button[] QuestList;                //Äù½ºÆ® ¸®½ºÆ® 
+{   
+    //í•„ìš”í•œ ê¸°ëŠ¥ 1.ìƒˆë¡œê³ ì¹¨ê¸°ëŠ¥ 2.ë²„íŠ¼ì¶”ê°€ê¸°ëŠ¥ 3.ëˆŒë €ì„ ë•Œ ì •ë³´ë‚˜ì˜¤ê²Œí•˜ê¸°
 
+    public QuestManager quest;                //ì „ì²´ íŒ¨ë„ì— ë¶™ì´ê³  stateë¥¼ ì±„í¬í•´ì„œ additemìœ¼ë¡œ ì§€ê¸ˆ ìˆ˜í–‰í•˜ê³ ìˆëŠ” í€˜ìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤. 
+    public List<Button> ButtonList;                //í€˜ìŠ¤íŠ¸ ë¦¬ìŠ¤íŠ¸ 
+    public ScrollView ScrollView;
     public TextMeshProUGUI QuestTitle;
     public TextMeshProUGUI QuestDescription;
     public ScrollRect QuestScrollRect;
-    public QuestData qd;
+    public List<QuestData> qd_progess=new List<QuestData>();
+    public List<QuestData> qd_complete = new List<QuestData>();
     public GameObject questInfoPanel;
-    //Äù½ºÆ® »ó¼¼¼³¸í -> ÀÌ¸§, ¼³¸í, À§Ä¡,°ü·ÃµÈ npcÀÌ¸§,ÁøÇà»óÈ² textmeshpro 5°³ ÇÊ¿ä?
+    //í€˜ìŠ¤íŠ¸ ìƒì„¸ì„¤ëª… -> ì´ë¦„, ì„¤ëª…, ìœ„ì¹˜,ê´€ë ¨ëœ npcì´ë¦„,ì§„í–‰ìƒí™© textmeshpro 5ê°œ í•„ìš”?
     private void Start()
     {
-        QuestScrollRect.normalizedPosition = new Vector2(1f, 1f);                   //»çÀÌÁî µ¿ÀûÀ¸·Î ¹Ù²ãÁÖ±â
-        Vector2 size = QuestScrollRect.content.sizeDelta;                   
-        size.y = 5000f;
-        QuestScrollRect.content.sizeDelta = size;
-
+           
     }
 
-    public void addQuest(int id)
+    public void RefreshquestList()                  //ì§„í–‰ì¤‘ì¸ í€˜ìŠ¤íŠ¸ì™€ ëë‚œ í€˜ìŠ¤íŠ¸ë¥¼ ì°¾ì•„ì„œ ê° ë¦¬ìŠ¤íŠ¸ì— ë„£ì–´ì£¼ê³  ì§€ê¸ˆ ì„ íƒëœ ë²„íŠ¼ì— ë”°ë¼ í•´ë‹¹ë¦¬ìŠ¤íŠ¸ë¡œ ë²„íŠ¼ë¦¬ìŠ¤íŠ¸ë¥¼ ì´ˆê¸°í™”í•´ì¤€ë‹¤.
     {
-        GameObject qeust= Resources.Load("QuestButton") as GameObject;
-        qd=QuestManager.GetInstance().GetQuestData(id);
-        
-        GameObject instance = PrefabUtility.InstantiatePrefab(qeust) as GameObject;     //ÇÁ¸®ÆÕÃß°¡ÇØÁÖ±â
+        for (int i = 0; i < quest.questList.Count; i++)
+        {
+            if (quest.questList[i].qs == QuestState.IN_PROGRESS)            //ì§„í–‰ì¤‘ì¸ í€˜ìŠ¤íŠ¸ ë°›ì•„ì˜¤ê¸° 
+            {
+                qd_progess.Add(quest.questList[i].getQuestData());
+            }
+            else if (quest.questList[i].qs == QuestState.FINISHED)
+            {
+                qd_complete.Add(quest.questList[i].getQuestData());
+            }
+        }
 
-        instance.transform.SetParent(QuestScrollRect.content.transform);
-        instance.name = qd.questName;
-        instance.AddComponent<QuestButton>();
-        QuestButton qb=instance.GetComponent<QuestButton>();
-        qb.questData = qd;
-        //Äù½ºÆ®¿¡ µû¶ó ÀÌ¸§ ¹× Äù½ºÆ® ½ºÅ©¸³Æ® Ãß°¡ÇØÁÖ±â 
+        for(int i = 0;i< qd_progess.Count;i++)
+        {
+            ButtonList[i].GetComponent<QuestButton>().SetQuestInfo(qd_progess[i]);
+            if(i>ButtonList.Count)                  //ë§Œì•½ì— ì§€ê¸ˆìˆëŠ” ë²„íŠ¼ë“¤ë³´ë‹¤ í€˜ìŠ¤íŠ¸í‘œì‹œí•´ì•¼ë ê²Œ ë§ë‹¤ë©´ ë²„íŠ¼ì„ ì¶”ê°€í•´ì¤€ë‹¤.
+            {
+                Managers.Resource.Instantiate("",this.transform);
+                ButtonList.Add(this.transform.GetChild(i).GetComponent<Button>());
+                ButtonList[i].GetComponent<QuestButton>().SetQuestInfo(qd_progess[i]);
+            }
+        }
     }
 
-   
+
+
+    public void AddQuest(QuestData data)
+    {
+        qd_progess.Add(data);
+    }
 }
