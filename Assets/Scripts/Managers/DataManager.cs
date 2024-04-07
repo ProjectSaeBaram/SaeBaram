@@ -29,12 +29,12 @@ public class DataManager
     /// </summary>
     private string _path;
     
-    /// <summary>
-    /// 게임 내 정보를 담는 Dictionary. 
-    /// 처음 게임이 시작될 때, Init() 함수를 통해 필요한 정보를 여기에 캐싱하고,
-    /// 이후에 필요할 때는 여기를 참조해 정보를 활용한다.
-    /// </summary>
-    public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
+    // /// <summary>
+    // /// 게임 내 정보를 담는 Dictionary. 
+    // /// 처음 게임이 시작될 때, Init() 함수를 통해 필요한 정보를 여기에 캐싱하고,
+    // /// 이후에 필요할 때는 여기를 참조해 정보를 활용한다.
+    // /// </summary>
+    //public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
 
     /// <summary>
     /// 인벤토리 칸의 갯수. 현재는 테스트용으로 10칸만 존재한다.
@@ -53,7 +53,7 @@ public class DataManager
     {
         {0, "NONE" },
         {1, "Sword" },
-        {2,  "Bow"  },
+        {2,  "Bow" },
         {100, "Wood" },
         {101, "Stone" },
     };
@@ -65,13 +65,16 @@ public class DataManager
     {
         {"NONE", 0 },
         {"Sword", 1 },
-        {"Bow", 2  },
+        {"Bow", 2 },
         {"Wood", 100},
         {"Stone", 101 },
     };
 
     public const int BOUNDARY = 100;
     
+    /// <summary>
+    ///  게임이 꺼질 때 Invoke되는 UnityAction
+    /// </summary>
     public UnityAction OnClose = null;
     
     /// <summary>
@@ -85,9 +88,9 @@ public class DataManager
         _path = Application.persistentDataPath + "/";
         
         // 다음과 같은 형태로 사용 가능
-        StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
+        // StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
         
-        // 인벤토리 데이터 테스트용 데이터 초기화
+        // 인벤토리 데이터 초기화
         InventoryTable = new ushort[NumberOfInventorySlots];
         for(int i = 0; i < NumberOfInventorySlots; i++)
             InventoryTable[i] = (ushort)0;
@@ -95,8 +98,6 @@ public class DataManager
         if(!LoadInventoryData())
             // 인벤토리를 테스트 데이터로 채우는 함수
             MakeItemTest();
-        else
-            LoadInventoryData();
     }
 
     /// <summary>
@@ -206,14 +207,16 @@ public class DataManager
             DebugEx.Log("############# ItemDescription ##############");
         for(int i = 0; i < NumberOfInventorySlots; i++)
         {
-            // 1. 아이템 종류 구하기
-            int id = ((int)InventoryTable[i] >> 6) & 255;      
+            // 1. 아이템 퀄리티 구하기 (상위 2bit)
+            int quality = (InventoryTable[i] >> 14);
+            
+            // 2. 아이템 종류 구하기 (퀄리티 이후 8bit)
+            int id = ((int)InventoryTable[i] >> 6) & 255;
             string name = itemCodeDict[id];
             
-            // 2. 아이템 퀄리티 구하기
-            int quality = (InventoryTable[i] >> 8);
-
             // 3. 아이템 내구도, 강화도 (갯수) 구하기
+            // (도구인 경우 4bit가 내구도, 2bit가 강화도)
+            // (재료인경우 6bit가 갯수)
             int durability = (InventoryTable[i] & 63) >> 2;
             int numOfReinforce = InventoryTable[i] & 3;
             
@@ -226,11 +229,13 @@ public class DataManager
             }
             
             // 지금 읽어온 아이템이 Tool인지, Material인지 구분해야한다.
-            if (id >= BOUNDARY)
+            if (name == "NONE")
+                itemDatas.Add(new DummyItem());
+            else if (id >= BOUNDARY)
                 itemDatas.Add(new Ingredient(id, name, quality, durability * 4 + numOfReinforce));
             else
                 itemDatas.Add(new Tool(id, name, quality, durability, numOfReinforce));
-            
+
         }
         if(printConsole)
             DebugEx.Log("############# ItemDescription ##############");
@@ -238,22 +243,46 @@ public class DataManager
         return itemDatas;
     }
 
-    // 리스트로 입력받은 인벤토리 데이터를 다시 배열로 바꾸는 함수
+    /// <summary>
+    /// 리스트로 입력받은 인벤토리 데이터를 다시 배열로 바꾸는 함수
+    /// 이 이후에, SaveInventoryData함수가 호출되어 실제 Disk에 저장된다.
+    /// </summary>
+    /// <param name="inventory"></param>
     public void TransDataListIntoArray(List<ItemData> inventory)
     {
         ushort[] _inventoryTable = new ushort[NumberOfInventorySlots];
         
         for (int i = 0; i < inventory.Count; i++)
         {
-            // item 이름으로 코드 찾기
-            int itemCode = reverseItemCodeDict[inventory[i].Name];
-            
-            // 갯수 조정 (1을 빼서 0~63 범위로 맞춤)
-            //int adjustedItemCount = inventory[i].Count - 1; TODO
-            //ushort item = (ushort)((itemCode << 6) | adjustedItemCount);
+            ushort data = 0;
 
-            //_inventoryTable[i] = item;
+            ushort quality = (ushort)inventory[i].Quality;
+            // item 이름으로 코드 찾기
+            ushort id = (ushort) reverseItemCodeDict[inventory[i].GetName()];
+
+            // 아이템 품질 (상위 2bit)
+            data |= (ushort)(quality << 14);
+
+            // 아이템 ID (다음 8bit)
+            data |= (ushort)(id << 6);
+
+            if (inventory[i] is Tool)
+            {
+                Tool tool = (Tool)inventory[i];
+                // 도구의 경우, 내구도 (4bit)와 강화도 (2bit)
+                data |= (ushort)((tool.Durability & 0xF) << 2); // 4bit
+                data |= (ushort)(tool.ReinforceCount & 0x3); // 마지막 2bit
+            }
+            else if (inventory[i] is Ingredient)
+            {
+                Ingredient ingredient = (Ingredient)inventory[i];
+                // 재료의 경우, 갯수 (6bit)
+                data |= (ushort)(ingredient.Amount & 0x3F); // 마지막 6bit
+            }
+            // 변환된 데이터 저장
+            _inventoryTable[i] = data;
         }
+        
         InventoryTable = _inventoryTable;
     }
 }

@@ -28,14 +28,24 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemDurabilitySlider,       // 아이템 내구도 표시 슬라이더
     }
 
+    // 아이템의 종류를 구분하는 enum
+    public enum ItemType
+    {
+        Tool,
+        Ingredient,
+        Dummy,
+    }
+    
     [Header("UI")] 
     [SerializeField] public UI_InventoryPopup _uiInventoryPopup;
     [SerializeField] private Image image;
     [SerializeField] public string Name;                // 아이템의 이름을 저장하는 필드
+    [SerializeField] public int Quality;                // 아이템의 퀄리티를 저장하는 필드
     [SerializeField] public int Amount = 0;             // 아이템의 갯수를 저장하는 필드
     [SerializeField] public int Durability = 1;         // 아이템의 내구도를 저장하는 필드
     public float maxDurability = 15f;
     [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드
+    [SerializeField] public ItemType itemType;
     
     // 드래그 이후 부모 Transform을 저장하기 위함
     [SerializeField] public Transform parentAfterDrag;
@@ -50,7 +60,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     /// <summary>
     /// 이 아이템이 도구인 경우는 갯수를 표시할 필요가 없다.
     /// </summary>
-    public void ToolInit(string name, int durability, int reinforceCount)
+    public void ToolInit(string name, int quality, int durability, int reinforceCount)
     {
         // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
         Bind<TextMeshProUGUI>(typeof(Texts)); 
@@ -58,6 +68,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Bind<Slider>(typeof(Sliders));
         
         Name = name;                        // 아이템 이름을 저장.
+        Quality = quality;                  // 아이템 품질을 저장.
         Durability = durability;            // 아이템 내구도를 저장.
         ReinforceCount = reinforceCount;    // 아이템의 강화 횟수를 저장.
         
@@ -69,12 +80,14 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Get<TextMeshProUGUI>((int)Texts.ItemAmountText).gameObject.SetActive(false);
         Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
         Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
+
+        itemType = ItemType.Tool;
     }
 
     /// <summary>
     /// 이 아이템이 재료인 경우에는, 내구도와 강화횟수를 표시할 필요가 없고, 갯수를 표시해야 한다.
     /// </summary>
-    public void IngredientInit(string name, int amount)
+    public void IngredientInit(string name, int quality, int amount)
     {
         // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
         Bind<TextMeshProUGUI>(typeof(Texts)); 
@@ -82,6 +95,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Bind<Slider>(typeof(Sliders));
         
         Name = name;                        // 아이템 이름을 저장.
+        Quality = quality;                  // 아이템 품질을 저장.
         Amount = amount;                    // 아이템 갯수를 저장.
         
         // 이미지 설정
@@ -92,11 +106,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Get<Slider>((int)Sliders.ItemDurabilitySlider).gameObject.SetActive(false);
         Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).gameObject.SetActive(false);
         Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
+
+        itemType = ItemType.Ingredient;
     }
     
     #region Drag and Drop
 
-    private Vector3 DragOffset;
+    private Vector3 _dragOffset;
     
     public void OnBeginDrag(PointerEventData eventData) {
         
@@ -108,13 +124,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         transform.SetParent(_uiInventoryPopup.transform);
 
         // 마우스 커서 클릭 위치 오프셋 적용
-        DragOffset = transform.position - Input.mousePosition;
+        _dragOffset = transform.position - Input.mousePosition;
     }
     
     public void OnDrag(PointerEventData eventData) {
         
         // InvntoryItem의 위치를 마우스 위치로 이동
-        transform.position = Input.mousePosition + DragOffset;
+        transform.position = Input.mousePosition + _dragOffset;
     }
     
     public void OnEndDrag(PointerEventData eventData) {

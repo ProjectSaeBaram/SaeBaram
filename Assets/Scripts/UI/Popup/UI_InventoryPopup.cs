@@ -27,8 +27,7 @@ public class UI_InventoryPopup : UI_Popup
 
         VisualizeItemsInTheGrid();
 
-        Managers.Data.OnClose = null;
-        //Managers.Data.OnClose += ExportInventoryData; TODO
+        Managers.Data.OnClose += ExportInventoryData;
         Managers.Data.OnClose += Managers.Data.SaveInventoryData;
     }
 
@@ -47,41 +46,38 @@ public class UI_InventoryPopup : UI_Popup
             
             // 아이템
             ItemData item = _itemDataList[i];
-            if (item.Name == "NONE")                    // 이름이 NONE 이라는 것은 빈칸이라는 의미
-            {
-                visualizedItems.Add(null);
-                continue;
-            }
 
-            switch (item)
+            switch (item)       // 아이템의 종류에 따라 다르게 시각화
             {
-                case ITool:
+                case Tool tool:
                 {
-                    Tool tool = item as Tool;
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
-                    visualizedItems[i].ToolInit(tool!.Name, tool!.Durability, tool!.ReinforceCount);
+                    visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount);
                     visualizedItems[i]._uiInventoryPopup = this;
                     break;
                 }
-                case IStackable:
+                case Ingredient ingredient:
                 {
-                    Ingredient ingredient = item as Ingredient;
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
-                    visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Amount);
+                    visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount);
                     visualizedItems[i]._uiInventoryPopup = this;
+                    break;
+                }
+                case DummyItem:
+                {
+                    visualizedItems.Add(null);
                     break;
                 }
             }
-            
 
             itemSlots[i].Item = visualizedItems[i];
         }
     }
 
-    /// <summary>
-    /// 인벤토리가 열려있는 중에, 아이템 목록의 변화가 일어났을 때 갱신하고, 다시 시각화해주는 기능.
-    /// </summary>
-    // private void RefreshItemUI() TODO
+    // /// <summary>
+    // /// 인벤토리가 열려있는 중에, 아이템 목록의 변화가 일어났을 때 갱신하고, 다시 시각화해주는 기능.
+    // /// </summary>
+    // private void RefreshItemUI()
     // {
     //     for (int i = 0; i < _itemDataList.Count; i++)
     //         visualizedItems[i].SetInfo(_itemDataList[i].Name, _itemDataList[i].Count);
@@ -95,26 +91,40 @@ public class UI_InventoryPopup : UI_Popup
         _itemDataList = Managers.Data.ItemInfos();
     }
 
-    /// <summary> TODO
+    /// <summary>
     /// 팝업이 닫힐 때는 인벤토리 정보를 다시 바이너리 파일로 저장
+    /// DataManager에게 정보를 전달
     /// </summary>
-    // public void ExportInventoryData()
-    // {
-    //     for (int i = 0; i < numberOfItemSlots; i++)
-    //     {
-    //         if (itemSlots[i].Item == null)
-    //         {
-    //             // 여기서 갯수를 1로 지정하지 않으면 바이너리 파일에 0만 찍혀서 저장되지 않는다.
-    //             // 빈 공간으로도 인식되지 못한다
-    //             _itemDataList[i] = new ItemData("NONE", 1);
-    //         }
-    //         else
-    //         {
-    //             UI_Inven_Slot slot = itemSlots[i];
-    //             _itemDataList[i] = new ItemData(slot.Item.Name, slot.Item.Count);
-    //         }
-    //     }
-    //
-    //     Managers.Data.TransDataListIntoArray(_itemDataList);
-    // }
+    public void ExportInventoryData()
+    {
+        for (int i = 0; i < numberOfItemSlots; i++)
+        {
+            UI_Inven_Item itemUI = itemSlots[i].Item;
+            
+            if (itemUI == null)
+            {
+                // 빈 공간으로 인식되기 위해 DummyItem을 저장 
+                _itemDataList[i] = new DummyItem();
+            }
+            else
+            {
+                switch (itemUI.itemType)
+                {
+                    case UI_Inven_Item.ItemType.Tool:
+                        _itemDataList[i] = 
+                            new Tool(0, itemUI.Name, itemUI.Quality, itemUI.Durability, itemUI.ReinforceCount);
+                        break;
+                    case UI_Inven_Item.ItemType.Ingredient:
+                        _itemDataList[i] = new Ingredient(0, itemUI.Name, itemUI.Quality, itemUI.Amount);
+                        break;
+                    case UI_Inven_Item.ItemType.Dummy:
+                        _itemDataList[i] = new DummyItem();
+                        break;
+                }
+                
+            }
+        }
+    
+        Managers.Data.TransDataListIntoArray(_itemDataList);
+    }
 }

@@ -1,4 +1,4 @@
-public interface IStackable 
+public interface Iingredient 
 {
     public int Amount { get; set; }
 }

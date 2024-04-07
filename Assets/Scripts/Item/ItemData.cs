@@ -13,6 +13,11 @@ public abstract class ItemData
         Name = name;
         Quality = quality;
     }
+
+    public string GetName()
+    {
+        return Name;
+    }
 }
 
 public class Tool : ItemData, ITool
@@ -28,12 +33,20 @@ public class Tool : ItemData, ITool
     }
 }
 
-public class Ingredient : ItemData , IStackable
+public class Ingredient : ItemData , Iingredient
 {
     public int Amount { get; set; }
     
     public Ingredient(int id, string name, int quality, int amount) : base(id, name, quality)
     {
         Amount = amount;
+    }
+}
+
+public class DummyItem : ItemData
+{
+    public DummyItem() : base(0, "NONE", 0)
+    {
+        // 더미 아이템을 위한 생성자, 필요한 경우 추가적인 속성 설정 가능
     }
 }
