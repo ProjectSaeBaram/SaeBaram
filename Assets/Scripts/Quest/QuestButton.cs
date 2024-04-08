@@ -3,21 +3,29 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VInspector;
 
 public class QuestButton : MonoBehaviour
 {
-    public TextMeshPro QuestName;
-    public QuestData questData;
+    [Tab("QuestInfo")]
+    [SerializeField] public TextMeshProUGUI QuestName;
+    [SerializeField] public QuestData questData;
+    [Tab("Panel")]
+    [SerializeField] public QuestInfoPanel QuestInfoPanel;
 
     private void Awake()
     {
-        this.name = QuestName.text;
-        //this.GetComponent<Button>().onClick.AddListener(() => QuestInfoPanel.GetInstance().setQuestInfo(qd));
+        this.GetComponent<Button>().onClick.AddListener(() => DisplayQuestInfo());
     }
 
     public void SetQuestInfo(QuestData data)
     {
         QuestName.text = data.questName;
-        questData=data;
+        questData = data;
+    }
+
+    public void DisplayQuestInfo()
+    {
+        QuestInfoPanel.setQuestInfo(questData);
     }
 }

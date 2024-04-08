@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    public int[] questId;               //ÀüÃ¼ ¾ÆÀÌµğ¸¦ º¸°üÇÏ´Â°Ô ÁÁÀ»±î?
+    public int[] questId;               //ì „ì²´ ì•„ì´ë””ë¥¼ ë³´ê´€í•˜ëŠ”ê²Œ ì¢‹ì„ê¹Œ?
     public int questActionIndex;
     public int questIndex;
-    public QuestLog QuestLog;
+    public QuestList QuestList;
     public Dictionary<int, QuestData> questList;
     private Dictionary<int, NpcData> questNpc;
 
@@ -16,7 +16,7 @@ public class QuestManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        questList = new Dictionary<int, QuestData>();               //Äù½ºÆ® ¾ÆÀÌµğ: Äù½ºÆ® Á¤º¸
+        questList = new Dictionary<int, QuestData>();               //í€˜ìŠ¤íŠ¸ ì•„ì´ë””: í€˜ìŠ¤íŠ¸ ì •ë³´
         questNpc = new Dictionary<int, NpcData>();
         questIndex = 1;
         GenerateData();
@@ -30,13 +30,13 @@ public class QuestManager : MonoBehaviour
 
     void GenerateData()
     {
-        questList.Add(1, new MeetPeopleQuest("´ëÈ­ÇÏ±â", 1000,"ÇÒ¾Æ¹öÁö",1,QuestState.REQUIREMENTS_NOT_MET,10,"Æ©Åä¸®¾ó ¸¶À»"));
+        questList.Add(1, new MeetPeopleQuest("ëŒ€í™”í•˜ê¸°", 1000,"í• ì•„ë²„ì§€",1,QuestState.REQUIREMENTS_NOT_MET,10,"íŠœí† ë¦¬ì–¼ ë§ˆì„"));
 
-        questList.Add(2, new CoincollectQuest("ÄÚÀÎ ¸ğÀ¸±â", 1000, "ÇÒ¾Æ¹öÁö", 2, QuestState.CAN_START, 20, "Æ©Åä¸®¾ó ¸¶À»"));
+        questList.Add(2, new CoincollectQuest("ì½”ì¸ ëª¨ìœ¼ê¸°", 1000, "í• ì•„ë²„ì§€", 2, QuestState.CAN_START, 20, "íŠœí† ë¦¬ì–¼ ë§ˆì„"));
 
     }
 
-    public void AdvanceQuest(int id,NpcData npc)            //Äù½ºÆ® ÁøÇà»óÈ² ¾÷µ¥ÀÌÆ®
+    public void AdvanceQuest(int id,NpcData npc)            //í€˜ìŠ¤íŠ¸ ì§„í–‰ìƒí™© ì—…ë°ì´íŠ¸
     {
 
         questActionIndex++;
@@ -52,7 +52,7 @@ public class QuestManager : MonoBehaviour
     }
 
 
-    public void CheckRequirement()             //ÁøÇà ¼ø¼­°¡ ¸Â¾ÆÁø´Ù¸é ½ÃÀÛ°¡´ÉÇÑ Äù½ºÆ® Ã¼Å©
+    public void CheckRequirement()             //ì§„í–‰ ìˆœì„œê°€ ë§ì•„ì§„ë‹¤ë©´ ì‹œì‘ê°€ëŠ¥í•œ í€˜ìŠ¤íŠ¸ ì²´í¬
     {
         for (int i = 1; i <= questList.Count; i++){
             if (questIndex >= questList[i].Indexrequirment && questList[i].qs==QuestState.REQUIREMENTS_NOT_MET)
@@ -63,7 +63,7 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    public QuestState CheckState(int id)          //Äù½ºÆ® ÇöÀç »óÅÂ ¹İÈ¯
+    public QuestState CheckState(int id)          //í€˜ìŠ¤íŠ¸ í˜„ì¬ ìƒíƒœ ë°˜í™˜
     {
         return questList[id].qs;
     }
@@ -77,12 +77,12 @@ public class QuestManager : MonoBehaviour
     {
         return questList[id].npcId;
     }
-    public int GetQuestTalkIndex(int id)            //NPC Id°¡ µé¾î¿È
+    public int GetQuestTalkIndex(int id)            //NPC Idê°€ ë“¤ì–´ì˜´
     {
         return questIndex + questActionIndex;
     }
 
-    public void AdvanceIndex(int qid)      //½ºÅä¸® ÁøÇà¿¡ µû¶ó ´ÙÀ½ Äù½ºÆ®°¡ ÁøÇàµÉ ¼ö ÀÖ°Ô ÀÎµ¦½º °ª Áõ°¡
+    public void AdvanceIndex(int qid)      //ìŠ¤í† ë¦¬ ì§„í–‰ì— ë”°ë¼ ë‹¤ìŒ í€˜ìŠ¤íŠ¸ê°€ ì§„í–‰ë  ìˆ˜ ìˆê²Œ ì¸ë±ìŠ¤ ê°’ ì¦ê°€
     {
         questIndex ++;
         if (questNpc[qid].questId.Length>1)

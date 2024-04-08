@@ -6,15 +6,24 @@ using VInspector;
 
 public class QuestInfoPanel : MonoBehaviour
 {
-    //Äù½ºÆ® »ó¼¼¼³¸í -> ÀÌ¸§, ¼³¸í, À§Ä¡,°ü·ÃµÈ npcÀÌ¸§,ÁøÇà»óÈ² textmeshpro 5°³ ÇÊ¿ä?
+    //í€˜ìŠ¤íŠ¸ ìƒì„¸ì„¤ëª… -> ì´ë¦„, ì„¤ëª…, ìœ„ì¹˜,ê´€ë ¨ëœ npcì´ë¦„,ì§„í–‰ìƒí™© textmeshpro 5ê°œ í•„ìš”?
     [Tab("QuestInfo")]
-    [SerializeField]private TextMeshPro questTitle;
-    [SerializeField] private TextMeshPro questDescription;
-    [SerializeField] private TextMeshPro questLoc;
-    [SerializeField] private TextMeshPro npcName;
-    [SerializeField] private TextMeshPro questState;
+    [SerializeField] private TextMeshProUGUI questTitle;
+    [SerializeField] private TextMeshProUGUI questDescription;
+    [SerializeField] private TextMeshProUGUI questLoc;
+    [SerializeField] private TextMeshProUGUI npcName;
+    [SerializeField] private TextMeshProUGUI questState;
     private static QuestInfoPanel instance;
     private void Awake()
+    {
+        questTitle.text = "";
+        questDescription.text = "";
+        questLoc.text = "";
+        npcName.text = "";
+        questState.text = "";
+    }
+
+    public void Resetting()
     {
         questTitle.text = "";
         questDescription.text = "";
