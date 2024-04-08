@@ -17,12 +17,13 @@ public class QuestList : UI_Popup
     [SerializeField] public List<Button> ButtonList;                //퀘스트 리스트 
     [SerializeField] public ScrollView ScrollView;
     private ScrollRect QuestScrollRect;
-    private List<QuestData> qd_progess=new List<QuestData>();
-    private List<QuestData> qd_complete = new List<QuestData>();
-    public GameObject questInfoPanel;
+    private List<QuestData> qd_progess;
+    private List<QuestData> qd_complete;
     //퀘스트 상세설명 -> 이름, 설명, 위치,관련된 npc이름,진행상황 textmeshpro 5개 필요?
     private void Start()        //진행중인 퀘스트 보여주기
     {
+        qd_progess = new List<QuestData>();
+        qd_complete = new List<QuestData>();
         int idx = 0;
         if (qd_progess.Count > ButtonList.Count)                  //만약에 지금있는 버튼들보다 퀘스트표시해야될게 많다면 버튼을 추가해준다.
         {
@@ -47,6 +48,8 @@ public class QuestList : UI_Popup
 
     public void RefreshquestList()                  //진행중인 퀘스트와 끝난 퀘스트를 찾아서 각 리스트에 넣어주고 지금 선택된 버튼에 따라 해당리스트로 버튼리스트를 초기화해준다.
     {
+        qd_progess = new List<QuestData>();
+        qd_complete = new List<QuestData>();
         for (int i = 0; i < QuestManager.GetInstance().questList.Count; i++)
         {
             if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS)            //진행중인 퀘스트 받아오기 
@@ -62,6 +65,7 @@ public class QuestList : UI_Popup
 
     public void DisplayProgessList()        //진행중인 퀘스트 보여주기
     {
+        qd_progess = new List<QuestData>();
         int idx = 0;
         if (qd_progess.Count > ButtonList.Count)                  //만약에 지금있는 버튼들보다 퀘스트표시해야될게 많다면 버튼을 추가해준다.
         {
@@ -86,6 +90,7 @@ public class QuestList : UI_Popup
 
     public void DisplayFinishedList()           //끝난 퀘스트 보여주기
     {
+        qd_complete = new List<QuestData>();
         int idx = 0;
         if (qd_complete.Count > ButtonList.Count)                  //만약에 지금있는 버튼들보다 퀘스트표시해야될게 많다면 버튼을 추가해준다.
         {
