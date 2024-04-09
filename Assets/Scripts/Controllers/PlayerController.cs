@@ -2,10 +2,162 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VInspector;
+using Vector2 = UnityEngine.Vector2;
 
-[RequireComponent(typeof(Rigidbody2D))] [RequireComponent(typeof(SpriteRenderer))] [RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))] [RequireComponent(typeof(CapsuleCollider2D))] [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    // Player의 컨트롤은 State에 기반해 이를 변경하는 방식으로 구현.
+    // 현재 Player의 State는 Idle, Walk, Run, Jump, Fall, Attack 총 6개의 State로 구분.
+    // 새로운 State를 추가할 때는 IPlayerState 인터페이스를 상속받는 클래스를 정의하고,
+    // PlayerController가 해당 클래스의 인스턴스를 들고있도록 수정하면 바로 적용할 수 있다.
+    
+    public interface IPlayerState
+    {
+        void Enter(PlayerController player);
+        void Execute();
+        void Exit();
+    }
+    
+    public class PlayerIdleState : IPlayerState
+    {
+        private PlayerController _playerController;
+        public void Enter(PlayerController player)
+        {
+            _playerController = player;
+        }
+
+        public void Execute()
+        {
+            if (_playerController.inputVector.x == 0) return;
+            _playerController.CurrentState = _playerController.shiftToggled ? _playerController._runState : _playerController._walkState;
+        }
+
+        public void Exit()
+        {
+            
+        }
+    }
+
+    public class PlayerWalkState : IPlayerState
+    {
+        private PlayerController _playerController;
+        public void Enter(PlayerController player)
+        {
+            _playerController = player;
+        }
+
+        public void Execute()
+        {
+            // 플레이어의 입력에 따라 캐릭터 이동
+            _playerController._rigidbody2D.velocity = 
+                new Vector2(_playerController.inputVector.x * _playerController.speed, 
+                    _playerController._rigidbody2D.velocity.y);
+        
+            _playerController.FlipImage();
+        }
+
+        public void Exit()
+        {
+            
+        }
+    }
+
+    public class PlayerRunState : IPlayerState
+    {
+        private PlayerController _playerController;
+        public void Enter(PlayerController player)
+        {
+            _playerController = player;
+        }
+
+        public void Execute()
+        {
+            // 플레이어의 입력에 따라 캐릭터 이동
+            _playerController._rigidbody2D.velocity = 
+                new Vector2(_playerController.inputVector.x * _playerController.runningSpeed, 
+                    _playerController._rigidbody2D.velocity.y);
+        
+            _playerController.FlipImage();
+        }
+
+        public void Exit()
+        {
+            
+        }
+    }
+
+    public class PlayerJumpState : IPlayerState
+    {
+        private PlayerController _playerController;
+        public void Enter(PlayerController player)
+        {
+            _playerController = player;
+            
+            if (_playerController.jumpForced) return;
+        
+            _playerController._rigidbody2D.velocity = new Vector2(_playerController._rigidbody2D.velocity.x, 0);
+            _playerController._rigidbody2D.AddForce(Vector2.up * _playerController.jumpPower, ForceMode2D.Impulse);
+
+            _playerController.jumpForced = true;
+        }
+
+        public void Execute()
+        {
+            float speed = (_playerController.shiftToggled) ? _playerController.runningSpeed : _playerController.speed;
+            
+            // 플레이어의 입력에 따라 캐릭터 이동
+            _playerController._rigidbody2D.velocity = 
+                new Vector2(_playerController.inputVector.x * speed, 
+                    _playerController._rigidbody2D.velocity.y);
+        
+            _playerController.FlipImage();
+        }
+
+        public void Exit()
+        {
+            
+        }
+    }
+
+    public class PlayerFallState : IPlayerState
+    {
+        private PlayerController _playerController;
+        public void Enter(PlayerController player)
+        {
+            _playerController = player;
+        }
+
+        public void Execute()
+        {
+
+        }
+
+        public void Exit()
+        {
+            
+        }
+    }
+
+    public class PlayerAttackState : IPlayerState
+    {
+        private PlayerController _playerController;
+        public void Enter(PlayerController player)
+        {
+            _playerController = player;
+        }
+
+        public void Execute()
+        {
+            
+        }
+
+        public void Exit()
+        {
+            
+        }
+    }
+    
     [Tab("Information")]
     [SerializeField] private Vector2 inputVector;
     [SerializeField] private float speed = 400f;
@@ -14,39 +166,56 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isJumpable = false;
     [SerializeField] private bool jumpForced = false;
     [SerializeField] private bool shiftToggled = false;
-    [SerializeField] private State _currentState = PlayerController.State.Idle;
-    [SerializeField] private State CurrentState
+    [SerializeField] private IPlayerState _currentState;
+    [SerializeField]
+    public IPlayerState CurrentState
     {
         get => _currentState;
-        set
+        private set
         {
-            bool ran = CurrentState == State.Run;
+            if(_currentState?.GetType() == value.GetType())  //  상태가 변하지 않았다면 업데이트하지 않는다. 
+            {
+                DebugEx.Log(_currentState?.GetType().ToString() + " -> " + value.GetType().ToString());
+                return;
+            }
+            
+            bool ran = CurrentState is PlayerRunState;
+            _currentState?.Exit();                 // 이전의 State에서 탈출
+            
             _currentState = value;
 
+            _currentState.Enter(this);      // State에 진입
             switch (_currentState)
             {
-                case State.Idle:
+                case PlayerIdleState playerIdleState:
                     _animator.CrossFade("PlayerIdle", idleCFCoef * (ran ? 3 : 1) );
                     break;
-                case State.Walk:
+                case PlayerWalkState playerWalkState:
                     _animator.CrossFade("PlayerWalk", walkCFCoef * (ran ? 3 : 1) );
                     break;
-                case State.Run:
+                case PlayerRunState playerRunState:
                     _animator.CrossFade("PlayerRun", runCFCoef);
                     break;
-                case State.Jump:
+                case PlayerJumpState playerJumpState:
                     _animator.CrossFade("PlayerJump", jumpCFCoef);
                     break;
-                case State.Fall:
+                case PlayerFallState playerFallState:
                     _animator.CrossFade("PlayerFall", fallCFCoef);
                     break;
-                case State.Attack:
+                case PlayerAttackState playerAttackState:
                     break;
             }
             
         }
     }
 
+    private PlayerIdleState   _idleState;
+    private PlayerWalkState   _walkState;
+    private PlayerRunState   _runState;
+    private PlayerJumpState   _jumpState;
+    private PlayerFallState   _fallState;
+    private PlayerAttackState _attackState;
+    
     private float idleCFCoef = 0.1f;
     private float walkCFCoef = 0.1f;
     private float runCFCoef = 0.3f;
@@ -55,8 +224,6 @@ public class PlayerController : MonoBehaviour
 
     [Tab("KeyComponents")]
     [SerializeField] private Rigidbody2D _rigidbody2D;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private CapsuleCollider2D _capsuleCollider2D;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _rightHandBone;
     
@@ -66,31 +233,47 @@ public class PlayerController : MonoBehaviour
     // [Tab("Interaction")]
     // [SerializeField] public GameObject NPC;
     // [SerializeField] private bool isNPCAvailable = false;
-
-    enum State
-    {
-        Idle,
-        Walk,
-        Run,
-        Jump,
-        Fall,
-        Attack,
-    }
     
     private void Awake()
+    {
+        // 중요한 컴포넌트들을 모두 초기화
+        InitKeyComponents();
+        // State 초기화
+        InitStates();
+        
+        _localScale = transform.localScale;
+    }
+
+    /// <summary>
+    /// 플레이어 컨트롤러에서 중요한 역할을 하는 컴포넌트를 초기화하는 함수.
+    /// 현재 부착되어있는 컴포넌트들을 가져와 캐싱한다.
+    /// </summary>
+    private void InitKeyComponents()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.freezeRotation = true;
         
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         _animator = GetComponent<Animator>();
-        
-        _localScale = transform.localScale;
         
         _playerInputActions = new PlayerInputActions();
     }
 
+    /// <summary>
+    /// 플레이어의 State 객체들을 초기화하는 함수.
+    /// 이 객체들은 영구적으로 쓰인다.
+    /// </summary>
+    private void InitStates()
+    {
+        _idleState = new PlayerIdleState();
+        _walkState = new PlayerWalkState();
+        _runState = new PlayerRunState();
+        _jumpState = new PlayerJumpState();
+        _fallState = new PlayerFallState();
+        _attackState = new PlayerAttackState();
+
+        CurrentState = _idleState;
+    }
+    
     /// <summary>
     /// 손에 쥔 물건을 바꾸는 함수
     /// </summary>
@@ -110,43 +293,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_rigidbody2D.velocity.y < 0 && CurrentState != State.Fall)
-            CurrentState = State.Fall;
+        CurrentState?.Execute();
 
-        Vector2 rayStart = _rigidbody2D.position + Vector2.down * 10 + Vector2.left * 20;
-        float rayDistance = 40;
-        
-        Debug.DrawRay(rayStart,Vector3.right * rayDistance,Color.red);
-        RaycastHit2D hit = Physics2D.Raycast(rayStart, Vector3.right, rayDistance, LayerMask.GetMask("Ground"));
-        if (Equals(hit.collider, null))     // ray에 아무것도 닿지 않을때 (= 공중일 때)
-            isJumpable = false;
-        else                                // ray에 무언가 닿았을 때
-        {
-            jumpForced = false;
-            isJumpable = true;
-            if(CurrentState == State.Fall)
-                CurrentState = State.Idle;
-        }
-        
-        switch (CurrentState)
-        {
-            case State.Idle:
-                UpdateIdle();
-                break;
-            case State.Walk:
-                UpdateWalk();
-                break;
-            case State.Run:
-                UpdateRun();
-                break;
-            case State.Jump:
-                UpdateJump();
-                break;
-            case State.Attack:
-                UpdateAttack();
-                break;
-        }
-        
         #region NPC Interaction
 
         // Debug.DrawRay(_rigidbody2D.position,Vector3.right,Color.red );
@@ -166,123 +314,84 @@ public class PlayerController : MonoBehaviour
 
         #endregion
     }
-
-    private void UpdateIdle()
-    {
-        // do nothing...
-        if (inputVector.x == 0) return;
-        if (shiftToggled)
-            CurrentState = State.Run;
-        CurrentState = State.Walk;
-    }
-    private void UpdateWalk()
-    {
-        _rigidbody2D.velocity = new Vector2(inputVector.x * speed, _rigidbody2D.velocity.y);
-    }
     
-    private void UpdateRun()
+    private void Update()
     {
-        _rigidbody2D.velocity = new Vector2(inputVector.x * runningSpeed, _rigidbody2D.velocity.y);
-    }
-    
-    private void UpdateJump()
-    {
-        if (jumpForced) return;
-        _rigidbody2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-        jumpForced = true;
-    }
-    
-    private void UpdateAttack()
-    {
-        throw new NotImplementedException();
-    }
-    
-    private void OnEnable()
-    {
-        #region About PlayerInput
-        // PlayerInput을 컴포넌트 대신 스크립트로
-        _playerInputActions.PlayerAction.Move.started += MoveStarted;
-        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
-        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
-        _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
-        _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
-        _playerInputActions.PlayerAction.Jump.started += JumpStarted;
-        _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
-        _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
-        _playerInputActions.PlayerAction.Interact.started += InteractStarted;
-        _playerInputActions.PlayerAction.Interact.performed += InteractPerformed;
-        _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
-        _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
-        _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
-        _playerInputActions.Enable();
-        #endregion
-    }
-    
-    private void OnDisable()
-    {
-        #region About PlayerInput
-        // PlayerInput을 컴포넌트 대신 스크립트로
-        _playerInputActions.PlayerAction.Move.started -= MoveStarted;
-        _playerInputActions.PlayerAction.Move.performed -= MovePerformed;
-        _playerInputActions.PlayerAction.Move.canceled -= MoveCanCeled;
-        _playerInputActions.PlayerAction.RunningSwitch.started -= RunningSwitchEnter;
-        _playerInputActions.PlayerAction.RunningSwitch.canceled -= RunningSwitchExit;
-        _playerInputActions.PlayerAction.Jump.started -= JumpStarted;
-        _playerInputActions.PlayerAction.Jump.performed -= JumpPerformed;
-        _playerInputActions.PlayerAction.Jump.canceled -= JumpCanceled;
-        _playerInputActions.PlayerAction.Interact.started -= InteractStarted;
-        _playerInputActions.PlayerAction.Interact.performed -= InteractPerformed;
-        _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
-        _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
-        _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
-        _playerInputActions.Disable();
-        #endregion
+        RayCheckGround();
     }
 
-    #region Move
-
-    void MoveStarted(InputAction.CallbackContext context)
+    private void RayCheckGround()
     {
-        DebugEx.Log($"MoveStarted {context}");
-        CurrentState = shiftToggled ? State.Run : State.Walk;
-    }
-    void MovePerformed(InputAction.CallbackContext context)
-    {
-        DebugEx.Log($"MovePerformed {context}");
+        Vector2 rayStart = _rigidbody2D.position + Vector2.down * 10 + Vector2.left * 20;
+        float rayDistance = 40;
         
-        inputVector.x = context.ReadValue<Vector2>().x;
-
-        #region 좌우 뒤집기
-
+        Debug.DrawRay(rayStart,Vector3.right * rayDistance,Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(rayStart, Vector3.right, rayDistance, LayerMask.GetMask("Ground"));
+        if (Equals(hit.collider, null))     // ray에 땅이 닿지 않을때 (= 공중일 때)
+        {
+            isJumpable = false;
+            if (_rigidbody2D.velocity.y < 0 && CurrentState is not PlayerFallState)
+                CurrentState = _fallState;
+        }
+        else                                // ray에 땅이 닿았을 때
+        {
+            jumpForced = false;
+            isJumpable = true;
+            if (CurrentState is PlayerFallState)
+            {
+                CurrentState = shiftToggled ? _runState : _idleState;
+            }
+        }
+    }
+    
+    private void FlipImage()
+    {
         Vector3 directedToRight = new Vector3(_localScale.x * -1 , _localScale.y, _localScale.z);
         Vector3 directedToLeft = new Vector3(_localScale.x, _localScale.y, _localScale.z);
 
         if (inputVector.x == 0) transform.localScale = _localScale;
         else if (inputVector.x < 0) transform.localScale = directedToLeft;
         else transform.localScale = directedToRight;
+    }
 
-        #endregion
+    #region Move
+
+    void MoveStarted(InputAction.CallbackContext context)
+    {
+        // DebugEx.Log($"MoveStarted");
+        
+        if (CurrentState is PlayerFallState or PlayerJumpState) return;
+        CurrentState = shiftToggled ? _runState : _walkState;
+    }
+    void MovePerformed(InputAction.CallbackContext context)
+    {
+        // DebugEx.Log($"MovePerformed");
+        
+        inputVector.x = context.ReadValue<Vector2>().x;
     }
     void MoveCanCeled(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"MoveCanceled {context}");
+        // DebugEx.Log($"MoveCanceled");
 
-        CurrentState = State.Idle;
+        if(CurrentState is not PlayerFallState && CurrentState is not PlayerJumpState)
+            CurrentState = _idleState;
         inputVector.x = 0;
     }
 
     void RunningSwitchEnter(InputAction.CallbackContext context)
     {
         shiftToggled = true;
-        if (CurrentState == State.Walk && shiftToggled)
-            CurrentState = State.Run;
+        
+        if (CurrentState is PlayerWalkState && shiftToggled)
+            CurrentState = _runState;
     }
     
     void RunningSwitchExit(InputAction.CallbackContext context)
     {
         shiftToggled = false;
-        if (CurrentState == State.Run && !shiftToggled)
-            CurrentState = State.Walk;
+        
+        if (CurrentState is PlayerRunState && !shiftToggled)
+            CurrentState = _walkState;
     }
     
     #endregion
@@ -291,18 +400,18 @@ public class PlayerController : MonoBehaviour
     
     void JumpStarted(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"JumpStarted {context}");
+        // DebugEx.Log($"JumpStarted");
         if (!isJumpable) return;
 
-        CurrentState = State.Jump;
+        CurrentState = _jumpState;
     }
     void JumpPerformed(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"JumpPerformed {context}");
+        // DebugEx.Log($"JumpPerformed");
     }
     void JumpCanceled(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"JumpCanceled {context}");
+        // DebugEx.Log($"JumpCanceled");
     }
 
     #endregion
@@ -310,15 +419,15 @@ public class PlayerController : MonoBehaviour
     #region Interact
     void InteractStarted(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"InteractStarted {context}");
+        // DebugEx.Log($"InteractStarted");
     }
     void InteractPerformed(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"InteractPerformed {context}");
+        // DebugEx.Log($"InteractPerformed");
     }
     void InteractCanceled(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"InteractCanceled {context}");
+        // DebugEx.Log($"InteractCanceled");
     }
     #endregion
     
@@ -337,5 +446,48 @@ public class PlayerController : MonoBehaviour
         // }
         
     }
+    
     #endregion
+    
+    #region About PlayerInput
+    private void OnEnable()
+    {
+
+        // PlayerInput을 컴포넌트 대신 스크립트로
+        _playerInputActions.PlayerAction.Move.started += MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
+        _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
+        _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
+        _playerInputActions.PlayerAction.Jump.started += JumpStarted;
+        _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
+        _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
+        _playerInputActions.PlayerAction.Interact.started += InteractStarted;
+        _playerInputActions.PlayerAction.Interact.performed += InteractPerformed;
+        _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
+        _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
+        _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
+        _playerInputActions.Enable();
+    }
+    
+    private void OnDisable()
+    {
+        // PlayerInput을 컴포넌트 대신 스크립트로
+        _playerInputActions.PlayerAction.Move.started -= MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed -= MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled -= MoveCanCeled;
+        _playerInputActions.PlayerAction.RunningSwitch.started -= RunningSwitchEnter;
+        _playerInputActions.PlayerAction.RunningSwitch.canceled -= RunningSwitchExit;
+        _playerInputActions.PlayerAction.Jump.started -= JumpStarted;
+        _playerInputActions.PlayerAction.Jump.performed -= JumpPerformed;
+        _playerInputActions.PlayerAction.Jump.canceled -= JumpCanceled;
+        _playerInputActions.PlayerAction.Interact.started -= InteractStarted;
+        _playerInputActions.PlayerAction.Interact.performed -= InteractPerformed;
+        _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
+        _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
+        _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
+        _playerInputActions.Disable();
+    }
+    
+        #endregion
 }
