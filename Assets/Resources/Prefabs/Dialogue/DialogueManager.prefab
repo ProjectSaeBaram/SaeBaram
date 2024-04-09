@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popup: {fileID: 530071769588551860, guid: d272d641fa635094f8402ea942c6c382, type: 3}
+  qpanel: {fileID: 1494453506043453802, guid: 18769c06e8772714e91f7c0d2777545c, type: 3}

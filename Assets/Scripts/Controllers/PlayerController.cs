@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite[] playerPortrait;
     [Tab("Quest & Dialogue")]
     [SerializeField] private QuestManager _questManager;
+    [SerializeField] public bool isQuestPanelActive;
     private bool interactPressed;
     private static PlayerController instance;
     public static PlayerController GetInstance() { return instance; }
@@ -230,6 +231,7 @@ public class PlayerController : MonoBehaviour
         //_playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
+        _playerInputActions.PlayerAction.QuestCall.performed += QuestCall;
         _playerInputActions.Enable();
         #endregion
     }
@@ -251,6 +253,7 @@ public class PlayerController : MonoBehaviour
        // _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
+        _playerInputActions.PlayerAction.QuestCall.performed -= QuestCall;
         _playerInputActions.Disable();
         #endregion
     }
@@ -365,6 +368,33 @@ public class PlayerController : MonoBehaviour
         //     Time.timeScale = 1.0f;
         // }
         
+    }
+    #endregion
+
+    #region QuestCall
+    void QuestCall(InputAction.CallbackContext context)
+    {
+        if(!isQuestPanelActive)
+        {
+            QuesttabOpen();
+            isQuestPanelActive = true;
+        }
+        else
+        {
+            QuesttabClose();
+            isQuestPanelActive = false;
+        }
+    }
+
+    private void QuesttabOpen()
+    {
+        Managers.UI.ShowPopupUI<QuestPanel>();
+
+    }
+
+    private void QuesttabClose() 
+    {
+        Managers.UI.ClosePopupUI();
     }
     #endregion
 }

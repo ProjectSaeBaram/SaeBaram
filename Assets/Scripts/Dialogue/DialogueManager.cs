@@ -16,16 +16,17 @@ public class DialogueManager : MonoBehaviour
 
 
     private NpcData npcdata;
-    private Story currentStory;                                     //Ink ·Î »ı¼ºµÈ ÅØ½ºÆ®¸¦ ¹Ş¾Æ¿Ã Classº¯¼ö
+    private Story currentStory;                                     //Ink ë¡œ ìƒì„±ëœ í…ìŠ¤íŠ¸ë¥¼ ë°›ì•„ì˜¬ Classë³€ìˆ˜
 
-    private const string SPEAKER_TAG = "speaker";                   //Å×±×°ªµé Å×±×°ª : º¯¼ö
+    private const string SPEAKER_TAG = "speaker";                   //í…Œê·¸ê°’ë“¤ í…Œê·¸ê°’ : ë³€ìˆ˜
     private const string PORTRAIT_TAG = "portrait";
     private const string PLAYER_TAG = "player";
     private const string LAYOUT_TAG = "layout";
     public UI_DialoguePopup popup;
+    public QuestPanel qpanel;
     
-    public bool dialogueIsPlaying { get; private set; }             //ÇöÀç ´ëÈ­Ã¢¿¡ ÁøÀÔÇß´ÂÁö È®ÀÎÇÒ º¯¼ö
-    //Äù½ºÆ® ÁøÇà»óÈ²Àº Äù½ºÆ® ¸Ş´ÏÀú¿¡¼­ °ü¸®
+    public bool dialogueIsPlaying { get; private set; }             //í˜„ì¬ ëŒ€í™”ì°½ì— ì§„ì…í–ˆëŠ”ì§€ í™•ì¸í•  ë³€ìˆ˜
+    //í€˜ìŠ¤íŠ¸ ì§„í–‰ìƒí™©ì€ í€˜ìŠ¤íŠ¸ ë©”ë‹ˆì €ì—ì„œ ê´€ë¦¬
 
     public static DialogueManager instance;
 
@@ -58,7 +59,7 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);
 
-        //ÅÂ±× ÃÊ±âÈ­
+        //íƒœê·¸ ì´ˆê¸°í™”
         popup.displayNameText.text = "???";
         ContinueStory();
     }
@@ -74,11 +75,11 @@ public class DialogueManager : MonoBehaviour
 
     private void ContinueStory()
     {
-        if (currentStory.canContinue)                   //´õ º¸¿©ÁÙ ÀÌ¾ß±â°¡ ÀÖ´Ù¸é
+        if (currentStory.canContinue)                   //ë” ë³´ì—¬ì¤„ ì´ì•¼ê¸°ê°€ ìˆë‹¤ë©´
         {
-            popup.dialogueText.text = currentStory.Continue();            //ÇÑÁÙ Ãâ·Â
-            DisplayChoices();                                       //¼±ÅÃÀÌ ÀÖÀ¸¸é ¼±ÅÃÃâ·Â
-            //ÅÂ±×°ü¸®
+            popup.dialogueText.text = currentStory.Continue();            //í•œì¤„ ì¶œë ¥
+            DisplayChoices();                                       //ì„ íƒì´ ìˆìœ¼ë©´ ì„ íƒì¶œë ¥
+            //íƒœê·¸ê´€ë¦¬
             HandleTags(currentStory.currentTags);
         }
         else
@@ -121,7 +122,7 @@ public class DialogueManager : MonoBehaviour
     private void DisplayChoices()
     {
         List<Choice> currentChoices = currentStory.currentChoices;
-        if (currentChoices.Count > popup.choices.Length)           //ÇöÀç ¼±ÅÃÁöÀÇ °³¼ö°¡ ¹öÆ°ÀÇ °³¼öº¸´Ù ¸¹À¸¸é ¿À·ù 
+        if (currentChoices.Count > popup.choices.Length)           //í˜„ì¬ ì„ íƒì§€ì˜ ê°œìˆ˜ê°€ ë²„íŠ¼ì˜ ê°œìˆ˜ë³´ë‹¤ ë§ìœ¼ë©´ ì˜¤ë¥˜ 
         {
             Debug.LogError("More choices than ever");
         }
@@ -161,6 +162,7 @@ public class DialogueManager : MonoBehaviour
                 if (qs == QuestState.CAN_START)
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex], npcdata);
+                    //qpanel.questlist.AddQuest(QuestManager.GetInstance().GetQuestData(npcdata.questId[npcdata.questIndex]));
                 }
             }
         }
