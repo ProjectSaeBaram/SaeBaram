@@ -20,6 +20,7 @@ public class GameScene : BaseScene
         SceneType = Define.Scene.GameScene;
         
         // 게임 씬에 필요한 UI를 표시합니다. 여기서는 인벤토리 UI를 예로 들고 있음.
+
         //Managers.UI.ShowPopupUI<UI_InventoryPopup>();
 
         // 게임 데이터 매니저로부터 캐릭터의 통계 데이터 딕셔너리를 가져옴.

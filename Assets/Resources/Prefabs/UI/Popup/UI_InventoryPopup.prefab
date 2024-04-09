@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 1096198338336461849}
   - component: {fileID: 6440316845641884155}
   - component: {fileID: 4444148601107532267}
+  - component: {fileID: 540272518642943428}
   m_Layer: 5
   m_Name: UI_InventoryPopup
   m_TagString: Untagged
@@ -314,3 +315,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &540272518642943428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7732178501983980265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fde07f117caf53b449a61d8e4f577793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSlots: []
+  visualizedItems: []
