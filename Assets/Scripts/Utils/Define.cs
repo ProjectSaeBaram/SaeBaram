@@ -57,4 +57,12 @@ public class Define
         Player,
         Monster,
     }
+    
+    // 지금 게임 세션이 새로운 게임인지, 저장된 데이터를 불러온 게임인지 구분하는 열거형.
+    // GameScene에 진입하면서 이를 검사한다.
+    public enum ThisGameis
+    {
+        NewGame,
+        LoadedGame,
+    }
 }

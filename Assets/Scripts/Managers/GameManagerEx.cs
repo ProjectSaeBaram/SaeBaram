@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public class GameManagerEx
 {
+    public Define.ThisGameis thisGameis { get; set; }
+    
     // 플레이어는 하나뿐이니까
     private GameObject _player;
     

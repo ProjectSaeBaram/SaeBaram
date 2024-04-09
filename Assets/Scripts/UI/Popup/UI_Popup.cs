@@ -1,3 +1,5 @@
+using UnityEngine.EventSystems;
+
 /// <summary>
 /// 팝업 UI를 관리하는 기본 클래스.
 /// UI_Base를 상속받아, 팝업 UI의 기본적인 초기화와 닫기 동작을 구현.
@@ -16,7 +18,7 @@ public class UI_Popup : UI_Base
     /// <summary>
     /// 팝업 UI를 닫는 메서드.
     /// </summary>
-    public virtual void ClosePopupUI()
+    public virtual void ClosePopupUI(PointerEventData action)
     {
         // Managers.UI.ClosePopupUI를 호출하여 현재 팝업 UI를 닫음.
         // 이 메서드는 상속받는 팝업 UI 클래스에서 오버라이드하여

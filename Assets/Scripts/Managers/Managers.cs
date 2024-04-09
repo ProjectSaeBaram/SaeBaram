@@ -14,7 +14,7 @@ public class Managers : MonoBehaviour
     // 새로운 Manager가 추가될 때, 아래에 하나씩 추가.
     private DataManager _data = new DataManager();
     private GameManagerEx _game = new GameManagerEx();
-    private InputManager _input = new InputManager();
+    //private InputManager _input = new InputManager();
     private PoolManager _pool = new PoolManager();
     private ResourceManger _resource = new ResourceManger();
     private SceneManagerEx _scene = new SceneManagerEx();
@@ -22,13 +22,13 @@ public class Managers : MonoBehaviour
     private UIManager _ui = new UIManager();
     
     public static DataManager Data => Instance._data;
-    public static GameManagerEx Game => s_instance._game;
-    public static InputManager Input => Instance._input;
+    public static GameManagerEx Game => Instance._game;
+    //public static InputManager Input => Instance._input;
     public static PoolManager Pool => Instance._pool;
     public static ResourceManger Resource => Instance._resource;
     public static SceneManagerEx Scene => Instance._scene;
     public static SoundManager Sound => Instance._sound;
-    public static UIManager UI => s_instance._ui;
+    public static UIManager UI => Instance._ui;
     
     void Start()
     {
@@ -82,7 +82,9 @@ public class Managers : MonoBehaviour
     private void OnApplicationQuit()
     {
         // 인벤토리 데이터를 바이너리 파일로 저장하도록
-        Managers.Data.OnClose.Invoke();
+
+        Managers.Data.OnClose?.Invoke();        // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
+
     }
 }
 
