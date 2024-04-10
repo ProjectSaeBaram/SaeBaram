@@ -48,7 +48,7 @@ public abstract class UI_Base : MonoBehaviour
                 objects[i] = Util.FindChild<T>(gameObject, names[i], true); // 그 외 타입은 제네릭 메서드를 사용합니다.
             
             if(objects[i] == null)
-                Debug.Log($"Failed to Bind! ({names[i]})"); // 바인딩 실패 시 로그 출력
+                DebugEx.Log($"Failed to Bind! ({names[i]})"); // 바인딩 실패 시 로그 출력
         }
     }
 

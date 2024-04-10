@@ -27,6 +27,17 @@ public class GameScene : BaseScene
         // 이 데이터는 게임 내에서 캐릭터의 능력치 등을 관리하는 데 사용될 수 있음.
         // Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
 
+        SpawnPlayer();
+        
+        Managers.UI.ShowSceneUI<UI_Game>();
+    }
+
+    /// <summary>
+    /// GameScene에 처음 Player를 소환하고,
+    /// Cinemachine VirtualCamera의 Follow Target으로 설정
+    /// </summary>
+    void SpawnPlayer()
+    {
         GameObject player = Managers.Game.Spawn(Define.WorldObject.Player, "Player");
         Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.Follow = player.transform;     // virtual camera의 Follow에 플레이어 등록
     }

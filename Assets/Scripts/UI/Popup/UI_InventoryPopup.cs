@@ -13,7 +13,6 @@ public class UI_InventoryPopup : UI_Popup
 
     private GridLayoutGroup itemGridLayoutGroup;
 
-    [FormerlySerializedAs("_itemSlots")] 
     [Header("Items")] 
     private const int numberOfItemSlots = 10;       // 테스트용 기본 아이템 슬롯의 크기
     [SerializeField] private List<UI_Inven_Slot> itemSlots = new List<UI_Inven_Slot>();
