@@ -11,11 +11,6 @@ public class UI_Lobby : UI_Scene
         ExitGameBtn,
     }
 
-    private void Start()
-    {
-        Init();
-    }
-
     public override void Init()
     {
         base.Init();
