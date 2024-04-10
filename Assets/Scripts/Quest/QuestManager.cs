@@ -41,9 +41,9 @@ public class QuestManager : MonoBehaviour
 
         questActionIndex++;
         questNpc.Add(id, npc);
-        questList[questIndex].qs++;
+        questList[npc.questId[npc.questIndex-1]].qs++;
         Debug.Log(questList[id].qs);
-        if (questList[questIndex].qs == QuestState.FINISHED)
+        if (questList[npc.questId[npc.questIndex-1]].qs == QuestState.FINISHED)
         {
             AdvanceIndex(id);
             return;
@@ -97,10 +97,6 @@ public class QuestManager : MonoBehaviour
     public int getnpcId(int id)
     {
         return questList[id].npcId;
-    }
-    public int GetQuestTalkIndex(int id)            //NPC Id가 들어옴
-    {
-        return questIndex + questActionIndex;
     }
 
     public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가

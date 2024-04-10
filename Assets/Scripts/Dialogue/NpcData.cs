@@ -35,6 +35,7 @@ public class NpcData : MonoBehaviour
 
     private void Awake()
     {
+        questIndex = 1;
         playerInRange = false;
         foreach (var c in visualCue)
         {
@@ -65,8 +66,7 @@ public class NpcData : MonoBehaviour
         if (collider.gameObject.tag == "Player") 
         {
             playerInRange=true;
-
-            qs = QuestManager.GetInstance().CheckState(questId[questIndex]);
+            qs = QuestManager.GetInstance().CheckState(questId[questIndex-1]);
             if (questId.Length > 0)          //퀘스트아이디가 있을 때
             {
                 if (qs == QuestState.CAN_START)

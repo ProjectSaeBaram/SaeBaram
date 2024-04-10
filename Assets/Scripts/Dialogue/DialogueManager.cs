@@ -56,7 +56,14 @@ public class DialogueManager : MonoBehaviour
     public void GetTalk2(NpcData npc)
     {
         npcdata = npc;
-        currentStory = new Story(npc.dialogue[QuestManager.GetInstance().questActionIndex].text);
+        if (QuestManager.GetInstance().CheckState(npc.questId[npc.questIndex - 1]) == QuestState.FINISHED)
+        {
+            currentStory = new Story(npc.dialogue[0].text);
+        }
+        else
+        {
+            currentStory = new Story(npc.dialogue[npc.questIndex + QuestManager.GetInstance().questActionIndex].text);
+        }
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);
 
@@ -159,14 +166,14 @@ public class DialogueManager : MonoBehaviour
         {
             if (npcdata.questId.Length > 0)
             {
-                QuestState qs = QuestManager.GetInstance().CheckState(npcdata.questId[npcdata.questIndex]);
+                QuestState qs = QuestManager.GetInstance().CheckState(npcdata.questId[npcdata.questIndex-1]);
                 if (qs == QuestState.CAN_START)
                 {
-                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex], npcdata);
+                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex-1], npcdata);
                     //qpanel.questlist.AddQuest(QuestManager.GetInstance().GetQuestData(npcdata.questId[npcdata.questIndex]));
                 }else if (qs == QuestState.CAN_FINISH)
                 {
-                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex], npcdata);
+                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex - 1], npcdata);
                     QuestManager.GetInstance().AdvanceNpcIndex(npcdata);
                 }
             }
