@@ -58,11 +58,11 @@ public class DialogueManager : MonoBehaviour
         npcdata = npc;
         if (QuestManager.GetInstance().CheckState(npc.questId[npc.questIndex - 1]) == QuestState.FINISHED)
         {
-            currentStory = new Story(npc.dialogue[0].text);
+            currentStory = new Story(npc.dialogue[npc.dialogue.Length-1].text);
         }
         else
         {
-            currentStory = new Story(npc.dialogue[npc.questIndex + QuestManager.GetInstance().questActionIndex].text);
+            currentStory = new Story(npc.dialogue[npc.questIndex + QuestManager.GetInstance().questActionIndex-1].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때
         }
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);

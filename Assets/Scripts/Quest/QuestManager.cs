@@ -30,22 +30,23 @@ public class QuestManager : MonoBehaviour
 
     void GenerateData()
     {
-        questList.Add(1, new MeetPeopleQuest("대화하기", 1000,"할아버지",1,QuestState.REQUIREMENTS_NOT_MET,10,"튜토리얼 마을"));
+        questList.Add(1, new MeetPeopleQuest("대화하기", 1000,"할아버지",1,QuestState.REQUIREMENTS_NOT_MET,10,"튜토리얼 마을",QuestType.Corauge));
 
-        questList.Add(2, new CoincollectQuest("코인 모으기", 1000, "할아버지", 2, QuestState.CAN_START, 20, "튜토리얼 마을"));
+        questList.Add(2, new CoincollectQuest("코인 모으기", 1000, "할아버지", 2, QuestState.CAN_START, 20, "튜토리얼 마을", QuestType.Corauge));
 
     }
 
     public void AdvanceQuest(int id,NpcData npc)            //퀘스트 진행상황 업데이트
     {
 
+        npc.questActionIndex++;
         questActionIndex++;
         questNpc.Add(id, npc);
         questList[npc.questId[npc.questIndex-1]].qs++;
         Debug.Log(questList[id].qs);
         if (questList[npc.questId[npc.questIndex-1]].qs == QuestState.FINISHED)
         {
-            AdvanceIndex(id);
+            AdvanceIndex(id, npc);
             return;
         }  
 
@@ -101,12 +102,22 @@ public class QuestManager : MonoBehaviour
 
     public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
     {
+        questIndex++;
+        if (questNpc[qid].questId.Length > 1)
+        {
+            questNpc[qid].questIndex++;
+        }
+        questActionIndex = 0;
+    }
+
+    public void AdvanceIndex(int qid,NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
+    {
         questIndex ++;
         if (questNpc[qid].questId.Length>1)
         {
             questNpc[qid].questIndex++;
         }
-        questActionIndex = 0;
+        npc.questActionIndex = 0;
     }
 
 

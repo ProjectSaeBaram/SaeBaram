@@ -6,17 +6,18 @@ public abstract class QuestData
 {
     [Header("Quest Info")]
     public string questName;
-    public int npcId;     //Äù½ºÆ®¸¦ °¡Áö°íÀÖ´Â npcId
+    public int npcId;     //í€˜ìŠ¤íŠ¸ë¥¼ ê°€ì§€ê³ ìžˆëŠ” npcId
     public string npcname;
     public int Indexrequirment;
     public QuestState qs;
-    public string loc;              //Äù½ºÆ®npcÀ§Ä¡
+    public QuestType type;
+    public string loc;              //í€˜ìŠ¤íŠ¸npcìœ„ì¹˜
 
     [Header("Reward Info")]
     public int goldReward;
 
 
-    public QuestData(string name, int npc, string npcn,int Index,QuestState qs,int gold,string location)
+    public QuestData(string name, int npc, string npcn,int Index,QuestState qs,int gold,string location,QuestType t)
     {
         questName = name;
         npcId = npc;
@@ -25,6 +26,7 @@ public abstract class QuestData
         qs = QuestState.REQUIREMENTS_NOT_MET;
         goldReward = gold;
         loc=location;
+        type = t;
 }
     public abstract void updateQuest();
 

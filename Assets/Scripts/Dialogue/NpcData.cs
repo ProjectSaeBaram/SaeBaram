@@ -23,6 +23,7 @@ public class NpcData : MonoBehaviour
     [SerializeField] public int questIndex;                     //여러퀘스트를 가지고있을때 지금 진행가능한 퀘스트번호 
     [SerializeField] public QuestState qs;
     [SerializeField] public PlayerController playerController;
+    [SerializeField] public int questActionIndex;
 
     private static NpcData instance;
 

@@ -6,17 +6,17 @@ public class MeetPeopleQuest : QuestData
 {
     public bool isMeet;
 
-    public MeetPeopleQuest(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location) : base(name, npc, npcn, Index, qs, gold, location)
+    public MeetPeopleQuest(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t) : base(name, npc, npcn, Index, qs, gold, location, t)
     {
         base.questName = name;
         base.npcId = npc;
-        base.npcname= npcn;
+        base.npcname = npcn;
         base.Indexrequirment = Index;
         base.qs = qs;
         base.goldReward = gold;
         base.loc = location;
+        base.type = t;
     }
-
 
     public override QuestData getQuestData()
     {

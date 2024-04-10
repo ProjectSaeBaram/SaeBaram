@@ -7,8 +7,7 @@ public class CoincollectQuest : QuestData
     private int coinsCollected = 0;
     private int coinsToComplete = 5;
 
-
-    public CoincollectQuest(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location) : base(name, npc, npcn, Index, qs, gold, location)
+    public CoincollectQuest(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t) : base(name, npc, npcn, Index, qs, gold, location, t)
     {
         base.questName = name;
         base.npcId = npc;
@@ -17,9 +16,8 @@ public class CoincollectQuest : QuestData
         base.qs = qs;
         base.goldReward = gold;
         base.loc = location;
+        base.type = t;
     }
-
-
 
     //코인을 수집함에 따라 퀘스트 진행상황 체크
 
