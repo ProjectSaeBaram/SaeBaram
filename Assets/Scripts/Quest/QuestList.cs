@@ -48,8 +48,6 @@ public class QuestList : UI_Popup
             }
         }
         int idx = 0;
-        DebugEx.Log(qd_progess.Count + "vs" + ButtonList.Count);
-        DebugEx.Log(qd_progess.Count > ButtonList.Count);
         if (qd_progess.Count > ButtonList.Count)                  //만약에 지금있는 버튼들보다 퀘스트표시해야될게 많다면 버튼을 추가해준다.
         {
             while (qd_progess.Count > ButtonList.Count)
@@ -57,15 +55,17 @@ public class QuestList : UI_Popup
                 Managers.Resource.Instantiate("UI/PopUp/QuestList", this.transform);                   //버튼을 생성하고
                 ButtonList.Add(this.transform.GetChild(ButtonList.Count - 1).GetComponent<Button>());      //버튼에 스크립트를 붙여준다.
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestInfo(qd_progess[ButtonList.Count - 1]);
+                ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestCheck(qd_progess[ButtonList.Count - 1]);
             }
         }
-        for (int i = 0; i < qd_progess.Count; i++)
+        for (int i = 0; i < qd_progess.Count; i++)          //퀘스트 수 만큼만 활성화
         {
             ButtonList[i].gameObject.GetComponent<QuestButton>().SetQuestInfo(qd_progess[i]);
+            ButtonList[i].gameObject.GetComponent<QuestButton>().SetQuestCheck(qd_progess[i]);
             ButtonList[i].gameObject.SetActive(true);
             idx++;
         }
-        for (int i = idx; i < ButtonList.Count; i++)
+        for (int i = idx; i < ButtonList.Count; i++)            //퀘스트 수보다 많은 인덱스의 버튼은 비활성화
         {
             ButtonList[i].gameObject.SetActive(false);
         }
@@ -78,6 +78,7 @@ public class QuestList : UI_Popup
         }
     }
 
+    #region Refresh
     public void RefreshquestList()                  //진행중인 퀘스트와 끝난 퀘스트를 찾아서 각 리스트에 넣어주고 지금 선택된 버튼에 따라 해당리스트로 버튼리스트를 초기화해준다.
     {
         qd_progess = new List<QuestData>();
@@ -103,11 +104,13 @@ public class QuestList : UI_Popup
                 Managers.Resource.Instantiate("UI/PopUp/QuestButton", this.transform);                   //버튼을 생성하고
                 ButtonList.Add(this.transform.GetChild(ButtonList.Count-1).GetComponent<Button>());      //버튼에 스크립트를 붙여준다.
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestInfo(qd_progess[ButtonList.Count-1]);
+                ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestCheck(qd_progess[ButtonList.Count - 1]);
             }
         }
         for (int i = 0; i < qd_progess.Count; i++)
         {
             ButtonList[i].gameObject.GetComponent<QuestButton>().SetQuestInfo(qd_progess[i]);
+            ButtonList[i].gameObject.GetComponent<QuestButton>().SetQuestCheck(qd_progess[i]);
             ButtonList[i].gameObject.SetActive(true);
             idx++;
         }
@@ -123,7 +126,9 @@ public class QuestList : UI_Popup
             }
         }
     }
+    #endregion
 
+    #region DisplayProgress
     public void DisplayProgessList()        //진행중인 퀘스트 보여주기
     {
         qd_progess = new List<QuestData>();
@@ -142,11 +147,13 @@ public class QuestList : UI_Popup
                 Managers.Resource.Instantiate("", this.transform);                   //버튼을 생성하고
                 ButtonList.Add(this.transform.GetChild(ButtonList.Count - 1).GetComponent<Button>());      //버튼에 스크립트를 붙여준다.
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestInfo(qd_progess[ButtonList.Count]);
+                ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestCheck(qd_progess[ButtonList.Count]);
             }
         }
         for (int i = 0; i < qd_progess.Count; i++)
         {
             ButtonList[i].GetComponent<QuestButton>().SetQuestInfo(qd_progess[i]);
+            ButtonList[i].GetComponent<QuestButton>().SetQuestCheck(qd_progess[i]); 
             ButtonList[i].gameObject.SetActive(true);
             idx++;
         }
@@ -155,7 +162,9 @@ public class QuestList : UI_Popup
             ButtonList[i].gameObject.SetActive(false);
         }
     }
+    #endregion
 
+    #region DisplayFinished
     public void DisplayFinishedList()           //끝난 퀘스트 보여주기
     {
         qd_complete = new List<QuestData>();
@@ -174,11 +183,13 @@ public class QuestList : UI_Popup
                 Managers.Resource.Instantiate("", this.transform);                   //버튼을 생성하고
                 ButtonList.Add(this.transform.GetChild(ButtonList.Count - 1).GetComponent<Button>());      //버튼에 스크립트를 붙여준다.
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestInfo(qd_complete[ButtonList.Count]);
+                ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestCheck(qd_complete[ButtonList.Count]);
             }
         }
         for (int i = 0; i < qd_complete.Count; i++)
         {
             ButtonList[i].GetComponent<QuestButton>().SetQuestInfo(qd_complete[i]);
+            ButtonList[i].GetComponent<QuestButton>().SetQuestCheck(qd_complete[i]);
             ButtonList[i].gameObject.SetActive(true);
             idx++;
         }
@@ -187,32 +198,5 @@ public class QuestList : UI_Popup
             ButtonList[i].gameObject.SetActive(false);
         }
     }
-
-
-    //public void AddQuest(QuestData data)        
-    //{
-    //    if(data.qs==QuestState.IN_PROGRESS)
-    //    {
-    //        qd_progess.Add(data);
-    //    }
-    //    else
-    //    {
-    //        qd_complete.Add(data);
-    //    }
-       
-    //}
-    //public void RemoveQuest(QuestData data)
-    //{
-    //    if (data.qs == QuestState.IN_PROGRESS)
-    //    {
-    //        qd_progess.Remove(data);
-    //        qd_progess.Sort((data1,data2)=>data1.Indexrequirment.CompareTo(data2.Indexrequirment));
-
-    //    }
-    //    else
-    //    {
-    //        qd_complete.Remove(data);
-    //        qd_complete.Sort((data1, data2) => data1.Indexrequirment.CompareTo(data2.Indexrequirment));
-    //    }
-    //}
+    #endregion
 }

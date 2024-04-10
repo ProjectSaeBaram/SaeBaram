@@ -25,9 +25,7 @@ public class QuestPanel : UI_Popup
     {
         instance = this;
         questlist.gameObject.SetActive(true);
-        infoPanel.gameObject.SetActive(true);
-        //questlist.RefreshquestList();
-        
+        infoPanel.gameObject.SetActive(true);        
     }
 
     public void DisplayQuest()
