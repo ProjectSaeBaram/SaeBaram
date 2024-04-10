@@ -157,6 +157,7 @@ MonoBehaviour:
   questId: 
   questIndex: 0
   qs: 0
+  playerController: {fileID: 908189072290955293, guid: 67087b5bc904d9244a0a7f527838c92f, type: 3}
   playerInRange: 0
 --- !u!1 &8195449954198852215
 GameObject:

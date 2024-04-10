@@ -23,7 +23,8 @@ public class DialogueManager : MonoBehaviour
     private const string PLAYER_TAG = "player";
     private const string LAYOUT_TAG = "layout";
     public UI_DialoguePopup popup;
-    public QuestPanel qpanel;
+    public QuestLayer qpanel;
+    public PlayerController playerController;
     
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
     //퀘스트 진행상황은 퀘스트 메니저에서 관리
@@ -46,7 +47,7 @@ public class DialogueManager : MonoBehaviour
         {
             return;
         }
-        if (PlayerController.GetInstance().GetInteractPressed())
+        if (playerController.GetInteractPressed())
         {
             ContinueStory();
         }
@@ -109,7 +110,7 @@ public class DialogueManager : MonoBehaviour
                     popup.portraitImage.sprite = npcdata.npcPortrait[int.Parse(tagvalue)];
                     break;
                 case PLAYER_TAG:
-                    popup.portraitImage.sprite = PlayerController.GetInstance().getplayerPortrait(int.Parse(tagvalue));
+                    popup.portraitImage.sprite = playerController.getplayerPortrait(int.Parse(tagvalue));
                     break;
                 default:
                     Debug.LogWarning("Tag exists but not handled");
@@ -163,6 +164,10 @@ public class DialogueManager : MonoBehaviour
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex], npcdata);
                     //qpanel.questlist.AddQuest(QuestManager.GetInstance().GetQuestData(npcdata.questId[npcdata.questIndex]));
+                }else if (qs == QuestState.CAN_FINISH)
+                {
+                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex], npcdata);
+                    QuestManager.GetInstance().AdvanceNpcIndex(npcdata);
                 }
             }
         }

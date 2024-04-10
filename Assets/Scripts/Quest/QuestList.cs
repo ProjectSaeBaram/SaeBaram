@@ -144,7 +144,7 @@ public class QuestList : UI_Popup
         {
             while (qd_progess.Count > ButtonList.Count)
             {
-                Managers.Resource.Instantiate("", this.transform);                   //버튼을 생성하고
+                Managers.Resource.Instantiate("UI/Popup/QuestButton.prefab", this.transform);                   //버튼을 생성하고
                 ButtonList.Add(this.transform.GetChild(ButtonList.Count - 1).GetComponent<Button>());      //버튼에 스크립트를 붙여준다.
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestInfo(qd_progess[ButtonList.Count]);
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestCheck(qd_progess[ButtonList.Count]);
@@ -180,7 +180,7 @@ public class QuestList : UI_Popup
         {
             while (qd_complete.Count > ButtonList.Count)
             {
-                Managers.Resource.Instantiate("", this.transform);                   //버튼을 생성하고
+                Managers.Resource.Instantiate("UI/Popup/QuestButton.prefab", this.transform);                   //버튼을 생성하고
                 ButtonList.Add(this.transform.GetChild(ButtonList.Count - 1).GetComponent<Button>());      //버튼에 스크립트를 붙여준다.
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestInfo(qd_complete[ButtonList.Count]);
                 ButtonList[ButtonList.Count - 1].GetComponent<QuestButton>().SetQuestCheck(qd_complete[ButtonList.Count]);

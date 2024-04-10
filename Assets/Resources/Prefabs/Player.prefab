@@ -900,6 +900,9 @@ MonoBehaviour:
   isJumpable: 0
   jumpForced: 0
   shiftToggled: 0
+  playerPortrait: []
+  _questManager: {fileID: 8178310703521705546, guid: 579ee51f6129542409d4aa2dbe29d000, type: 3}
+  isQuestPanelActive: 0
   _rigidbody2D: {fileID: 0}
   _animator: {fileID: 0}
   _rightHandBone: {fileID: 7936561779221067104}

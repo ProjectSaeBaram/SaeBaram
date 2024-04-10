@@ -89,6 +89,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AdvanceQuest"",
+                    ""type"": ""Button"",
+                    ""id"": ""8d0562d0-720d-4d82-b9de-b2d95410f698"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -342,6 +351,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""QuestCall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95660cf3-0411-417d-ae6a-ce834e06d671"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AdvanceQuest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -903,6 +923,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerAction_Escape = m_PlayerAction.FindAction("Escape", throwIfNotFound: true);
         m_PlayerAction_RunningSwitch = m_PlayerAction.FindAction("RunningSwitch", throwIfNotFound: true);
         m_PlayerAction_QuestCall = m_PlayerAction.FindAction("QuestCall", throwIfNotFound: true);
+        m_PlayerAction_AdvanceQuest = m_PlayerAction.FindAction("AdvanceQuest", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -983,6 +1004,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerAction_Escape;
     private readonly InputAction m_PlayerAction_RunningSwitch;
     private readonly InputAction m_PlayerAction_QuestCall;
+    private readonly InputAction m_PlayerAction_AdvanceQuest;
     public struct PlayerActionActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -994,6 +1016,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Escape => m_Wrapper.m_PlayerAction_Escape;
         public InputAction @RunningSwitch => m_Wrapper.m_PlayerAction_RunningSwitch;
         public InputAction @QuestCall => m_Wrapper.m_PlayerAction_QuestCall;
+        public InputAction @AdvanceQuest => m_Wrapper.m_PlayerAction_AdvanceQuest;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1024,6 +1047,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @QuestCall.started += instance.OnQuestCall;
             @QuestCall.performed += instance.OnQuestCall;
             @QuestCall.canceled += instance.OnQuestCall;
+            @AdvanceQuest.started += instance.OnAdvanceQuest;
+            @AdvanceQuest.performed += instance.OnAdvanceQuest;
+            @AdvanceQuest.canceled += instance.OnAdvanceQuest;
         }
 
         private void UnregisterCallbacks(IPlayerActionActions instance)
@@ -1049,6 +1075,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @QuestCall.started -= instance.OnQuestCall;
             @QuestCall.performed -= instance.OnQuestCall;
             @QuestCall.canceled -= instance.OnQuestCall;
+            @AdvanceQuest.started -= instance.OnAdvanceQuest;
+            @AdvanceQuest.performed -= instance.OnAdvanceQuest;
+            @AdvanceQuest.canceled -= instance.OnAdvanceQuest;
         }
 
         public void RemoveCallbacks(IPlayerActionActions instance)
@@ -1211,6 +1240,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnEscape(InputAction.CallbackContext context);
         void OnRunningSwitch(InputAction.CallbackContext context);
         void OnQuestCall(InputAction.CallbackContext context);
+        void OnAdvanceQuest(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

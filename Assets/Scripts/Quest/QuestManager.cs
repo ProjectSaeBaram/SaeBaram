@@ -51,6 +51,27 @@ public class QuestManager : MonoBehaviour
 
     }
 
+    public void AdvanceQuest(int id)            //퀘스트 진행상황 업데이트
+    {
+
+        questActionIndex++;
+        questList[questIndex].qs++;
+        Debug.Log(questList[id].qs);
+        if (questList[questIndex].qs == QuestState.FINISHED)
+        {
+            AdvanceIndex(id);
+            return;
+        }
+
+    }
+    public void AdvanceNpcIndex(NpcData npc)
+    {
+        if(npc.questId.Length>1)
+        {
+            npc.questIndex++;
+        }
+    }
+
 
     public void CheckRequirement()             //진행 순서가 맞아진다면 시작가능한 퀘스트 체크
     {
@@ -91,6 +112,7 @@ public class QuestManager : MonoBehaviour
         }
         questActionIndex = 0;
     }
+
 
     public NpcData GetNpcId(int questId)
     {

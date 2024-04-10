@@ -20,8 +20,9 @@ public class NpcData : MonoBehaviour
     [SerializeField] public string loc;
     [Tab("Quest Inform")]
     [SerializeField] public int[] questId;
-    [SerializeField] public int questIndex;                     //¿©·¯Äù½ºÆ®¸¦ °¡Áö°íÀÖÀ»¶§ Áö±Ý ÁøÇà°¡´ÉÇÑ Äù½ºÆ®¹øÈ£ 
+    [SerializeField] public int questIndex;                     //ì—¬ëŸ¬í€˜ìŠ¤íŠ¸ë¥¼ ê°€ì§€ê³ ìžˆì„ë•Œ ì§€ê¸ˆ ì§„í–‰ê°€ëŠ¥í•œ í€˜ìŠ¤íŠ¸ë²ˆí˜¸ 
     [SerializeField] public QuestState qs;
+    [SerializeField] public PlayerController playerController;
 
     private static NpcData instance;
 
@@ -66,7 +67,7 @@ public class NpcData : MonoBehaviour
             playerInRange=true;
 
             qs = QuestManager.GetInstance().CheckState(questId[questIndex]);
-            if (questId.Length > 0)          //Äù½ºÆ®¾ÆÀÌµð°¡ ÀÖÀ» ¶§
+            if (questId.Length > 0)          //í€˜ìŠ¤íŠ¸ì•„ì´ë””ê°€ ìžˆì„ ë•Œ
             {
                 if (qs == QuestState.CAN_START)
                 {

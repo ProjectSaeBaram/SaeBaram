@@ -13,6 +13,7 @@ public class QuestInfoPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questLoc;
     [SerializeField] private TextMeshProUGUI npcName;
     [SerializeField] private TextMeshProUGUI questState;
+    [SerializeField] private TextMeshProUGUI questReward;
     private static QuestInfoPanel instance;
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class QuestInfoPanel : MonoBehaviour
         questLoc.text = "";
         npcName.text = "";
         questState.text = "";
+        questReward.text = "";
     }
 
     public void Resetting()
@@ -30,6 +32,7 @@ public class QuestInfoPanel : MonoBehaviour
         questLoc.text = "";
         npcName.text = "";
         questState.text = "";
+        questReward.text = "";
     }
 
     public static QuestInfoPanel GetInstance()
@@ -43,5 +46,6 @@ public class QuestInfoPanel : MonoBehaviour
         questLoc.text = questData.loc;
         npcName.text = questData.npcname;
         questState.text = questData.qs.ToString();
+        questReward.text = "골드 보상 :"+questData.goldReward.ToString();
     }
 }
