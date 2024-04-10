@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_DialoguePopup : UI_Popup
+public class UI_DialoguePopup : UI_Scene
 {
     [SerializeField] private GameObject DialoguePopup;
     [SerializeField] public GameObject dialoguePanel;
@@ -22,22 +22,10 @@ public class UI_DialoguePopup : UI_Popup
 
     public static UI_DialoguePopup instance;
 
-    enum UIs
-    {
-        DialoguePanel,
-        DialogueChoices
-    }
-
-    enum Buttons
-    {
-        Choice0, 
-        Choice1, 
-        Choice2
-    }
 
     public override void Init()
     {
-        
+
         DialoguePopup = this.gameObject;
         dialoguePanel = DialoguePopup.transform.GetChild(0).gameObject;
         dialogueText = dialoguePanel.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
@@ -47,23 +35,21 @@ public class UI_DialoguePopup : UI_Popup
 
         choicep = dialoguePanel.transform.GetChild(2).gameObject;
         choices = new GameObject[2] { dialoguePanel.transform.GetChild(2).GetChild(0).gameObject, dialoguePanel.transform.GetChild(2).GetChild(1).gameObject };
-        choicesText = new TextMeshProUGUI[2] { choices[0].GetComponent<TextMeshProUGUI>(), choices[1].GetComponent<TextMeshProUGUI>() };
+        choicesText = new TextMeshProUGUI[2] { choices[0].GetComponentInChildren<TextMeshProUGUI>(), choices[1].GetComponentInChildren<TextMeshProUGUI>() };
         choiceButton = new Button[2] { choices[0].GetComponent<Button>(), choices[1].GetComponent<Button>() };
     }
 
     private void Awake()
     {
         instance = this;
-       
-
+        DialogueManager.GetInstance().popup = this;
     }
-
     private void Start()
     {
         for (int i = 0; i < choices.Length; i++)
         {
             int id = i;
-            choiceButton[i].onClick.AddListener(() => makeChoice(id));
+            choiceButton[i].onClick.AddListener(() => DialogueManager.GetInstance().makeChoice(id));
         }
     }
 
@@ -73,11 +59,7 @@ public class UI_DialoguePopup : UI_Popup
     }
 
 
-    public void makeChoice(int choice)
-    {
-        //Player.GetInstance().select = choice;
-        DebugEx.Log(choice);
-    }
 
-   
+
+
 }

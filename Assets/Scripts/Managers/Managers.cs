@@ -54,7 +54,12 @@ public class Managers : MonoBehaviour
             go = new GameObject {name = "@Managers"};
             go.AddComponent<Managers>();
         }
-        
+        GameObject go2 = GameObject.Find("DialogueManager");
+        if (go2 == null)
+        {
+            go2 = new GameObject { name = "DialogueManager" };
+            go2.AddComponent<DialogueManager>();
+        }
         DontDestroyOnLoad(go);
         s_instance = go.GetComponent<Managers>();
         
@@ -82,7 +87,6 @@ public class Managers : MonoBehaviour
     private void OnApplicationQuit()
     {
         // 인벤토리 데이터를 바이너리 파일로 저장하도록
-
         Managers.Data.OnClose?.Invoke();        // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
 
     }

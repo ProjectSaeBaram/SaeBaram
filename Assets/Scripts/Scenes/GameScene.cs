@@ -1,6 +1,5 @@
 using Cinemachine;
 using UnityEngine;
-
 /// <summary>
 /// 게임 씬을 관리하는 샘플 클래스.
 /// BaseScene을 상속받아 게임 씬에 특화된 초기화 및 정리 로직을 구현.
@@ -18,11 +17,15 @@ public class GameScene : BaseScene
 
         // 현재 씬의 타입을 게임 씬으로 설정.
         SceneType = Define.Scene.GameScene;
-        
         // 게임 씬에 필요한 UI를 표시합니다. 여기서는 인벤토리 UI를 예로 들고 있음.
-
         //Managers.UI.ShowPopupUI<UI_InventoryPopup>();
-
+        Managers.UI.ShowSceneUI<UI_DialoguePopup>();
+        GameObject go = GameObject.Find("QuestManager");
+        if (go == null)
+        {
+            go = new GameObject { name = "QuestManager" };
+            go.AddComponent<QuestManager>();
+        }
         // 게임 데이터 매니저로부터 캐릭터의 통계 데이터 딕셔너리를 가져옴.
         // 이 데이터는 게임 내에서 캐릭터의 능력치 등을 관리하는 데 사용될 수 있음.
         // Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;

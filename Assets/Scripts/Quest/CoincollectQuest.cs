@@ -21,7 +21,7 @@ public class CoincollectQuest : QuestData
 
 
 
-    //ÄÚÀÎÀ» ¼öÁıÇÔ¿¡ µû¶ó Äù½ºÆ® ÁøÇà»óÈ² Ã¼Å©
+    //ì½”ì¸ì„ ìˆ˜ì§‘í•¨ì— ë”°ë¼ í€˜ìŠ¤íŠ¸ ì§„í–‰ìƒí™© ì²´í¬
 
     public void Getcoin(int coin)
     {
@@ -37,7 +37,7 @@ public class CoincollectQuest : QuestData
 
     public override string getQuestInfo()
     {
-        return "";
+        return "ì½”ì¸ì„ 5ê°œëª¨ì•„ì˜¤ê±°ë¼";
     }
 
     public override void updateQuest()

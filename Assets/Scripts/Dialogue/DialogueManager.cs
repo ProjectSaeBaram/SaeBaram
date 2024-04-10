@@ -1,3 +1,4 @@
+using Ink.Runtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,101 +6,143 @@ using System.IO;
 using System.Text;
 using System.Xml.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 
 public class DialogueManager : MonoBehaviour
 {
-    private const int npcId = 10000;
-    private const int dialogueId = 10;
-    
-    Dictionary<int, string[]> talkData;
-    Dictionary<int,int> portraitData;
-    Dictionary<int, string[]> ChoiceData;
+
+
     private NpcData npcdata;
+    private Story currentStory;                                     //Ink ë¡œ ìƒì„±ëœ í…ìŠ¤íŠ¸ë¥¼ ë°›ì•„ì˜¬ Classë³€ìˆ˜
 
-    private const string SPEAKER_TAG = "speaker";                   //Å×±×°ªµé Å×±×°ª : º¯¼ö
+    private const string SPEAKER_TAG = "speaker";                   //í…Œê·¸ê°’ë“¤ í…Œê·¸ê°’ : ë³€ìˆ˜
     private const string PORTRAIT_TAG = "portrait";
+    private const string PLAYER_TAG = "player";
     private const string LAYOUT_TAG = "layout";
-    private UI_DialoguePopup popup;
+    public UI_DialoguePopup popup;
+    public QuestPanel qpanel;
+    
+    public bool dialogueIsPlaying { get; private set; }             //í˜„ì¬ ëŒ€í™”ì°½ì— ì§„ì…í–ˆëŠ”ì§€ í™•ì¸í•  ë³€ìˆ˜
+    //í€˜ìŠ¤íŠ¸ ì§„í–‰ìƒí™©ì€ í€˜ìŠ¤íŠ¸ ë©”ë‹ˆì €ì—ì„œ ê´€ë¦¬
 
-    //Äù½ºÆ® ÁøÇà»óÈ²Àº Äù½ºÆ® ¸Ş´ÏÀú¿¡¼­ °ü¸®
-
+    public static DialogueManager instance;
 
     private void Awake()
     {
-
-        talkData = new Dictionary<int, string[]>();
-        portraitData = new Dictionary<int, int>();
-        GenerateData();
+        instance = this;
     }
 
-    void GenerateData()     //Äù½ºÆ®¹øÈ£+NPCId => Äù½ºÆ®¿ë ´ëÈ­ µ¥ÀÌÅÍ Id
+    public static DialogueManager GetInstance()
     {
-        var Textfile = @"c:/";
-        if (File.Exists(Textfile))
+        return instance;
+    }
+
+    private void Update()
+    {
+        if (!dialogueIsPlaying)
         {
-            using(var reader = new StreamReader(Textfile)) 
-            { 
-                while(!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    string[] sentence = line.Split(",");
-                }
-            }
+            return;
         }
-        //Basic Talk Data
-        talkData.Add(1000, new string[] { "¾È³ç?:0", " ÀÌ °÷¿¡´Â ¾îÂ¾ÀÏÀÌ¾ß?:1" });
-
-        talkData.Add(2000, new string[] { "¾È³ç?:0", " ³Ê´Â ´©±¸¾ß?:1" });
-
-        //Quest Talk Data
-        talkData.Add(1000+10, new string[] { "¾î¼­¿Í:0", "¿·ÀÇ npc2¸¦ ¸¸³ª°í¿Ã·¡?:1:¿¹:¾Æ´Ï¿À" });       //Äù½ºÆ® ´ëÈ­
-        talkData.Add(1000 + 11, new string[] { "¾î:0", "npc¸¦ ¸¸³ª°í ¿Ô¾î?:1" });                      //Äù½ºÆ® ÁøÇà Áß ´ëÈ­
-        talkData.Add(1000 + 12, new string[] { "¿·ÀÇ npc2¸¦ ¸¸³ª°í ¿Ô±¸³ª:1", "ÀßÇß¾î!:1" });                      //Äù½ºÆ® ÁøÇà Áß ´ëÈ­
-        talkData.Add(2000+11, new string[] { "¾È³ç?:0", "¹«¾ùÀ» ÇÏ·¯ ¿©±â±îÁö ¿Ô¾î?:1" });
-        portraitData.Add(1000 + 0, 0);
-        portraitData.Add(1000 + 1, 1);
-        portraitData.Add (1000 + 2, 2);
-
-        portraitData.Add(2000 + 0, 0);
-        portraitData.Add(2000 + 1, 1);
-        portraitData.Add(2000 + 2, 2);
-    }
-
-    public string GetTalk(int id,int talkIndex)
-    {
-        if (!talkData.ContainsKey(id))       //Äù½ºÆ® ÁøÇàÁßÀÇ ´ë»çÀÖ´ÂÁö Ã¼Å©
+        if (PlayerController.GetInstance().GetInteractPressed())
         {
-            //Äù½ºÆ® ÁøÇà Áß¿¡´Â Äù½ºÆ® ÁøÇà ´ë»ç¿À±â
-            if (!talkData.ContainsKey(id - id % 10))
-            {
-                return GetTalk(id - id % 100, talkIndex);
-            }
-            else    //Äù½ºÆ® ´ë»ç °¡Á®¿À±â
-            {
-                return GetTalk(id - id % 10, talkIndex);
-
-            }
+            ContinueStory();
         }
-        //±âº» ´ë»ç °¡Á®¿À±â ÄÚµå
-        if (talkIndex == talkData[id].Length) return null;
-        else return talkData[id][talkIndex];
     }
 
-    //public void GetTalk2(int id, int talkIndex)
-    //{
-    //    currentStory = new Story();
-    //}
-
-
-    public int GetPortraitIndex(int id,int portraitIndex)
+    public void GetTalk2(NpcData npc)
     {
-        return portraitData[id + portraitIndex];
+        npcdata = npc;
+        currentStory = new Story(npc.dialogue[QuestManager.GetInstance().questActionIndex].text);
+        dialogueIsPlaying = true;
+        popup.dialoguePanel.SetActive(true);
+
+        //íƒœê·¸ ì´ˆê¸°í™”
+        popup.displayNameText.text = "???";
+        ContinueStory();
     }
 
-   
+
+
+    private void ExitDialogueMode()
+    {
+        dialogueIsPlaying = false;
+        popup.dialoguePanel.SetActive(false);
+        popup.dialogueText.text = "";
+    }
+
+    private void ContinueStory()
+    {
+        if (currentStory.canContinue)                   //ë” ë³´ì—¬ì¤„ ì´ì•¼ê¸°ê°€ ìˆë‹¤ë©´
+        {
+            popup.dialogueText.text = currentStory.Continue();            //í•œì¤„ ì¶œë ¥
+            DisplayChoices();                                       //ì„ íƒì´ ìˆìœ¼ë©´ ì„ íƒì¶œë ¥
+            //íƒœê·¸ê´€ë¦¬
+            HandleTags(currentStory.currentTags);
+        }
+        else
+        {
+            ExitDialogueMode();
+        }
+    }
+
+    private void HandleTags(List<string> currentTags)
+    {
+        foreach (string tag in currentTags)
+        {
+            string[] splitTag = tag.Split(':');
+            if (splitTag.Length != 2)
+            {
+                Debug.LogError("Tag parsed error : " + tag);
+            }
+            string tagkey = splitTag[0].Trim();
+            string tagvalue = splitTag[1].Trim();
+
+            switch (tagkey)
+            {
+                case SPEAKER_TAG:
+                    popup.displayNameText.text = tagvalue;
+                    break;
+                case PORTRAIT_TAG:
+                    popup.portraitImage.sprite = npcdata.npcPortrait[int.Parse(tagvalue)];
+                    break;
+                case PLAYER_TAG:
+                    popup.portraitImage.sprite = PlayerController.GetInstance().getplayerPortrait(int.Parse(tagvalue));
+                    break;
+                default:
+                    Debug.LogWarning("Tag exists but not handled");
+                    break;
+            }
+
+        }
+    }
+
+    private void DisplayChoices()
+    {
+        List<Choice> currentChoices = currentStory.currentChoices;
+        if (currentChoices.Count > popup.choices.Length)           //í˜„ì¬ ì„ íƒì§€ì˜ ê°œìˆ˜ê°€ ë²„íŠ¼ì˜ ê°œìˆ˜ë³´ë‹¤ ë§ìœ¼ë©´ ì˜¤ë¥˜ 
+        {
+            Debug.LogError("More choices than ever");
+        }
+
+        int index = 0;
+        foreach (Choice choice in currentChoices)
+        {
+            popup.choices[index].gameObject.SetActive(true);
+            popup.choicesText[index].text = choice.text;
+            index++;
+        }
+
+        for (int i = index; i < popup.choices.Length; i++)
+        {
+            popup.choices[i].gameObject.SetActive(false);
+        }
+        popup.choicep.SetActive(true);
+
+        StartCoroutine(SelectFirstChoice());
+    }
 
     private IEnumerator SelectFirstChoice()
     {
@@ -108,19 +151,23 @@ public class DialogueManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(popup.choices[0].gameObject);
     }
 
-    //public void MakeChoice(int choiceIndex, string npcId)
-    //{
-    //    currentStory.ChooseChoiceIndex(choiceIndex);
-    //    Debug.Log(npcId);
-    //    if (choiceIndex == 0 && npcId.Contains("Quest") && start)
-    //    {
-    //        //NPC id ¿Í Quest ID¸¦ ÀÏÄ¡½ÃÄÑ¾ßÇÔ
-    //        Managers.Questevent.StartQuest(npcId);
-    //    }
-    //    else if (choiceIndex == 0 && npcId.Contains("Quest") && end)
-    //    {
-    //        Managers.Questevent.FinishQuest(npcId);
-    //    }
-    //}
+    public void makeChoice(int choice)
+    {
+        currentStory.ChooseChoiceIndex(choice);
+        if (choice == 0)
+        {
+            if (npcdata.questId.Length > 0)
+            {
+                QuestState qs = QuestManager.GetInstance().CheckState(npcdata.questId[npcdata.questIndex]);
+                if (qs == QuestState.CAN_START)
+                {
+                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex], npcdata);
+                    //qpanel.questlist.AddQuest(QuestManager.GetInstance().GetQuestData(npcdata.questId[npcdata.questIndex]));
+                }
+            }
+        }
+        DebugEx.Log(choice);
+    }
+
 
 }

@@ -25,7 +25,7 @@ public class MeetPeopleQuest : QuestData
 
     public override string getQuestInfo()
     {
-        return ""; //Äù½ºÆ® ¼³¸í
+        return "í€˜ìŠ¤íŠ¸ì„¤ëª…1"; //í€˜ìŠ¤íŠ¸ ì„¤ëª…
     }
 
     public override void updateQuest()
