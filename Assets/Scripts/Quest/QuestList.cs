@@ -38,7 +38,7 @@ public class QuestList : UI_Popup
         qd_complete = new List<QuestData>();
         for (int i = 1; i <= QuestManager.GetInstance().questList.Count; i++)
         {
-            if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS)
+            if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS|| QuestManager.GetInstance().questList[i].qs == QuestState.CAN_FINISH)
             {
                 qd_progess.Add(QuestManager.GetInstance().questList[i]);
             }
@@ -85,7 +85,7 @@ public class QuestList : UI_Popup
         qd_complete = new List<QuestData>();
         for (int i = 1; i <= QuestManager.GetInstance().questList.Count; i++)
         {
-            if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS)
+            if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS || QuestManager.GetInstance().questList[i].qs == QuestState.CAN_FINISH)
             {
                 qd_progess.Add(QuestManager.GetInstance().questList[i]);
             }
@@ -134,7 +134,7 @@ public class QuestList : UI_Popup
         qd_progess = new List<QuestData>();
         for (int i = 1; i <= QuestManager.GetInstance().questList.Count; i++)
         {
-            if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS)
+            if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS || QuestManager.GetInstance().questList[i].qs == QuestState.CAN_FINISH)
             {
                 qd_progess.Add(QuestManager.GetInstance().questList[i]);
             }

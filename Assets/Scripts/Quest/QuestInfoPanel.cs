@@ -45,7 +45,18 @@ public class QuestInfoPanel : MonoBehaviour
         questDescription.text = questData.getQuestInfo();
         questLoc.text = questData.loc;
         npcName.text = questData.npcname;
-        questState.text = questData.qs.ToString();
+        switch (questData.qs)
+        {
+            case QuestState.IN_PROGRESS:
+                questState.text = "진행 중";
+                break;
+            case QuestState.CAN_FINISH:
+                questState.text = "완료 가능";
+                break;
+            case QuestState.FINISHED:
+                questState.text = "완료";
+                break;
+        }
         questReward.text = "골드 보상 :"+questData.goldReward.ToString();
     }
 }

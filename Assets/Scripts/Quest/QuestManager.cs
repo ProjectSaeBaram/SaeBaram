@@ -42,9 +42,9 @@ public class QuestManager : MonoBehaviour
         npc.questActionIndex++;
         questActionIndex++;
         questNpc.Add(id, npc);
-        questList[npc.questId[npc.questIndex-1]].qs++;
+        questList[npc.questId[npc.questIndex]].qs++;
         Debug.Log(questList[id].qs);
-        if (questList[npc.questId[npc.questIndex-1]].qs == QuestState.FINISHED)
+        if (questList[npc.questId[npc.questIndex]].qs == QuestState.FINISHED)
         {
             AdvanceIndex(id, npc);
             return;
