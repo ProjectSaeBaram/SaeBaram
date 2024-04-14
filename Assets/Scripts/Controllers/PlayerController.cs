@@ -460,7 +460,7 @@ public class PlayerController : MonoBehaviour
             Managers.UI.ShowPopupUI<UI_NotebookPopup>();
         else
         {
-            Managers.UI.ClosePopupUI(notebookPopup);
+            notebookPopup.ClosePopupUI(null);
             Time.timeScale = 1;
         }
     }

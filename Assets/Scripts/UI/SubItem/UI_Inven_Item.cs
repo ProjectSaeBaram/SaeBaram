@@ -37,7 +37,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     }
     
     [Header("UI")] 
-    [SerializeField] public UI_InventoryPopup _uiInventoryPopup;
+    [SerializeField] public GameObject parentPanel;
     [SerializeField] private Image image;
     [SerializeField] public string Name;                // 아이템의 이름을 저장하는 필드
     [SerializeField] public int Quality;                // 아이템의 퀄리티를 저장하는 필드
@@ -121,7 +121,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // 정확한 위치에 옮기지 않았을 경우 원래 자리로 되돌아가기 위함.
         parentAfterDrag = transform.parent;
         // 하이어러키에서 제일 밑에 가도록 해서 가장 위에 보이도록 하기위함.
-        transform.SetParent(_uiInventoryPopup.transform);
+        transform.SetParent(parentPanel.transform);
 
         // 마우스 커서 클릭 위치 오프셋 적용
         _dragOffset = transform.position - Input.mousePosition;
