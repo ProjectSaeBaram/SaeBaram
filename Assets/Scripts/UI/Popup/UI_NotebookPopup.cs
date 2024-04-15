@@ -46,6 +46,8 @@ public class UI_NotebookPopup : UI_Popup
     
     // 현재 시각화된 Layer
     [SerializeField] private GameObject VisualizedLayer;
+
+    [SerializeField] public UI_Inven_Item CatchedItem = null;
     
     void Start()
     {
@@ -133,6 +135,7 @@ public class UI_NotebookPopup : UI_Popup
                 case Tool tool:
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
+                    visualizedItems[i].Init();
                     visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount);
                     visualizedItems[i].parentPanel = VisualizedLayer;
                     break;
@@ -140,6 +143,7 @@ public class UI_NotebookPopup : UI_Popup
                 case Ingredient ingredient:
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
+                    visualizedItems[i].Init();
                     visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount);
                     visualizedItems[i].parentPanel = VisualizedLayer;
                     break;
@@ -200,7 +204,6 @@ public class UI_NotebookPopup : UI_Popup
     }
     
     #endregion
-    
     
     /// <summary>
     /// 모든 북마크들에게 레이어들을 매칭시키는 함수

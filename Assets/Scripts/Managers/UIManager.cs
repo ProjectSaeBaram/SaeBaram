@@ -148,6 +148,14 @@ public class UIManager
 
         _order--;
     }
+    
+    /// <summary>
+    /// 스택의 최상단 팝업을 닫는 함수.
+    /// </summary>
+    public UI_Popup GetTopPopupUI()
+    {
+        return _popupStack.Peek();
+    }
 
     /// <summary>
     /// 특정 팝업을 닫는 함수. 스택의 최상단 Popup이 아니면 닫지 않는다.
