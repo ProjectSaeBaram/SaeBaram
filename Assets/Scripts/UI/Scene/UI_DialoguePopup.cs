@@ -13,6 +13,8 @@ public class UI_DialoguePopup : UI_Scene
     [SerializeField] public TextMeshProUGUI dialogueText;
     [SerializeField] public TextMeshProUGUI displayNameText;
     [SerializeField] public Image portraitImage;
+    [SerializeField] public Animator layoutAnimator;
+
 
     [SerializeField] public TextMeshProUGUI[] choicesText;
     [SerializeField] public GameObject[] choices;
@@ -31,7 +33,7 @@ public class UI_DialoguePopup : UI_Scene
         dialogueText = dialoguePanel.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         displayNameText = dialoguePanel.transform.GetChild(4).GetChild(0).GetComponent<TextMeshProUGUI>();
         portraitImage = dialoguePanel.transform.GetChild(3).transform.GetChild(0).GetComponent<Image>();
-
+        layoutAnimator=dialoguePanel.GetComponent<Animator>();
 
         choicep = dialoguePanel.transform.GetChild(2).gameObject;
         choices = new GameObject[2] { dialoguePanel.transform.GetChild(2).GetChild(0).gameObject, dialoguePanel.transform.GetChild(2).GetChild(1).gameObject };

@@ -129,6 +129,9 @@ public class DialogueManager : MonoBehaviour
                 case PLAYER_TAG:
                     popup.portraitImage.sprite = playerController.getplayerPortrait(int.Parse(tagvalue));
                     break;
+                case LAYOUT_TAG:
+                    popup.layoutAnimator.Play(tagvalue);
+                    break;
                 default:
                     Debug.LogWarning("Tag exists but not handled");
                     break;
