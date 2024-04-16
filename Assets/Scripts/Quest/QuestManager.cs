@@ -32,7 +32,7 @@ public class QuestManager : MonoBehaviour
     {
         questList.Add(1, new MeetPeopleQuest("대화하기", 1000,"할아버지",1,QuestState.REQUIREMENTS_NOT_MET,10,"튜토리얼 마을",QuestType.Corauge));
 
-        questList.Add(2, new CoincollectQuest("코인 모으기", 1000, "할아버지", 2, QuestState.CAN_START, 20, "튜토리얼 마을", QuestType.Corauge));
+        questList.Add(2, new CoincollectQuest("코인 모으기", 1000, "할아버지", 1, QuestState.CAN_START, 10, "튜토리얼 마을", QuestType.Corauge));
 
     }
 
@@ -40,7 +40,6 @@ public class QuestManager : MonoBehaviour
     {
 
         npc.questActionIndex++;
-        questActionIndex++;
         questNpc.Add(id, npc);
         questList[npc.questId[npc.questIndex]].qs++;
         Debug.Log(questList[id].qs);

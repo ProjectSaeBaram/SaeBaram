@@ -70,7 +70,7 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                currentStory = new Story(npc.dialogue[(npc.questIndex + QuestManager.GetInstance().questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때
+                currentStory = new Story(npc.dialogue[(npc.questIndex + npc.questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때
             }
             
         }
@@ -89,10 +89,12 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         popup.dialoguePanel.SetActive(false);
         popup.dialogueText.text = "";
+        Time.timeScale = 1;
     }
 
     private void ContinueStory()
     {
+        Time.timeScale = 0;
         if (currentStory.canContinue)                   //더 보여줄 이야기가 있다면
         {
             popup.dialogueText.text = currentStory.Continue();            //한줄 출력

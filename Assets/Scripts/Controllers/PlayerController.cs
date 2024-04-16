@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         public void Execute()
         {
             // 플레이어의 입력에 따라 캐릭터 이동
-            _playerController._rigidbody2D.velocity = DialogueManager.GetInstance().dialogueIsPlaying ? Vector2.zero :
+            _playerController._rigidbody2D.velocity =
                 new Vector2(_playerController.inputVector.x * _playerController.speed,
                     _playerController._rigidbody2D.velocity.y);
 
@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         public void Execute()
         {
             // 플레이어의 입력에 따라 캐릭터 이동
-            _playerController._rigidbody2D.velocity = DialogueManager.GetInstance().dialogueIsPlaying ? Vector2.zero :
+            _playerController._rigidbody2D.velocity = 
                 new Vector2(_playerController.inputVector.x * _playerController.runningSpeed,
                     _playerController._rigidbody2D.velocity.y);
 
@@ -96,7 +96,6 @@ public class PlayerController : MonoBehaviour
             _playerController = player;
 
             if (_playerController.jumpForced) return;
-            else if (DialogueManager.GetInstance().dialogueIsPlaying) return;
             _playerController._rigidbody2D.velocity = new Vector2(_playerController._rigidbody2D.velocity.x, 0);
             _playerController._rigidbody2D.AddForce(Vector2.up * _playerController.jumpPower, ForceMode2D.Impulse);
 
@@ -484,11 +483,13 @@ public class PlayerController : MonoBehaviour
         if (!isQuestPanelActive)
         {
             QuesttabOpen();
+            Time.timeScale = 0;
             isQuestPanelActive = true;
         }
         else
         {
             QuesttabClose();
+            Time.timeScale = 1;
             isQuestPanelActive = false;
         }
     }

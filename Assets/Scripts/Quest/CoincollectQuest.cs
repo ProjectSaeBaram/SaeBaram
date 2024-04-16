@@ -7,17 +7,26 @@ public class CoincollectQuest : QuestData
     private int coinsCollected = 0;
     private int coinsToComplete = 5;
 
-    public CoincollectQuest(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t) : base(name, npc, npcn, Index, qs, gold, location, t)
+    private string name;
+    private int npc;
+    private string npcn;
+    private int index;
+    private QuestState state;
+    private int gold;
+    private string location;
+    private QuestType ty;
+
+    public CoincollectQuest(string n, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t)
     {
-        base.questName = name;
-        base.npcId = npc;
-        base.npcname = npcn;
-        base.Indexrequirment = Index;
-        base.qs = qs;
-        base.goldReward = gold;
-        base.loc = location;
-        base.type = t;
+        this.questName = n;
+        this.npcname = npcn;
+        this.Indexrequirment = Index;
+        this.qs = qs;
+        this.goldReward = gold;
+        this.loc = location;
+        this.ty = t;
     }
+
 
     //코인을 수집함에 따라 퀘스트 진행상황 체크
 
@@ -42,7 +51,7 @@ public class CoincollectQuest : QuestData
     {
         if (coinsCollected == coinsToComplete)
         {
-            qs++;
+            this.qs++;
         }
     }
 }

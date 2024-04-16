@@ -17,17 +17,7 @@ public abstract class QuestData
     public int goldReward;
 
 
-    public QuestData(string name, int npc, string npcn,int Index,QuestState qs,int gold,string location,QuestType t)
-    {
-        questName = name;
-        npcId = npc;
-        npcname = npcn;
-        Indexrequirment=Index;
-        qs = QuestState.REQUIREMENTS_NOT_MET;
-        goldReward = gold;
-        loc=location;
-        type = t;
-}
+   
     public abstract void updateQuest();
 
     public abstract QuestData getQuestData();

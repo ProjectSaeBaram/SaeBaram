@@ -18,8 +18,9 @@ public class QuestButton : MonoBehaviour
     private void Awake()
     {
         this.GetComponent<Button>().onClick.AddListener(() => DisplayQuestInfo());
+
         QuestCheckBox.gameObject.SetActive(true);
-        QuestCheck.gameObject.SetActive(false);
+        QuestCheck.gameObject.SetActive(true);
     }
 
     public void SetQuestInfo(QuestData data)
@@ -36,6 +37,7 @@ public class QuestButton : MonoBehaviour
                 QuestCheckBox.gameObject.SetActive(true);
                 QuestCheck.gameObject.SetActive(true);
             }
+            SetQuestCheck(questData);
         }
     }
 
