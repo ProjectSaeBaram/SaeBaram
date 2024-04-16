@@ -20,7 +20,7 @@ public class QuestButton : MonoBehaviour
         this.GetComponent<Button>().onClick.AddListener(() => DisplayQuestInfo());
 
         QuestCheckBox.gameObject.SetActive(true);
-        QuestCheck.gameObject.SetActive(true);
+        QuestCheck.gameObject.SetActive(false);
     }
 
     public void SetQuestInfo(QuestData data)
@@ -29,12 +29,12 @@ public class QuestButton : MonoBehaviour
         questData = data;
         if(data!=null)
         {
-            if (data.qs == QuestState.IN_PROGRESS)
+            if(data.qs == QuestState.FINISHED)
             {
                 QuestCheckBox.gameObject.SetActive(true);
-            }else if(data.qs == QuestState.FINISHED)
+                QuestCheck.gameObject.SetActive(true);
+            }else if (data.qs == QuestState.CAN_FINISH)
             {
-                QuestCheckBox.gameObject.SetActive(true);
                 QuestCheck.gameObject.SetActive(true);
             }
             SetQuestCheck(questData);
@@ -43,9 +43,12 @@ public class QuestButton : MonoBehaviour
 
     public void SetQuestCheck(QuestData data)
     {
-        if(data.qs==QuestState.IN_PROGRESS)
+        if(data.qs==QuestState.CAN_FINISH)
         {
             QuestCheck.color = Color.gray;
+            Color color = QuestCheck.color;
+            color.a = 0.5f;
+            QuestCheck.color=color;
         }else if (data.qs == QuestState.FINISHED)
         {
             QuestCheck.color = Color.red;
