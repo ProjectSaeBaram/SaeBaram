@@ -29,7 +29,7 @@ public class UI_SeparateIngredient : UI_Popup
     
     private UI_Inven_Item _originItem;
     
-    private int _itemOriginAmount;      // ¾ÆÀÌÅÛÀÇ ¿ø·¡ °¹¼ö
+    private int _itemOriginAmount;      // ì•„ì´í…œì˜ ì›ë˜ ê°¯ìˆ˜
     
     public override void Init()
     {
@@ -54,7 +54,7 @@ public class UI_SeparateIngredient : UI_Popup
     }
 
     /// <summary>
-    /// °ªÀÌ 0ÀÌ¸é Confirm ¹öÆ° ºñÈ°¼ºÈ­
+    /// ê°’ì´ 0ì´ë©´ Confirm ë²„íŠ¼ ë¹„í™œì„±í™”
     /// </summary>
     /// <param name="str"></param>
     void CheckValue(string str)
@@ -77,7 +77,7 @@ public class UI_SeparateIngredient : UI_Popup
 
     void Confirm()
     {
-        // ºĞ¸®µÈ ¾ÆÀÌÅÛÀÌ ¸¶¿ì½º Ä¿¼­¿¡ »ı°Ü¾ß ÇÑ´Ù.
+        // ë¶„ë¦¬ëœ ì•„ì´í…œì´ ë§ˆìš°ìŠ¤ ì»¤ì„œì— ìƒê²¨ì•¼ í•œë‹¤.
         UI_Inven_Item item = Managers.UI.MakeSubItem<UI_Inven_Item>();
         item.IngredientInit(_originItem.Name, _originItem.Quality, int.Parse(_inputField.text));
         
