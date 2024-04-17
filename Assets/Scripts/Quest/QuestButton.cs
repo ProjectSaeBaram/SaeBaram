@@ -53,6 +53,10 @@ public class QuestButton : MonoBehaviour
         {
             QuestCheck.color = Color.red;
         }
+        else
+        {
+            QuestCheck.gameObject.SetActive(false);
+        }
         
     }
 
