@@ -639,6 +639,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Notebook_Quest_GoldReward
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 54
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 711ced135afaba0468f6ecd5b3aceaae
+      internalID: -702779573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Notebook_Quest_SpecialReward
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 30
+        width: 27
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9c41c2894b59e246b507bd11e6dd9f1
+      internalID: -1917725457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -665,7 +707,9 @@ TextureImporter:
       Notebook_ProductSlot: -204684019
       Notebook_Quest_Check: -1864337695
       Notebook_Quest_CheckBox: 1158254676
+      Notebook_Quest_GoldReward: -702779573
       Notebook_Quest_LocationPin: 1387867832
+      Notebook_Quest_SpecialReward: -1917725457
       Notebook_RecipeBackground: -2130538389
       Notebook_ReinforcingBackground: -699845937
       Notebook_ReinforcingButton_Clicked: -2040837145
