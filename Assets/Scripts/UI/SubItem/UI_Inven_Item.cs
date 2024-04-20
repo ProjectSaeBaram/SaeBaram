@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 /// UI_Base를 상속받아, 인벤토리 아이템의 개별 UI 요소를 초기화하고 관리합니다.
 /// 이런식으로 관리 가능한 UI 오소로는 아이콘이 있다.
 /// </summary>
-public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     enum Texts
     {
@@ -37,7 +38,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     }
     
     [Header("UI")] 
-    [SerializeField] public UI_InventoryPopup _uiInventoryPopup;
+    [SerializeField] public GameObject parentPanel;
     [SerializeField] private Image image;
     [SerializeField] public string Name;                // 아이템의 이름을 저장하는 필드
     [SerializeField] public int Quality;                // 아이템의 퀄리티를 저장하는 필드
@@ -49,12 +50,18 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     
     // 드래그 이후 부모 Transform을 저장하기 위함
     [SerializeField] public Transform parentAfterDrag;
+
+    [SerializeField] private bool isCatched = false;
+
+    public Action OnValueChange = null;
     
     /// <summary>
     /// UI 요소들을 초기화하는 메서드
     /// </summary>
     public override void Init()
     {
+        OnValueChange -= RefreshUI;
+        OnValueChange += RefreshUI;
     }
 
     /// <summary>
@@ -109,19 +116,37 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
         itemType = ItemType.Ingredient;
     }
-    
+
+    private void Update()
+    {
+        if (!isCatched) return;
+
+        transform.position = Input.mousePosition;
+    }
+
+    private void RefreshUI()
+    {
+        // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
+        Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
+        Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
+        Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
+        Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
+    }
+
     #region Drag and Drop
 
     private Vector3 _dragOffset;
     
-    public void OnBeginDrag(PointerEventData eventData) {
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (isCatched) return;
         
         // image.raycastTarget = true 면, 최상위가 자기 자신이라서 InventorySlot을 지정할 수 없음. 
         image.raycastTarget = false;
         // 정확한 위치에 옮기지 않았을 경우 원래 자리로 되돌아가기 위함.
         parentAfterDrag = transform.parent;
         // 하이어러키에서 제일 밑에 가도록 해서 가장 위에 보이도록 하기위함.
-        transform.SetParent(_uiInventoryPopup.transform);
+        transform.SetParent(parentPanel.transform);
 
         // 마우스 커서 클릭 위치 오프셋 적용
         _dragOffset = transform.position - Input.mousePosition;
@@ -135,6 +160,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     
     public void OnEndDrag(PointerEventData eventData) {
         
+        if (isCatched) return;
+        
         image.raycastTarget = true;
         // 중간에 parentAfterDrag가 변경되지 않았으면 원래 위치로 복귀. 중간에 바뀌었으면 다른 위치로 이동.
         transform.SetParent(parentAfterDrag);
@@ -143,4 +170,35 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     }
 
     #endregion
+    
+    #region Click
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // 우클릭인 경우에 동작
+        if (eventData.button == PointerEventData.InputButton.Right && !isCatched)
+        {
+            UI_SeparateIngredient popup = Managers.UI.ShowPopupUI<UI_SeparateIngredient>();
+            popup.InitItemReference(this);
+        }
+    }
+
+    public void Catched()
+    {
+        isCatched = true;
+        Get<Image>((int)Images.ItemIcon).color = new Color(1,1,1,0.8f);
+        (Managers.UI.GetTopPopupUI() as UI_NotebookPopup).CatchedItem = this;
+        image.raycastTarget = false;
+    }
+
+    public void Released()
+    {
+        isCatched = false;
+        Get<Image>((int)Images.ItemIcon).color = new Color(1,1,1,1);
+        transform.localPosition = new Vector3(0, 0, 0);
+        image.raycastTarget = true;
+    }
+    
+    #endregion
+    
 }

@@ -476,36 +476,7 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-    #region QuestCall
-    void QuestCall(InputAction.CallbackContext context)
-    {
-
-        if (!isQuestPanelActive)
-        {
-            QuesttabOpen();
-            Time.timeScale = 0;
-            isQuestPanelActive = true;
-        }
-        else
-        {
-            QuesttabClose();
-            Time.timeScale = 1;
-            isQuestPanelActive = false;
-        }
-    }
-
-    private void QuesttabOpen()
-    {
-        Managers.UI.ShowPopupUI<UI_NotebookPopup>();
-
-    }
-
-    private void QuesttabClose()
-    {
-        Managers.UI.ClosePopupUI();
-    }
-    #endregion
-
+   
     #region AdvanceQuest
     void AdvanceQuest(InputAction.CallbackContext context)
     {
@@ -517,6 +488,25 @@ public class PlayerController : MonoBehaviour
         QuestManager.GetInstance().AdvanceQuest(1);
     }
     #endregion
+    
+    #region Notebook
+
+    void OpenOrCloseNotebook(InputAction.CallbackContext context)
+    {
+        // 노트북 팝업이 열려있으면 닫고, 
+        // 열려있지 않으면 열기
+        UI_NotebookPopup notebookPopup = FindObjectOfType<UI_NotebookPopup>();
+        if(notebookPopup == null)
+            Managers.UI.ShowPopupUI<UI_NotebookPopup>();
+        else
+        {
+            notebookPopup.ClosePopupUI(null);
+            Time.timeScale = 1;
+        }
+    }
+    
+    #endregion
+    
     #region About PlayerInput
     private void OnEnable()
     {
@@ -535,8 +525,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
-        _playerInputActions.PlayerAction.QuestCall.performed += QuestCall;
-        _playerInputActions.PlayerAction.AdvanceQuest.performed += AdvanceQuest;
+        _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.Enable();
     }
     
@@ -556,8 +545,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
-        _playerInputActions.PlayerAction.QuestCall.performed -= QuestCall;
-        _playerInputActions.PlayerAction.AdvanceQuest.performed -= AdvanceQuest;
+        _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
         _playerInputActions.Disable();
     }
     

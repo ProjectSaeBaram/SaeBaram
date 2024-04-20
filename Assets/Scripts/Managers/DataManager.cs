@@ -37,9 +37,9 @@ public class DataManager
     //public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
 
     /// <summary>
-    /// 인벤토리 칸의 갯수. 현재는 테스트용으로 10칸만 존재한다.
+    /// 인벤토리 칸의 갯수. 현재는 테스트용으로 30칸만 존재한다.
     /// </summary>
-    public const int NumberOfInventorySlots = 10;
+    public const int NumberOfInventorySlots = 30;
 
     /// <summary>
     /// 아이템 정보를 캐싱하는 ushort 배열
@@ -70,6 +70,10 @@ public class DataManager
         {"Stone", 101 },
     };
 
+    /// <summary>
+    /// Item을 Ingredient와 Tool로 구분하는 기준 Boundary.
+    /// Item의 id가 BOUNDARY보다 크거나 같으면 Ingredient, 보다 작으면 Tool.
+    /// </summary>
     public const int BOUNDARY = 100;
     
     /// <summary>
