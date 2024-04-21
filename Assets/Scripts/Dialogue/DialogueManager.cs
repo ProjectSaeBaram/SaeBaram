@@ -65,7 +65,7 @@ public class DialogueManager : MonoBehaviour
             if (npc.questId.Length > 1)
             {   
                 //questIndex : 0부터 시작
-                //questActionIndex : 0 시작 1; 중간 2: 끝낼수있을때 3: 끝 
+                //questActionIndex : 0 시작 1; 중간 2: 끝낼수있을때 3: 끝  4베수로 시작 
                 currentStory = new Story(npc.dialogue[(npc.questIndex*4 + QuestManager.GetInstance().questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때 
             }
             else
@@ -189,7 +189,6 @@ public class DialogueManager : MonoBehaviour
                 }else if (qs == QuestState.CAN_FINISH)
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.questIndex], npcdata);
-                    QuestManager.GetInstance().AdvanceNpcIndex(npcdata);
                 }
             }
         }

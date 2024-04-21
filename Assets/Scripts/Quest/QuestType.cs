@@ -6,5 +6,6 @@ public enum QuestType
 {
     Corauge,
     Knowlege,
-    handicraft
+    handicraft,
+    None
 }

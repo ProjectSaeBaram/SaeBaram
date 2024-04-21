@@ -6,7 +6,7 @@ public class MeetPeopleQuest : QuestData
 {
     public bool isMeet;
 
-    public MeetPeopleQuest(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t) : base(name, npc, npcn, Index, qs, gold, location, t)
+    public MeetPeopleQuest(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t = QuestType.None) : base(name, npc, npcn, Index, qs, gold, location, t)
     {
         base.questName = name;
         base.npcId = npc;
