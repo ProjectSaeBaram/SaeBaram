@@ -18,7 +18,6 @@ public class QuestManager : MonoBehaviour
         instance = this;
         questList = new Dictionary<int, QuestData>();               //퀘스트 아이디: 퀘스트 정보
         questNpc = new Dictionary<int, NpcData>();
-        questIndex = 10;
         GenerateData();
     }
 
@@ -29,9 +28,9 @@ public class QuestManager : MonoBehaviour
 
     void GenerateData()
     {
-        questList.Add(10, new MeetPeopleQuest("대화하기", 1000,"할아버지",10,QuestState.CAN_START,10,"튜토리얼 마을"));
+        questList.Add(0, new MeetPeopleQuest("대화하기", 1000,"할아버지",0,QuestState.REQUIREMENTS_NOT_MET,10,"튜토리얼 마을"));
 
-        questList.Add(20, new CoincollectQuest("코인 모으기", 1000, "할아버지", 20, QuestState.CAN_START, 20, "튜토리얼 마을"));
+        questList.Add(1, new CoincollectQuest("코인 모으기", 1000, "할아버지", 1, QuestState.REQUIREMENTS_NOT_MET, 20, "튜토리얼 마을"));
 
     }
 
@@ -40,7 +39,7 @@ public class QuestManager : MonoBehaviour
 
         npc.questActionIndex++;
         questNpc.Add(id, npc);
-        questList[questIndex].qs++;
+        questList[npc.questIndex].qs++;
         Debug.Log(questList[id].qs);
         if (questList[questIndex].qs == QuestState.FINISHED)
         {
@@ -66,7 +65,7 @@ public class QuestManager : MonoBehaviour
 
     public void CheckRequirement(int index)             //진행 순서가 맞아진다면 시작가능한 퀘스트 체크
     {
-        for (int i = 10; i < questList.Count; i += 10){
+        for (int i = 0; i < questList.Count; i ++){
             if (index >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED || questList[i].qs!=QuestState.IN_PROGRESS))
             {
                 questList[i].qs = QuestState.CAN_START;
@@ -95,6 +94,7 @@ public class QuestManager : MonoBehaviour
     }
     public void AdvanceIndex(int qid,NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
     {
+        PlayerController.GetInstance().questIdx++;
         if (questNpc[qid].questId.Length > 1)
         {
             questNpc[qid].questIndex++;

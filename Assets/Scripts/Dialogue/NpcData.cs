@@ -66,7 +66,8 @@ public class NpcData : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player") 
         {
-            playerInRange=true;
+           
+            playerInRange =true;
             qs = QuestManager.GetInstance().CheckState(questId[questIndex]);
             if (questId.Length > 0)          //퀘스트아이디가 있을 때
             {

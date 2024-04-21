@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite[] playerPortrait;
     [Tab("Quest & Dialogue")]
     [SerializeField] private QuestManager _questManager;
+    [SerializeField] public int questIdx;
     [SerializeField] public bool isQuestPanelActive;
     private bool interactPressed;
     private static PlayerController instance;
@@ -253,7 +254,8 @@ public class PlayerController : MonoBehaviour
         InitStates();
         DialogueManager.GetInstance().playerController = this;
         _localScale = transform.localScale;
-
+        questIdx = 0;
+        QuestManager.GetInstance().CheckRequirement(questIdx);
         interactPressed = false;
         instance = this;
     }
@@ -493,6 +495,7 @@ public class PlayerController : MonoBehaviour
 
     void OpenOrCloseNotebook(InputAction.CallbackContext context)
     {
+        
         // 노트북 팝업이 열려있으면 닫고, 
         // 열려있지 않으면 열기
         UI_NotebookPopup notebookPopup = FindObjectOfType<UI_NotebookPopup>();

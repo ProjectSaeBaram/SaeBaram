@@ -36,7 +36,7 @@ public class QuestList : UI_Popup
         }
         qd_progess = new List<QuestData>();
         qd_complete = new List<QuestData>();
-        for (int i = 1; i <= QuestManager.GetInstance().questList.Count; i++)
+        for (int i = 0; i < QuestManager.GetInstance().questList.Count; i++)
         {
             if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS|| QuestManager.GetInstance().questList[i].qs == QuestState.CAN_FINISH)
             {
@@ -83,7 +83,7 @@ public class QuestList : UI_Popup
     {
         qd_progess = new List<QuestData>();
         qd_complete = new List<QuestData>();
-        for (int i = 1; i <= QuestManager.GetInstance().questList.Count; i++)
+        for (int i = 0; i < QuestManager.GetInstance().questList.Count; i++)
         {
             if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS || QuestManager.GetInstance().questList[i].qs == QuestState.CAN_FINISH)
             {
@@ -132,7 +132,7 @@ public class QuestList : UI_Popup
     public void DisplayProgessList()        //진행중인 퀘스트 보여주기
     {
         qd_progess = new List<QuestData>();
-        for (int i = 1; i <= QuestManager.GetInstance().questList.Count; i++)
+        for (int i = 0; i < QuestManager.GetInstance().questList.Count; i++)
         {
             if (QuestManager.GetInstance().questList[i].qs == QuestState.IN_PROGRESS || QuestManager.GetInstance().questList[i].qs == QuestState.CAN_FINISH)
             {
@@ -168,7 +168,7 @@ public class QuestList : UI_Popup
     public void DisplayFinishedList()           //끝난 퀘스트 보여주기
     {
         qd_complete = new List<QuestData>();
-        for (int i = 1; i <= QuestManager.GetInstance().questList.Count; i++)
+        for (int i = 0; i < QuestManager.GetInstance().questList.Count; i++)
         {
             if (QuestManager.GetInstance().questList[i].qs == QuestState.FINISHED)
             {
