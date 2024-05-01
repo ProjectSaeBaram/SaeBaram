@@ -4523,7 +4523,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2658469230373732653, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Name
-      value: Questnpc
+      value: Ruda
       objectReference: {fileID: 0}
     - target: {fileID: 8175303610426114463, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_LocalScale.x

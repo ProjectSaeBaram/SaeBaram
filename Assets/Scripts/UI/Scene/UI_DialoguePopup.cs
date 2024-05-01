@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_DialoguePopup : UI_Scene
+public class UI_DialoguePopup : UI_Popup
 {
     [SerializeField] private GameObject DialoguePopup;
     [SerializeField] public GameObject dialoguePanel;
@@ -45,6 +45,7 @@ public class UI_DialoguePopup : UI_Scene
     {
         instance = this;
         DialogueManager.GetInstance().popup = this;
+        //dialoguePanel.SetActive(false);
     }
     private void Start()
     {

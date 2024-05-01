@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager.Requests;
@@ -24,6 +25,9 @@ public class NpcData : MonoBehaviour
     [SerializeField] public QuestState qs;
     [SerializeField] public PlayerController playerController;
     [SerializeField] public int questActionIndex;
+    [Tab("Chapter Inform")]
+    [SerializeField] public static string Chap = "Dialogue/Chap";
+    [SerializeField] public int ChapNum;
 
     private static NpcData instance;
 
@@ -42,6 +46,20 @@ public class NpcData : MonoBehaviour
         {
             c.gameObject.SetActive(false);
         }
+       dialogue=new TextAsset[3];
+        if(questId.Length > 1 ) 
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                //dialogue[i] = Resources.Load("Dialogue/Chap0/Ruda/Ruda0") as TextAsset;
+                dialogue[i] = Resources.Load(Chap + ChapNum.ToString() + "/" + npcName + "/" + npcName + i.ToString()) as TextAsset;
+            }
+        }
+        else
+        {
+            dialogue[0] = Resources.Load(Chap + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0") as TextAsset;
+        }
+       
         npcName = this.name;
     }
 
