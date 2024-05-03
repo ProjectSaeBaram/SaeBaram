@@ -288,5 +288,6 @@ public class DataManager
         }
         
         InventoryTable = _inventoryTable;
+        DebugEx.Log("Exported from InventoryPopup to DataManager");
     }
 }

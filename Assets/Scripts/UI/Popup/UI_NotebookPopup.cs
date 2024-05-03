@@ -71,6 +71,8 @@ public class UI_NotebookPopup : UI_Popup
         WhenOpened();
         
         // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
+        // Managers.Data.OnClose -= ExportInventoryData;
+        // Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
         Managers.Data.OnClose += ExportInventoryData;
         Managers.Data.OnClose += Managers.Data.SaveInventoryData;
         
@@ -173,6 +175,16 @@ public class UI_NotebookPopup : UI_Popup
     /// </summary>
     public void ExportInventoryData()
     {
+        try
+        {
+            bool proove = this.gameObject.activeSelf;
+        }
+        catch (Exception)
+        {
+            DebugEx.Log("Skipped Exporting from InventoryPopup to DataManager");
+            return;
+        }
+        
         for (int i = 0; i < numberOfItemSlots; i++)
         {
             UI_Inven_Item itemUI = itemSlots[i].Item;
@@ -248,10 +260,14 @@ public class UI_NotebookPopup : UI_Popup
     
     public override void ClosePopupUI(PointerEventData action)
     {
-        Time.timeScale = 1;
-        base.ClosePopupUI(action);
-
+        
         // 인벤토리의 데이터 저장
         Managers.Data.OnClose?.Invoke();    // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
+        
+        Time.timeScale = 1;
+        Managers.Data.OnClose -= ExportInventoryData;
+        Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
+        
+        base.ClosePopupUI(action);
     }
 }
