@@ -461,7 +461,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             notebookPopup.ClosePopupUI(null);
-            Time.timeScale = 1;
         }
     }
     
