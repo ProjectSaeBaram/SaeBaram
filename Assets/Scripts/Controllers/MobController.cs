@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using VInspector;
 
-
 [RequireComponent(typeof(Rigidbody2D))] [RequireComponent(typeof(CapsuleCollider2D))] [RequireComponent(typeof(Animator))]
 public class MobController : MonoBehaviour
 {
@@ -89,7 +88,8 @@ public class MobController : MonoBehaviour
             }
             else // 플레이어가 감지 범위를 벗어나면 복귀 상태로 돌아감
             {
-                _mob.CurrentState = _mob._returnState;
+                //_mob.CurrentState = _mob._returnState;
+                _mob.CurrentState = _mob._patrolState;
             }
         }
 
@@ -150,51 +150,51 @@ public class MobController : MonoBehaviour
         }
     }
 
-    public class MobReturnState : IMobState
-    {
-        private MobController _mob;
-        private Vector2 _returnPosition;
-        
-        public void Enter(MobController mob)
-        {
-            // Return 상태에 진입할 때 필요한 초기화 로직
-            _mob = mob;
-            
-            // 현재 몬스터의 위치가 순찰 지점 A와 더 가까우면 지점 B로 설정하고, 그렇지 않으면 지점 A로 설정
-            if (Vector2.Distance(_mob.transform.position, _mob.patrolPointA) < Vector2.Distance(_mob.transform.position, _mob.patrolPointB))
-            {
-                _returnPosition = _mob.patrolPointA;
-            }
-            else
-            {
-                _returnPosition = _mob.patrolPointB;
-            }
-
-            Debug.Log("Returning to patrol point.");
-        }
-
-        public void Execute() 
-        {
-            // Return 상태에서의 주요 로직
-            
-            // 몬스터가 복귀 지점에 도달했는지 확인
-            if (Vector2.Distance(_mob.transform.position, _returnPosition) < 1f)
-            {
-                Debug.Log("Reached patrol point, returning to patrol state.");
-                _mob.CurrentState = _mob._patrolState; // 도착하면 순찰 상태로 전환
-            }
-            else
-            {
-                // 반환 지점으로 계속 이동
-                _mob.MoveTowards(_returnPosition);
-            }
-        }
-
-        public void Exit() 
-        {
-            // Return 상태에서 나갈 때 정리 로직
-        }
-    }
+    // public class MobReturnState : IMobState
+    // {
+    //     private MobController _mob;
+    //     private Vector2 _returnPosition;
+    //     
+    //     public void Enter(MobController mob)
+    //     {
+    //         // Return 상태에 진입할 때 필요한 초기화 로직
+    //         _mob = mob;
+    //         
+    //         // 현재 몬스터의 위치가 순찰 지점 A와 더 가까우면 지점 B로 설정하고, 그렇지 않으면 지점 A로 설정
+    //         if (Vector2.Distance(_mob.transform.position, _mob.patrolPointA) < Vector2.Distance(_mob.transform.position, _mob.patrolPointB))
+    //         {
+    //             _returnPosition = _mob.patrolPointA;
+    //         }
+    //         else
+    //         {
+    //             _returnPosition = _mob.patrolPointB;
+    //         }
+    //
+    //         Debug.Log("Returning to patrol point.");
+    //     }
+    //
+    //     public void Execute() 
+    //     {
+    //         // Return 상태에서의 주요 로직
+    //         
+    //         // 몬스터가 복귀 지점에 도달했는지 확인
+    //         if (Vector2.Distance(_mob.transform.position, _returnPosition) < 1f)
+    //         {
+    //             Debug.Log("Reached patrol point, returning to patrol state.");
+    //             _mob.CurrentState = _mob._patrolState; // 도착하면 순찰 상태로 전환
+    //         }
+    //         else
+    //         {
+    //             // 반환 지점으로 계속 이동
+    //             _mob.MoveTowards(_returnPosition);
+    //         }
+    //     }
+    //
+    //     public void Exit() 
+    //     {
+    //         // Return 상태에서 나갈 때 정리 로직
+    //     }
+    // }
 
     [Tab("Information")]
     [SerializeField] private float speed = 400f;
@@ -237,9 +237,9 @@ public class MobController : MonoBehaviour
                 case MobPatrolState mobPatrolState:
                     _animator.CrossFade("Mob_TestPatrol", 0.1f);
                     break;
-                case MobReturnState mobReturnState:
-                    _animator.CrossFade("Mob_TestReturn", 0.1f);
-                    break;
+                // case MobReturnState mobReturnState:
+                //     _animator.CrossFade("Mob_TestReturn", 0.1f);
+                //     break;
             }
         }
     }
@@ -251,7 +251,7 @@ public class MobController : MonoBehaviour
     private MobPatrolState _patrolState = new MobPatrolState();
     private MobChaseState _chaseState = new MobChaseState();
     private MobAttackState _attackState = new MobAttackState();
-    private MobReturnState _returnState = new MobReturnState();
+    //private MobReturnState _returnState = new MobReturnState();
 
     void Awake()
     {
@@ -277,7 +277,7 @@ public class MobController : MonoBehaviour
         _patrolState = new MobPatrolState();
         _chaseState = new MobChaseState();
         _attackState = new MobAttackState();
-        _returnState = new MobReturnState();
+        //_returnState = new MobReturnState();
 
         CurrentState = _patrolState;
     }
