@@ -20,6 +20,38 @@ public interface ILoader<TKey, TValue>
 }
 
 /// <summary>
+/// 저장된 모든 아이템에 대한 로그를 저장하는 최상단 객체의 클래스
+/// </summary>
+[Serializable]
+public class EntireLog
+{
+    public List<LogForOneItem> logs = new();
+}
+
+/// <summary>
+/// 저장된 하나의 아이템에 대한 로그 정보
+/// </summary>
+[Serializable]
+public class LogForOneItem
+{
+    public int index;
+    public List<LogData> data = new();
+}
+
+/// <summary>
+/// 저장된 최소 단위의 로그
+/// </summary>
+[Serializable]
+public class LogData
+{
+    public string log;
+    public LogData(string log)
+    {
+         this.log = log;
+    }
+}
+
+/// <summary>
 /// 데이터를 관리하는 매니저.
 /// </summary>
 public class DataManager
@@ -27,7 +59,7 @@ public class DataManager
     /// <summary>
     /// 저장 경로 
     /// </summary>
-    private string _path;
+    private string _defaultPath;
     
     // /// <summary>
     // /// 게임 내 정보를 담는 Dictionary. 
@@ -45,6 +77,11 @@ public class DataManager
     /// 아이템 정보를 캐싱하는 ushort 배열
     /// </summary>
     public ushort[] InventoryTable;
+
+    /// <summary>
+    /// 인벤토리 내 전체 아이템들의 로그를 저장하는 객체
+    /// </summary>
+    public EntireLog EntireLog;
     
     /// <summary>
     /// 아이템 id에 해당하는 아이템의 이름을 저장하는 딕셔너리
@@ -89,7 +126,7 @@ public class DataManager
     public void Init()
     {
         // 데이터 저장 기본 경로
-        _path = Application.persistentDataPath + "/";
+        _defaultPath = Application.persistentDataPath + "/";
         
         // 다음과 같은 형태로 사용 가능
         // StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
@@ -102,6 +139,9 @@ public class DataManager
         if(!LoadInventoryData())
             // 인벤토리를 테스트 데이터로 채우는 함수
             MakeItemTest();
+        
+        // EntireLog를 Json으로부터 불러오기 
+        EntireLog = LoadEntireLogFromJson(_defaultPath + "/LogsForItems.json");
     }
 
     /// <summary>
@@ -146,7 +186,9 @@ public class DataManager
     public void SaveInventoryData()
     {
         const string dataFileName = "save.bin";
-        FileStream fs = File.Open(_path + dataFileName, FileMode.Create);
+        const string entireLogFileName = "LogsForItems.json";
+        
+        FileStream fs = File.Open(_defaultPath + dataFileName, FileMode.Create);
 
         using (BinaryWriter wr = new BinaryWriter(fs))
         {
@@ -156,18 +198,20 @@ public class DataManager
             }
             DebugEx.Log("Inventory Save Success");
         }
+
+        SaveEntireLogIntoJson(_defaultPath + entireLogFileName, EntireLog);
     }
 
     /// <summary>
     /// 인벤토리 데이터를 바이너리 파일로 읽어오는 함수
     /// </summary>
-    /// <returns>데이터가 존재한다면 true, 그렇지 않다면 false를 반환.</returns>
+    /// <returns> 데이터가 존재한다면 읽어오고 나서 true를 반환, 그렇지 않다면 false를 반환.</returns>
     public bool LoadInventoryData()
     {
         const string dataFileName = "save.bin";
         try
         {
-            using (BinaryReader rdr = new BinaryReader(File.Open(_path + dataFileName, FileMode.Open)))
+            using (BinaryReader rdr = new BinaryReader(File.Open(_defaultPath + dataFileName, FileMode.Open)))
             {
                 InventoryTable = new ushort[NumberOfInventorySlots];
                 for (int i = 0; i < NumberOfInventorySlots; i++)
@@ -209,6 +253,7 @@ public class DataManager
         
         if(printConsole)
             DebugEx.Log("############# ItemDescription ##############");
+        
         for(int i = 0; i < NumberOfInventorySlots; i++)
         {
             // 1. 아이템 퀄리티 구하기 (상위 2bit)
@@ -233,13 +278,25 @@ public class DataManager
             }
             
             // 지금 읽어온 아이템이 Tool인지, Material인지 구분해야한다.
-            if (name == "NONE")
-                itemDatas.Add(new DummyItem());
-            else if (id >= BOUNDARY)
-                itemDatas.Add(new Ingredient(id, name, quality, durability * 4 + numOfReinforce));
-            else
-                itemDatas.Add(new Tool(id, name, quality, durability, numOfReinforce));
 
+            ItemData itemData = null;
+            if (name == "NONE")
+                itemData = new DummyItem();
+            else if (id >= BOUNDARY)
+                itemData = new Ingredient(id, name, quality, durability * 4 + numOfReinforce);
+            else
+                itemData = new Tool(id, name, quality, durability, numOfReinforce);
+            
+            // 4. 현재 아이템이 로그를 가지고 있다면, 로그를 추가해준다.
+            foreach (var logForOneItem in EntireLog.logs)
+            {
+                if (logForOneItem.index == i)
+                {
+                    itemData.SetLogFromLogDatas(logForOneItem.data);
+                }
+            }
+            
+            itemDatas.Add(itemData);
         }
         if(printConsole)
             DebugEx.Log("############# ItemDescription ##############");
@@ -255,6 +312,7 @@ public class DataManager
     public void TransDataListIntoArray(List<ItemData> inventory)
     {
         ushort[] _inventoryTable = new ushort[NumberOfInventorySlots];
+        EntireLog _entireLog = new EntireLog();
         
         for (int i = 0; i < inventory.Count; i++)
         {
@@ -269,7 +327,7 @@ public class DataManager
 
             // 아이템 ID (다음 8bit)
             data |= (ushort)(id << 6);
-
+            
             if (inventory[i] is Tool)
             {
                 Tool tool = (Tool)inventory[i];
@@ -285,9 +343,54 @@ public class DataManager
             }
             // 변환된 데이터 저장
             _inventoryTable[i] = data;
+            
+            // 로그 저장 (있는 경우에만)
+            if (inventory[i].Logs.Count > 0)
+            {
+                LogForOneItem logForOneItem = new LogForOneItem();
+                logForOneItem.index = i;
+                foreach (var logString in inventory[i].Logs)
+                {
+                    logForOneItem.data.Add(new LogData(logString));
+                }
+                _entireLog.logs.Add(logForOneItem);    
+            }
         }
-        
         InventoryTable = _inventoryTable;
+        EntireLog = _entireLog;
         DebugEx.Log("Exported from InventoryPopup to DataManager");
     }
+
+    #region About ItemLog
+
+    public EntireLog LoadEntireLogFromJson(string path)
+    {
+        try{
+            using (StreamReader r = new StreamReader(path))
+            {
+                string json = r.ReadToEnd();
+                return JsonUtility.FromJson<EntireLog>(json);
+            }
+        } catch(Exception e)
+        {
+            DebugEx.LogWarning("There are no saved EntireLog json file.");
+            DebugEx.Log($"Exception message : {e}");
+
+            // 테스트 데이터 생성용
+            string testData =
+                "{\n    \"logs\": [\n        {\n            \"index\": 1,\n            \"data\": [\n                {\n                    \"log\": \"첫번째 챕터 보스를 잡은 무기\"\n                },\n                {\n                    \"log\": \"첫번째로 만든 무기\"\n                }\n            ]\n        },\n        {\n            \"index\": 2,\n            \"data\": [\n                {\n                    \"log\": \"테스트 성공!\"\n                }\n            ]\n        }\n    ]\n}";
+            //return new EntireLog();
+            return JsonUtility.FromJson<EntireLog>(testData);
+        }
+    }
+    
+    public void SaveEntireLogIntoJson(string path, EntireLog entireLog)
+    {
+        string json = JsonUtility.ToJson(entireLog, true);
+        File.WriteAllText(path, json);
+        DebugEx.Log($"EntireLog saved into Json at : {path}");
+    }
+
+    #endregion
+    
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -46,7 +47,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     [SerializeField] public int Durability = 1;         // 아이템의 내구도를 저장하는 필드
     public float maxDurability = 15f;
     [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드
-    [SerializeField] public ItemType itemType;
+    [SerializeField] public ItemType itemType;          // 아이템의 타입을 저장하기 위한 필드
+
+    [Header("Logs")] [SerializeField] public List<string> Logs;
     
     // 드래그 이후 부모 Transform을 저장하기 위함
     [SerializeField] public Transform parentAfterDrag;
@@ -67,7 +70,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     /// <summary>
     /// 이 아이템이 도구인 경우는 갯수를 표시할 필요가 없다.
     /// </summary>
-    public void ToolInit(string name, int quality, int durability, int reinforceCount)
+    public void ToolInit(string name, int quality, int durability, int reinforceCount, List<string> logs)
     {
         // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
         Bind<TextMeshProUGUI>(typeof(Texts)); 
@@ -88,13 +91,16 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
         Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
 
+        // 로그 받아오기
+        Logs = logs;
+        
         itemType = ItemType.Tool;
     }
 
     /// <summary>
     /// 이 아이템이 재료인 경우에는, 내구도와 강화횟수를 표시할 필요가 없고, 갯수를 표시해야 한다.
     /// </summary>
-    public void IngredientInit(string name, int quality, int amount)
+    public void IngredientInit(string name, int quality, int amount, List<string> logs)
     {
         // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
         Bind<TextMeshProUGUI>(typeof(Texts)); 
@@ -114,6 +120,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).gameObject.SetActive(false);
         Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
 
+        // 로그 받아오기
+        Logs = logs;
+        
         itemType = ItemType.Ingredient;
     }
 

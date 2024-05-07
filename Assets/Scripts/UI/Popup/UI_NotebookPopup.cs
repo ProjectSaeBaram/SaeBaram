@@ -67,7 +67,6 @@ public class UI_NotebookPopup : UI_Popup
         // 북마크들을 각각 자신에 해당하는 레이어들과 연결
         ConnectBookmarksIntoLayers();
         
-        // 팝업이 열릴 때, CraftingLayer를 시각화. (기본값)
         WhenOpened();
         
         // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
@@ -82,6 +81,7 @@ public class UI_NotebookPopup : UI_Popup
 
     /// <summary>
     /// 팝업이 열릴 때, CraftingLayer를 시각화. (기본값)
+    /// 인벤토리 데이터도 함께 로드
     /// </summary>
     void WhenOpened()
     {
@@ -138,7 +138,7 @@ public class UI_NotebookPopup : UI_Popup
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
                     visualizedItems[i].Init();
-                    visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount);
+                    visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount, tool!.Logs);
                     visualizedItems[i].parentPanel = VisualizedLayer;
                     break;
                 }
@@ -146,7 +146,7 @@ public class UI_NotebookPopup : UI_Popup
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
                     visualizedItems[i].Init();
-                    visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount);
+                    visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount, ingredient!.Logs);
                     visualizedItems[i].parentPanel = VisualizedLayer;
                     break;
                 }
@@ -196,19 +196,24 @@ public class UI_NotebookPopup : UI_Popup
             }
             else
             {
+                ItemData itemData = null;
+                
                 switch (itemUI.itemType)
                 {
                     case UI_Inven_Item.ItemType.Tool:
-                        _itemDataList[i] = 
-                            new Tool(0, itemUI.Name, itemUI.Quality, itemUI.Durability, itemUI.ReinforceCount);
+                        itemData = new Tool(0, itemUI.Name, itemUI.Quality, itemUI.Durability, itemUI.ReinforceCount);
                         break;
                     case UI_Inven_Item.ItemType.Ingredient:
-                        _itemDataList[i] = new Ingredient(0, itemUI.Name, itemUI.Quality, itemUI.Amount);
-                        break;
-                    case UI_Inven_Item.ItemType.Dummy:
-                        _itemDataList[i] = new DummyItem();
+                        itemData = new Ingredient(0, itemUI.Name, itemUI.Quality, itemUI.Amount);
                         break;
                 }
+                
+                if (itemUI.Logs != null)
+                {
+                    itemData.SetLogFromLogString(itemUI.Logs);
+                }
+                
+                _itemDataList[i] = itemData;
             }
         }
     
