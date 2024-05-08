@@ -169,9 +169,10 @@ public class DataManager
         InventoryTable[2] = (ushort)160;              // 똥 활 (퀄리티 최하, 내구도 절반, 0강)
         InventoryTable[3] = (ushort)39169;            // 나무 재료 (중간 퀄리티, 2개)
         InventoryTable[4] = (ushort)39295;            // 돌 재료 (중간 퀄리티, 64개)
+        InventoryTable[5] = (ushort)39295;            // 돌 재료 (중간 퀄리티, 64개)
 
         // 나머지는 빈값으로 채우기
-        for (int i = 5; i < 10; i++)
+        for (int i = 6; i < NumberOfInventorySlots; i++)
             InventoryTable[i] = (ushort)0;
 
         DebugEx.Log("makeItemTest ============== ");

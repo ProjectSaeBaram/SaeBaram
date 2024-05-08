@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
 {
     public UI_Inven_Item Item;
+    public UI_NotebookPopup UINotebookPopup;
     
     public override void Init()
     {
@@ -42,11 +43,16 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
 
                 // eventData가 들고있는 InventoryItem을 받고
                 Item = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)?.CatchedItem;
-                Item.transform.SetParent(transform);
-                Item.Released();
+                Item?.transform.SetParent(transform);
+                Item?.Released();
                 // Inventory의 parentAfterDrag를 자신의 transform으로 저장. (복귀 위치가 변경됨.)
                 (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)!.CatchedItem = null;
             }
         }
+    }
+
+    public void SetNotebookPopup(UI_NotebookPopup uiNotebookPopup)
+    {
+        UINotebookPopup = uiNotebookPopup;
     }
 }

@@ -11,8 +11,10 @@ using UnityEngine.UI;
 /// UI_Base를 상속받아, 인벤토리 아이템의 개별 UI 요소를 초기화하고 관리합니다.
 /// 이런식으로 관리 가능한 UI 오소로는 아이콘이 있다.
 /// </summary>
-public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerUpHandler, IDropHandler
 {
+    private readonly int Max_Amount = 63;
+    
     enum Texts
     {
         ItemNameText,           // 아이템 이름 표시 텍스트
@@ -178,6 +180,59 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         transform.localPosition = Vector3.zero;
     }
 
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            UI_Inven_Item catchedItem = parentPanel.transform.parent.GetComponent<UI_NotebookPopup>().CatchedItem;
+            if (catchedItem != null && catchedItem?.itemType == ItemType.Ingredient && this.itemType == ItemType.Ingredient && catchedItem.Name == this.Name
+                && catchedItem?.Quality == this.Quality)
+            {
+                if (catchedItem.Amount + this.Amount > Max_Amount)
+                {
+                    catchedItem.Amount = catchedItem.Amount + this.Amount - Max_Amount;
+                    this.Amount = Max_Amount;
+                
+                    catchedItem.transform.position = Vector3.zero;
+                    RefreshUI();
+                    catchedItem.RefreshUI();
+                }
+                else
+                {
+                    this.Amount += catchedItem.Amount;
+                    DestroyImmediate(catchedItem.gameObject);
+                    catchedItem = null;
+                    RefreshUI();
+                }
+            }
+        }
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        var item = eventData.pointerDrag.GetComponent<UI_Inven_Item>();
+        if (item != null && item?.itemType == ItemType.Ingredient && this.itemType == ItemType.Ingredient && item?.Name == this.Name 
+            && item?.Quality == this.Quality)
+        {
+            if (item.Amount + this.Amount > Max_Amount)
+            {
+                item.Amount = item.Amount + this.Amount - Max_Amount;
+                this.Amount = Max_Amount;
+                
+                item.transform.position = Vector3.zero;
+                RefreshUI();
+                item.RefreshUI();
+            }
+            else
+            {
+                this.Amount += item.Amount;
+                DestroyImmediate(item.gameObject);
+                item = null;
+                RefreshUI();
+            }
+        }
+    }
+    
     #endregion
     
     #region Click
@@ -185,7 +240,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public void OnPointerClick(PointerEventData eventData)
     {
         // 우클릭인 경우에 동작
-        if (eventData.button == PointerEventData.InputButton.Right && !isCatched)
+        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != ItemType.Tool && parentPanel.transform.parent.GetComponent<UI_NotebookPopup>().CatchedItem == null)
         {
             UI_SeparateIngredient popup = Managers.UI.ShowPopupUI<UI_SeparateIngredient>();
             popup.InitItemReference(this);

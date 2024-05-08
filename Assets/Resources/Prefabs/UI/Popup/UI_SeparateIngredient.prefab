@@ -431,6 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f685c3ce1fd314baee5b5b9897ecbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _originItem: {fileID: 0}
 --- !u!1 &901811632749379251
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,7 +497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Deny
+  m_text: Cancel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -936,7 +937,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 4990674769656670845}
   m_OnClick:
     m_PersistentCalls:
@@ -1238,7 +1239,7 @@ GameObject:
   - component: {fileID: 4962551114304057338}
   - component: {fileID: 4964411076214129561}
   m_Layer: 5
-  m_Name: Deny
+  m_Name: Cancel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -127,7 +127,9 @@ public class UI_NotebookPopup : UI_Popup
         for (int i = 0; i < numberOfItemSlots; i++)
         {
             // 아이템 슬롯
-            itemSlots.Add(Managers.UI.MakeSubItem<UI_Inven_Slot>(content));
+            UI_Inven_Slot slot = Managers.UI.MakeSubItem<UI_Inven_Slot>(content);
+            slot.SetNotebookPopup(this);
+            itemSlots.Add(slot);
             
             // 아이템
             ItemData item = _itemDataList[i];
