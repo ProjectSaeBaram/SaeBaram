@@ -11,7 +11,7 @@ using UnityEngine.UI;
 /// UI_Base를 상속받아, 인벤토리 아이템의 개별 UI 요소를 초기화하고 관리합니다.
 /// 이런식으로 관리 가능한 UI 오소로는 아이콘이 있다.
 /// </summary>
-public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerUpHandler, IDropHandler
+public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerUpHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private readonly int Max_Amount = 63;
     
@@ -39,6 +39,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Ingredient,
         Dummy,
     }
+
+    private RectTransform _rectTransform;
     
     [Header("UI")] 
     [SerializeField] public GameObject parentPanel;
@@ -51,6 +53,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드
     [SerializeField] public ItemType itemType;          // 아이템의 타입을 저장하기 위한 필드
 
+    private UI_NotebookPopup uiNotebookPopup;
+    
     [Header("Logs")] [SerializeField] public List<string> Logs;
     
     // 드래그 이후 부모 Transform을 저장하기 위함
@@ -67,6 +71,10 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         OnValueChange -= RefreshUI;
         OnValueChange += RefreshUI;
+        
+        uiNotebookPopup = parentPanel.transform.parent.GetComponent<UI_NotebookPopup>();
+
+        _rectTransform = GetComponent<RectTransform>();
     }
 
     /// <summary>
@@ -177,7 +185,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // 중간에 parentAfterDrag가 변경되지 않았으면 원래 위치로 복귀. 중간에 바뀌었으면 다른 위치로 이동.
         transform.SetParent(parentAfterDrag);
         
-        transform.localPosition = Vector3.zero;
+        _rectTransform.anchoredPosition = Vector2.zero;
+        _rectTransform.localScale = Vector2.one;
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -259,8 +268,24 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         isCatched = false;
         Get<Image>((int)Images.ItemIcon).color = new Color(1,1,1,1);
-        transform.localPosition = new Vector3(0, 0, 0);
+        _rectTransform.anchoredPosition = Vector2.zero;
+        _rectTransform.localScale = Vector2.one;
         image.raycastTarget = true;
+    }
+    
+    #endregion
+    
+    #region Tooptip
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        uiNotebookPopup.ShowToolTip(this, eventData);
+        
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        uiNotebookPopup.HideTooltip();
     }
     
     #endregion

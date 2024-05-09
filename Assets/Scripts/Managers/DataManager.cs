@@ -88,11 +88,31 @@ public class DataManager
     /// </summary>
     Dictionary<int, string> itemCodeDict = new Dictionary<int, string>()
     {
-        {0, "NONE" },
-        {1, "Sword" },
-        {2,  "Bow" },
-        {100, "Wood" },
-        {101, "Stone" },
+        { 0, "NONE"},
+        { 1, "나무" },
+        { 2, "돌" },
+        { 3, "철" },
+        { 4, "나무 막대기" },
+        { 5, "돌 막대기" },
+        { 6, "철 막대기" },
+        { 7, "나무 판" },
+        { 8, "돌 판" },
+        { 9, "철 판" },
+        { 10, "회로" },
+        // BOUNDARY
+        { 128, "돌 곡괭이" },
+        { 129, "돌 도끼" },
+        { 130, "돌 망치" },
+        { 131, "돌 드라이버" },
+        { 132, "돌 단검" },
+        { 133, "활" },
+        { 134, "나무 몽둥이" },
+        { 135, "철 곡괭이" },
+        { 136, "철 도끼" },
+        { 137, "철 망치" },
+        { 138, "철 드라이버" },
+        { 139, "철 단검" },
+        { 140, "드릴" }
     };
     
     /// <summary>
@@ -100,18 +120,38 @@ public class DataManager
     /// </summary>
     Dictionary<string, int> reverseItemCodeDict = new Dictionary<string, int>()
     {
-        {"NONE", 0 },
-        {"Sword", 1 },
-        {"Bow", 2 },
-        {"Wood", 100},
-        {"Stone", 101 },
+        { "NONE", 0},
+        { "나무", 1 },
+        { "돌", 2 },
+        { "철", 3 },
+        { "나무 막대기", 4 },
+        { "돌 막대기", 5 },
+        { "철 막대기", 6 },
+        { "나무 판", 7 },
+        { "돌 판", 8 },
+        { "철 판", 9 },
+        { "회로", 10 },
+        // BOUNDARY
+        { "돌 곡괭이", 128 },
+        { "돌 도끼", 129 },
+        { "돌 망치", 130 },
+        { "돌 드라이버", 131 },
+        { "돌 단검", 132 },
+        { "활", 133 },
+        { "나무 몽둥이", 134 },
+        { "철 곡괭이", 135 },
+        { "철 도끼", 136 },
+        { "철 망치", 137 },
+        { "철 드라이버", 138 },
+        { "철 단검", 139 },
+        { "드릴", 140 }
     };
 
     /// <summary>
     /// Item을 Ingredient와 Tool로 구분하는 기준 Boundary.
-    /// Item의 id가 BOUNDARY보다 크거나 같으면 Ingredient, 보다 작으면 Tool.
+    /// Item의 id가 BOUNDARY보다 크거나 같으면 Tool, 보다 작으면 Ingredient.
     /// </summary>
-    public const int BOUNDARY = 100;
+    public const int BOUNDARY = 128;
     
     /// <summary>
     ///  게임이 꺼질 때 Invoke되는 UnityAction
@@ -165,11 +205,11 @@ public class DataManager
     {
         // 테스트용 더미 데이터 
         InventoryTable[0] = (ushort)0;
-        InventoryTable[1] = (ushort)49279;            // 종결옵 Sword (퀄리티 최상, 풀내구도, 풀강)
-        InventoryTable[2] = (ushort)160;              // 똥 활 (퀄리티 최하, 내구도 절반, 0강)
-        InventoryTable[3] = (ushort)39169;            // 나무 재료 (중간 퀄리티, 2개)
-        InventoryTable[4] = (ushort)39295;            // 돌 재료 (중간 퀄리티, 64개)
-        InventoryTable[5] = (ushort)39295;            // 돌 재료 (중간 퀄리티, 64개)
+        InventoryTable[1] = (ushort)57663;            // 종결옵 돌 단검 (퀄리티 최상, 풀내구도, 풀강)
+        InventoryTable[2] = (ushort)8544;             // 똥 활 (퀄리티 최하, 내구도 절반, 0강)
+        InventoryTable[3] = (ushort)16417;            // 나무 재료 (중간 퀄리티, 1개)
+        InventoryTable[4] = (ushort)16575;            // 돌 재료 (중간 퀄리티, 63개)
+        InventoryTable[5] = (ushort)16575;            // 돌 재료 (중간 퀄리티, 63개)
 
         // 나머지는 빈값으로 채우기
         for (int i = 6; i < NumberOfInventorySlots; i++)
@@ -284,9 +324,9 @@ public class DataManager
             if (name == "NONE")
                 itemData = new DummyItem();
             else if (id >= BOUNDARY)
-                itemData = new Ingredient(id, name, quality, durability * 4 + numOfReinforce);
-            else
                 itemData = new Tool(id, name, quality, durability, numOfReinforce);
+            else
+                itemData = new Ingredient(id, name, quality, durability * 4 + numOfReinforce);
             
             // 4. 현재 아이템이 로그를 가지고 있다면, 로그를 추가해준다.
             foreach (var logForOneItem in EntireLog.logs)

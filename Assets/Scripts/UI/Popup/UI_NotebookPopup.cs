@@ -17,6 +17,7 @@ public class UI_NotebookPopup : UI_Popup
         DiaryLayer,
         MapLayer,
         LastPage,
+        ItemToolTip,
     }
 
     enum Images
@@ -48,6 +49,8 @@ public class UI_NotebookPopup : UI_Popup
     [SerializeField] private GameObject VisualizedLayer;
 
     [SerializeField] public UI_Inven_Item CatchedItem = null;
+
+    [SerializeField] private UI_ItemTooltip uiItemTooltip;
     
     void Start()
     {
@@ -61,6 +64,9 @@ public class UI_NotebookPopup : UI_Popup
         Bind<Button>(typeof(Buttons));
 
         Get<Image>((int)Images.BackPanel).gameObject.AddUIEvent(ClosePopupUI);
+
+        uiItemTooltip = Get<GameObject>((int)GameObjects.ItemToolTip).GetComponent<UI_ItemTooltip>();
+        Get<GameObject>((int)GameObjects.ItemToolTip).SetActive(false);
         
         // 여기 안에서 동작하는 함수들의 순서는 서로 매우 긴밀하게 연결되어있음. 조작 시 주의할 것.
         
@@ -139,17 +145,17 @@ public class UI_NotebookPopup : UI_Popup
                 case Tool tool:
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
+                    visualizedItems[i].parentPanel = VisualizedLayer;
                     visualizedItems[i].Init();
                     visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount, tool!.Logs);
-                    visualizedItems[i].parentPanel = VisualizedLayer;
                     break;
                 }
                 case Ingredient ingredient:
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
+                    visualizedItems[i].parentPanel = VisualizedLayer;
                     visualizedItems[i].Init();
                     visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount, ingredient!.Logs);
-                    visualizedItems[i].parentPanel = VisualizedLayer;
                     break;
                 }
                 case DummyItem:
@@ -220,6 +226,18 @@ public class UI_NotebookPopup : UI_Popup
         }
     
         Managers.Data.TransDataListIntoArray(_itemDataList);
+    }
+
+    public void ShowToolTip(UI_Inven_Item invenItem, PointerEventData eventData)
+    {
+        uiItemTooltip.gameObject.SetActive(true);
+        uiItemTooltip.ShowTooltip(invenItem, eventData);
+    }
+
+    public void HideTooltip()
+    {
+        uiItemTooltip.gameObject.SetActive(false);
+        uiItemTooltip.UnsetPointerEventData();
     }
     
     #endregion
