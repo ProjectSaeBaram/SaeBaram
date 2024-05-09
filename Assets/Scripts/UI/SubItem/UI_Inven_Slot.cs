@@ -9,13 +9,14 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
     public UI_Inven_Item Item;
     public UI_NotebookPopup UINotebookPopup;
     
+    
     public override void Init()
     {
         
     }
     
     // 마우스에서 손을 때면
-    public void OnDrop(PointerEventData eventData) {
+    public virtual void OnDrop(PointerEventData eventData) {
         // InventorySlot의 자식이 없을 때
         if(transform.childCount == 0) {
             try
