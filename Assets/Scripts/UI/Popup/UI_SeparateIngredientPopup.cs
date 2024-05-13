@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_SeparateIngredient : UI_Popup
+public class UI_SeparateIngredientPopup : UI_Popup
 {
     enum Images
     {

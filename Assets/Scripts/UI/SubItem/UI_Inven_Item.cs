@@ -203,15 +203,18 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     this.Amount = Max_Amount;
                 
                     catchedItem.transform.position = Vector3.zero;
-                    RefreshUI();
-                    catchedItem.RefreshUI();
+                    //RefreshUI();
+                    OnValueChange.Invoke();
+                    // catchedItem.RefreshUI();
+                    catchedItem.OnValueChange.Invoke();
                 }
                 else
                 {
                     this.Amount += catchedItem.Amount;
                     DestroyImmediate(catchedItem.gameObject);
                     catchedItem = null;
-                    RefreshUI();
+                    // RefreshUI();
+                    OnValueChange.Invoke();
                 }
             }
         }
@@ -229,8 +232,10 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                 this.Amount = Max_Amount;
                 
                 item.transform.position = Vector3.zero;
-                RefreshUI();
-                item.RefreshUI();
+                //RefreshUI();
+                OnValueChange.Invoke();
+                // item.RefreshUI();
+                item.OnValueChange.Invoke();
             }
             else
             {
@@ -251,7 +256,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // 우클릭인 경우에 동작
         if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != ItemType.Tool && parentPanel.transform.parent.GetComponent<UI_NotebookPopup>().CatchedItem == null)
         {
-            UI_SeparateIngredient popup = Managers.UI.ShowPopupUI<UI_SeparateIngredient>();
+            UI_SeparateIngredientPopup popup = Managers.UI.ShowPopupUI<UI_SeparateIngredientPopup>();
             popup.InitItemReference(this);
         }
     }
