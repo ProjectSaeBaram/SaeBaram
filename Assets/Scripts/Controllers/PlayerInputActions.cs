@@ -80,6 +80,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenNotebook"",
+                    ""type"": ""Button"",
+                    ""id"": ""489fe6cb-2db1-4995-9a2b-dc61cf9ee426"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -280,6 +289,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RunningSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""800b59c7-e2a8-43bd-941b-8f67358e8cf8"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenNotebook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -322,6 +342,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerAction_WeaponChange = m_PlayerAction.FindAction("WeaponChange", throwIfNotFound: true);
         m_PlayerAction_Escape = m_PlayerAction.FindAction("Escape", throwIfNotFound: true);
         m_PlayerAction_RunningSwitch = m_PlayerAction.FindAction("RunningSwitch", throwIfNotFound: true);
+        m_PlayerAction_OpenNotebook = m_PlayerAction.FindAction("OpenNotebook", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -389,6 +410,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerAction_WeaponChange;
     private readonly InputAction m_PlayerAction_Escape;
     private readonly InputAction m_PlayerAction_RunningSwitch;
+    private readonly InputAction m_PlayerAction_OpenNotebook;
     public struct PlayerActionActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -399,6 +421,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @WeaponChange => m_Wrapper.m_PlayerAction_WeaponChange;
         public InputAction @Escape => m_Wrapper.m_PlayerAction_Escape;
         public InputAction @RunningSwitch => m_Wrapper.m_PlayerAction_RunningSwitch;
+        public InputAction @OpenNotebook => m_Wrapper.m_PlayerAction_OpenNotebook;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -426,6 +449,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RunningSwitch.started += instance.OnRunningSwitch;
             @RunningSwitch.performed += instance.OnRunningSwitch;
             @RunningSwitch.canceled += instance.OnRunningSwitch;
+            @OpenNotebook.started += instance.OnOpenNotebook;
+            @OpenNotebook.performed += instance.OnOpenNotebook;
+            @OpenNotebook.canceled += instance.OnOpenNotebook;
         }
 
         private void UnregisterCallbacks(IPlayerActionActions instance)
@@ -448,6 +474,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RunningSwitch.started -= instance.OnRunningSwitch;
             @RunningSwitch.performed -= instance.OnRunningSwitch;
             @RunningSwitch.canceled -= instance.OnRunningSwitch;
+            @OpenNotebook.started -= instance.OnOpenNotebook;
+            @OpenNotebook.performed -= instance.OnOpenNotebook;
+            @OpenNotebook.canceled -= instance.OnOpenNotebook;
         }
 
         public void RemoveCallbacks(IPlayerActionActions instance)
@@ -491,5 +520,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnWeaponChange(InputAction.CallbackContext context);
         void OnEscape(InputAction.CallbackContext context);
         void OnRunningSwitch(InputAction.CallbackContext context);
+        void OnOpenNotebook(InputAction.CallbackContext context);
     }
 }

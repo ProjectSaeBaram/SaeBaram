@@ -449,6 +449,24 @@ public class PlayerController : MonoBehaviour
     
     #endregion
     
+    #region Notebook
+
+    void OpenOrCloseNotebook(InputAction.CallbackContext context)
+    {
+        // 노트북 팝업이 열려있으면 닫고, 
+        // 열려있지 않으면 열기
+        UI_NotebookPopup notebookPopup = FindObjectOfType<UI_NotebookPopup>();
+        if(notebookPopup == null)
+            Managers.UI.ShowPopupUI<UI_NotebookPopup>();
+        else
+        {
+            notebookPopup.ClosePopupUI(null);
+            Time.timeScale = 1;
+        }
+    }
+    
+    #endregion
+    
     #region About PlayerInput
     private void OnEnable()
     {
@@ -467,6 +485,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
+        _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.Enable();
     }
     
@@ -486,6 +505,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
         _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
+        _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
         _playerInputActions.Disable();
     }
     

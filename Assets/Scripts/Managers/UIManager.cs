@@ -45,7 +45,7 @@ public class UIManager
         }
         else
         {
-            canvas.sortingOrder = 0;
+            canvas.sortingOrder = -1;
         }
     }
 
@@ -147,6 +147,14 @@ public class UIManager
         Managers.Resource.Destroy(popup.gameObject);
 
         _order--;
+    }
+    
+    /// <summary>
+    /// 스택의 최상단 팝업을 닫는 함수.
+    /// </summary>
+    public UI_Popup GetTopPopupUI()
+    {
+        return _popupStack.Peek();
     }
 
     /// <summary>
