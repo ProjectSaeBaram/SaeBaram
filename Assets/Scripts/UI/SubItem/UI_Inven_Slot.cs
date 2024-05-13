@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
@@ -9,6 +10,7 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
     public UI_Inven_Item Item;
     public UI_NotebookPopup UINotebookPopup;
     
+    protected UnityAction<int, UI_Inven_Item> OnRegister;
     
     public override void Init()
     {
@@ -27,6 +29,7 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
                 // Inventory의 parentAfterDrag를 자신의 transform으로 저장. (복귀 위치가 변경됨.)
                 Item.parentAfterDrag.GetComponent<UI_Inven_Slot>().Item = null;
                 Item.parentAfterDrag = transform;
+                
             }
             catch (Exception)
             {

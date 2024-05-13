@@ -86,7 +86,7 @@ public class DataManager
     /// <summary>
     /// 아이템 id에 해당하는 아이템의 이름을 저장하는 딕셔너리
     /// </summary>
-    Dictionary<int, string> itemCodeDict = new Dictionary<int, string>()
+    public Dictionary<int, string> itemCodeDict = new Dictionary<int, string>()
     {
         { 0, "NONE"},
         { 1, "나무" },
@@ -118,7 +118,7 @@ public class DataManager
     /// <summary>
     /// 아이템 이름에 해당하는 아이템의 코드를 저장하는 딕셔너리
     /// </summary>
-    Dictionary<string, int> reverseItemCodeDict = new Dictionary<string, int>()
+    public Dictionary<string, int> reverseItemCodeDict = new Dictionary<string, int>()
     {
         { "NONE", 0},
         { "나무", 1 },
@@ -207,9 +207,9 @@ public class DataManager
         InventoryTable[0] = (ushort)0;
         InventoryTable[1] = (ushort)57663;            // 종결옵 돌 단검 (퀄리티 최상, 풀내구도, 풀강)
         InventoryTable[2] = (ushort)8544;             // 똥 활 (퀄리티 최하, 내구도 절반, 0강)
-        InventoryTable[3] = (ushort)16417;            // 나무 재료 (중간 퀄리티, 1개)
+        InventoryTable[3] = (ushort)16449;            // 나무 재료 (중간 퀄리티, 1개)
         InventoryTable[4] = (ushort)16575;            // 돌 재료 (중간 퀄리티, 63개)
-        InventoryTable[5] = (ushort)16575;            // 돌 재료 (중간 퀄리티, 63개)
+        InventoryTable[5] = (ushort)16636;            // 철 재료 (중간 퀄리티, 63개)
 
         // 나머지는 빈값으로 채우기
         for (int i = 6; i < NumberOfInventorySlots; i++)

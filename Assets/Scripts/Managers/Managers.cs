@@ -20,6 +20,7 @@ public class Managers : MonoBehaviour
     private SceneManagerEx _scene = new SceneManagerEx();
     private SoundManager _sound = new SoundManager();
     private UIManager _ui = new UIManager();
+    private CraftingManager _crafting = new CraftingManager();
     
     public static DataManager Data => Instance._data;
     public static GameManagerEx Game => Instance._game;
@@ -29,6 +30,7 @@ public class Managers : MonoBehaviour
     public static SceneManagerEx Scene => Instance._scene;
     public static SoundManager Sound => Instance._sound;
     public static UIManager UI => Instance._ui;
+    public static CraftingManager Crafting => Instance._crafting;
     
     void Start()
     {
@@ -63,6 +65,7 @@ public class Managers : MonoBehaviour
         s_instance._data.Init();
         s_instance._pool.Init();
         s_instance._sound.Init();
+        s_instance._crafting.Init();
     }
 
     /// <summary>
