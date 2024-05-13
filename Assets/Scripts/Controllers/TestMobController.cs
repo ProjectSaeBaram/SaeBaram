@@ -12,8 +12,8 @@ public class TestMobController : MobController
     [SerializeField] private Vector2 patrolPointA;
     [SerializeField] private Vector2 patrolPointB;
     
-    private Rigidbody2D rigidbody2D;
-    private Animator animator;
+    private Rigidbody2D _rigidbody2D;
+    private Animator _animator;
 
     public override float GetDetectionRange() => detectionRange;
     public override float GetAttackRange() => attackRange;
@@ -24,8 +24,8 @@ public class TestMobController : MobController
     
     private void Awake()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
 
         // 초기 상태를 순찰 상태로 설정
         ChangeState(new PatrolState(patrolPointA, patrolPointB));
@@ -49,13 +49,13 @@ public class TestMobController : MobController
         switch (state)
         {
             case PatrolState:
-                animator.CrossFade("Patrol", 0.1f);
+                _animator.CrossFade("Patrol", 0.1f);
                 break;
             case ChaseState:
-                animator.CrossFade("Chase", 0.1f);
+                _animator.CrossFade("Chase", 0.1f);
                 break;
             case AttackState:
-                animator.CrossFade("Attack", 0.1f);
+                _animator.CrossFade("Attack", 0.1f);
                 break;
         }
     }
@@ -64,7 +64,7 @@ public class TestMobController : MobController
     {
         Vector2 currentPosition = transform.position;
         Vector2 direction = (target - currentPosition).normalized;
-        rigidbody2D.velocity = direction * speed;
+        _rigidbody2D.velocity = direction * speed;
     
         // 이미지 좌우 반전 처리
         if (direction.x != 0) // 방향이 정지 상태가 아닐 때만 처리
