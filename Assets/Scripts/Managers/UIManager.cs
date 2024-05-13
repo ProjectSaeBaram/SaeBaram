@@ -14,7 +14,7 @@ public class UIManager
     private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 
     // 현재 Scene UI를 저장하는 변수.
-    UI_Scene _sceneUI = null;
+    private UI_Scene sceneUI = null;
 
     // UI의 루트 게임 오브젝트를 반환하거나 생성.
     public GameObject Root
@@ -62,10 +62,7 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{name}");
-    
-        if(parent != null)
-            go.transform.SetParent(parent);
+        GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{name}", parent);
         
         return Util.GetOrAddComponent<T>(go);
     }
@@ -106,12 +103,12 @@ public class UIManager
             name = typeof(T).Name;
 
         GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
-        T sceneUI = Util.GetOrAddComponent<T>(go);
-        _sceneUI = sceneUI;
+        T _sceneUI = Util.GetOrAddComponent<T>(go);
+        sceneUI = _sceneUI;
     
         go.transform.SetParent(Root.transform);
     
-        return sceneUI;
+        return _sceneUI;
     }
 
     /// <summary>
@@ -133,10 +130,9 @@ public class UIManager
     
         return popup;
     }
-
-
+    
     /// <summary>
-    /// 스택의 최상단 팝업을 닫는 함수.
+    /// Popup 스택의 최상단 팝업을 닫는 함수.
     /// </summary>
     public void ClosePopupUI()
     {
@@ -150,7 +146,7 @@ public class UIManager
     }
     
     /// <summary>
-    /// 스택의 최상단 팝업을 닫는 함수.
+    /// Popup 스택의 최상단 팝업을 닫는 함수.
     /// </summary>
     public UI_Popup GetTopPopupUI()
     {
@@ -180,13 +176,22 @@ public class UIManager
         while (_popupStack.Count > 0)
             ClosePopupUI();
     }
-
+    
+    /// <summary>
+    /// 현재 Scene에서 활성화된 SceneUI에 대한 Getter
+    /// </summary>
+    /// <returns></returns>
+    public UI_Scene GetCurrentSceneUI()
+    {
+        return sceneUI;
+    }
+    
     /// <summary>
     /// 모든 UI를 비우는 함수.
     /// </summary>
     public void Clear()
     {
         CloseAllPopupUI();
-        _sceneUI = null;
+        sceneUI = null;
     }
 }
