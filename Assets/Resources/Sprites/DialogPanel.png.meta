@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 920c8581635b67b46b44b44a2791939c
+guid: fa71fa95ab0de124dbf2308087e79adf
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,51 +136,76 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: QuickSlot_Front
+      name: DialoguePanel_Background
       rect:
         serializedVersion: 2
         x: 0
-        y: 63
-        width: 1011
-        height: 120
+        y: 81
+        width: 1548
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 6, y: 6, z: 6, w: 6}
       outline:
-      - - {x: -505.5, y: 60}
-        - {x: -505.5, y: -60}
-        - {x: 505.5, y: -60}
-        - {x: 505.5, y: 60}
+      - - {x: -774, y: 120}
+        - {x: -774, y: -120}
+        - {x: 774, y: -120}
+        - {x: 774, y: 120}
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 458eaea57709bed48a9d7c53d93808c5
-      internalID: -143260754
+      spriteID: 1e95f6b2a316f6a46a03797ab592052b
+      internalID: -2045231182
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: QuickSlot_Back
+      name: DialoguePanel_NamePanel
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 888
-        height: 60
+        width: 333
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 6, z: 6, w: 6}
+      outline:
+      - - {x: -166.5, y: 39}
+        - {x: -166.5, y: -39}
+        - {x: 166.5, y: -39}
+        - {x: 166.5, y: 39}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dd9cf295fea5084da8e0df00e537872
+      internalID: 521940230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DialoguePanel_DownButton
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 60
+        width: 33
+        height: 18
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -444, y: 30}
-        - {x: -444, y: -30}
-        - {x: 444, y: -30}
-        - {x: 444, y: 30}
+      - - {x: -16.5, y: 9}
+        - {x: -16.5, y: -9}
+        - {x: 16.5, y: -9}
+        - {x: 16.5, y: 9}
       physicsShape: []
-      tessellationDetail: 1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9394f04c95332db4a8d01e606a571e8a
-      internalID: 886829160
+      spriteID: c726d4192fdc2ad4fb151da502f46127
+      internalID: -739325467
       vertices: []
       indices: 
       edges: []
@@ -196,8 +221,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      QuickSlot_Back: 886829160
-      QuickSlot_Front: -143260754
+      DialoguePanel_Background: -2045231182
+      DialoguePanel_DownButton: -739325467
+      DialoguePanel_NamePanel: 521940230
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

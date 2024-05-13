@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 920c8581635b67b46b44b44a2791939c
+guid: 6a5c1c02c43cba4489844aa54358066d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,51 +136,126 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: QuickSlot_Front
+      name: SeparateIngredient_Background
       rect:
         serializedVersion: 2
         x: 0
-        y: 63
-        width: 1011
-        height: 120
+        y: 42
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 10, y: 10, z: 10, w: 10}
       outline:
-      - - {x: -505.5, y: 60}
-        - {x: -505.5, y: -60}
-        - {x: 505.5, y: -60}
-        - {x: 505.5, y: 60}
+      - - {x: -24, y: 24}
+        - {x: -24, y: -24}
+        - {x: 24, y: -24}
+        - {x: 24, y: 24}
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 458eaea57709bed48a9d7c53d93808c5
-      internalID: -143260754
+      spriteID: 74a3f9f091858d545a06a00481e57fd6
+      internalID: 1278966059
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: QuickSlot_Back
+      name: SeparateIngredient_SliderArea
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 888
-        height: 60
+        x: 51
+        y: 87
+        width: 42
+        height: 3
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -444, y: 30}
-        - {x: -444, y: -30}
-        - {x: 444, y: -30}
-        - {x: 444, y: 30}
+      - - {x: -21, y: 1.5}
+        - {x: -21, y: -1.5}
+        - {x: 21, y: -1.5}
+        - {x: 21, y: 1.5}
       physicsShape: []
-      tessellationDetail: 1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9394f04c95332db4a8d01e606a571e8a
-      internalID: 886829160
+      spriteID: 73f239a4e61dd1a4fbdba0d92665944c
+      internalID: 277952804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SeparateIngredient_SliderHandle
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 69
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -4.5, y: 7.5}
+        - {x: -4.5, y: -7.5}
+        - {x: 4.5, y: -7.5}
+        - {x: 4.5, y: 7.5}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d4a06785c4a1ba4dbb4cbb00fc35dc0
+      internalID: 370668785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SeparateIngredient_Button_Non-clicked
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 21
+        width: 48
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 6, z: 6, w: 6}
+      outline:
+      - - {x: -24, y: 9}
+        - {x: -24, y: -9}
+        - {x: 24, y: -9}
+        - {x: 24, y: 9}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a83f31dfb10dda249a1a62e351f07cb4
+      internalID: -2089196951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SeparateIngredient_Button_Clicked
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 48
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 6, z: 6, w: 6}
+      outline:
+      - - {x: -24, y: 9}
+        - {x: -24, y: -9}
+        - {x: 24, y: -9}
+        - {x: 24, y: 9}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28c2beb0592374c4aacc92c5d530c833
+      internalID: -212059128
       vertices: []
       indices: 
       edges: []
@@ -196,8 +271,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      QuickSlot_Back: 886829160
-      QuickSlot_Front: -143260754
+      SeparateIngredient_Background: 1278966059
+      SeparateIngredient_Button_Clicked: -212059128
+      SeparateIngredient_Button_Non-clicked: -2089196951
+      SeparateIngredient_SliderArea: 277952804
+      SeparateIngredient_SliderHandle: 370668785
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
