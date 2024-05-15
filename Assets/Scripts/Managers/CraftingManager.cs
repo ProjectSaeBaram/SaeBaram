@@ -85,8 +85,6 @@ public class CraftingManager
     /// </summary>
     private void CachingUIElements()
     {
-        DebugEx.LogWarning($"{nameof(CachingUIElements)} called!");
-        
         // CraftingSlot들 찾아서 캐싱
         foreach (var slot in Object.FindObjectsOfType<UI_Inven_CraftingSlot>())
             _craftingSlots[slot.CraftingSlotIndex] = slot;

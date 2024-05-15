@@ -40,8 +40,8 @@ public class UI_Inven_CraftingSlot : UI_Inven_Slot, IPointerExitHandler, IPointe
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            // InventorySlot의 자식이 없을 때
-            if(transform.childCount == 0) {
+            // 분리된 아이템을 커서에 든 채, Slot의 자식이 없을 때
+            if(UINotebookPopup.CatchedItem is not null && transform.childCount == 0) {
 
                 // eventData가 들고있는 InventoryItem을 받고
                 Item = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)?.CatchedItem;

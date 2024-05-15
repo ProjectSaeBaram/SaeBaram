@@ -241,10 +241,17 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
             }
             else
             {
-                this.Amount += item.Amount;
-                DestroyImmediate(item.gameObject);
-                item = null;
-                RefreshUI();
+                // (+ 만약 이 아이템이 CraftingSlot에서 꺼내어졌다면, 이 아이템이 없는 버전으로 검색해야한다)
+                if (item.parentAfterDrag.GetComponent<UI_Inven_Slot>() is UI_Inven_CraftingSlot)
+                {
+                    this.Amount += item.Amount;
+                    DestroyImmediate(item.gameObject);
+                    item = null;
+                    OnValueChange.Invoke();
+                    
+                    // 검색
+                    Managers.Crafting.OnItemForCraftingChanged.Invoke();
+                }
             }
         }
     }
