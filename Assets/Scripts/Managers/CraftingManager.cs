@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CraftingManager
@@ -29,7 +28,15 @@ public class CraftingManager
     /// </summary>
     private UI_Inven_CraftingSlot[] _craftingSlots = new UI_Inven_CraftingSlot[SizeOfCraftingSlot];
     
+    /// <summary>
+    /// 아이템 조합 버튼
+    /// </summary>
     private Button CraftingButton;
+    
+    /// <summary>
+    /// 조합 결과물 아이템 슬롯
+    /// </summary>
+    private UI_Inven_ProductionSlot ProductionSlot;
 
     private int currentKey = 0;
     
@@ -93,9 +100,13 @@ public class CraftingManager
         CraftingButton = Util.FindChild<Button>(Managers.UI.GetTopPopupUI().gameObject, "Crafting_Button", true);
         CraftingButton.onClick.RemoveAllListeners();
         CraftingButton.onClick.AddListener(VisualizeProductionItem);
+
+        // 아이템 결과물 슬롯
+        ProductionSlot = Util.FindChild<UI_Inven_ProductionSlot>(Managers.UI.GetTopPopupUI().gameObject,
+            "Crafting_ProductionSlot", true);
     }
     
-    public void CheckCreatable()
+    private void CheckCreatable()
     {
         IsCreatable();
     }
@@ -124,34 +135,111 @@ public class CraftingManager
         
         return CraftingTable[currentKey] != null;
     }
+    
+    /// <summary>
+    /// 조합 결과 아이템의 퀄리티를 산출하는 함수
+    /// </summary>
+    /// <returns></returns>
+    private int GetQualityOfProductionItem()
+    {
+        int qualityPoint = 0;
+    
+        // qualityPoint는 재료로 들어간 아이템들의 (퀄리티 * 갯수)의 합
+        foreach (var craftingSlot in _craftingSlots)
+            if (craftingSlot.Item is not null) 
+                qualityPoint += craftingSlot.Item.Quality * craftingSlot.Item.Amount;
+            
+    
+        
+        const int ensureHighQuality = 22;            // 무조건 상 품질을 보장하는 경계
+        const int betweenHighAndMedium = 12;         // 상 품질과 중 품질을 구분짓는 경계
+        const int betweenMediumAndLow = 6;           // 중 품질과 하 품질을 구분짓는 경계
 
+        int result;
+        switch (qualityPoint)
+        {
+            case >= ensureHighQuality:          // 무조건 상 품질을 보장하는 경계
+                result = 3;  // 무조건 상 품질
+                break;
+            case >= betweenHighAndMedium:       // 상 품질과 중 품질을 구분짓는 경계
+            {
+                float randValue = Random.value;
+                result = randValue switch
+                {
+                    < 0.70f => 3,           // 70% 확률로 상 품질
+                    < 0.90f => 2,           // 20% 확률로 중 품질
+                    _ => 1                  // 10% 확률로 하 품질 
+                };
+                break;
+            }
+            case >= betweenMediumAndLow:        // 중 품질과 하 품질을 구분짓는 경계
+            {
+                float randValue = Random.value;
+                result = randValue switch
+                {
+                    < 0.70f => 2,           // 70% 확률로 중 품질
+                    < 0.90f => 3,           // 20% 확률로 상 품질
+                    _ => 1                  // 10% 확률로 하 품질
+                };
+                break;
+            }
+            default:
+            {
+                float randValue = Random.value;
+                result = randValue switch
+                {
+                    < 0.70f => 1,           // 70% 확률로 하 품질
+                    < 0.90f => 2,           // 20% 확률로 중 품질
+                    _ => 3                  // 10% 확률로 상 품질
+                };
+                break;
+            }
+        }
+
+        DebugEx.LogWarning($"total qualityPoint of Items : {qualityPoint} | result : {result}");
+        return result;
+    }
+    
     /// <summary>
     /// 조합 결과 아이템을 실제로 만드는 함수
     /// </summary>
     public void VisualizeProductionItem()
     {
-        if (!IsCreatable()) return;
-        
-        UI_Inven_Slot productionSlot = Util.FindChild<UI_Inven_Slot>(Managers.UI.GetTopPopupUI().gameObject, "Crafting_ProductionSlot", true);
+        if (!IsCreatable() || ProductionSlot.Item is not null) return;
         
         int productionItemId = int.Parse(CraftingTable[currentKey].ToString());
 
-        UI_Inven_Item productionItem = Managers.UI.MakeSubItem<UI_Inven_Item>(productionSlot.transform);
+        UI_Inven_Item productionItem = Managers.UI.MakeSubItem<UI_Inven_Item>(ProductionSlot.transform);
+        ProductionSlot.Item = productionItem;
         string name = itemCodeDict[productionItemId];
+        int quality = GetQualityOfProductionItem();
+        
         UI_Inven_Item.ItemType type = (productionItemId >= Managers.Data.BOUNDARY)
             ? UI_Inven_Item.ItemType.Tool
             : UI_Inven_Item.ItemType.Ingredient;
-
+        
         switch (type)
         {
             case UI_Inven_Item.ItemType.Ingredient:
                 productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)!.VisualizedLayer;
-                productionItem.IngredientInit(name, 0, 1, null);
+                productionItem.IngredientInit(name, quality, 1, null);
                 break;
             case UI_Inven_Item.ItemType.Tool:
                 productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)!.VisualizedLayer;
-                productionItem.ToolInit(name, 0, 15, 0, null);
+                productionItem.ToolInit(name, quality, 15, 0, null);
                 break;
         }
+
+        foreach (var craftingSlot in _craftingSlots)
+        {
+            if (craftingSlot.Item is not null)
+            {
+                Object.DestroyImmediate(craftingSlot.Item.gameObject);
+                craftingSlot.Item = null;
+            }
+                
+        }
     }
+
+    
 }

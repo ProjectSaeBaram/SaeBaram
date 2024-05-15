@@ -48,7 +48,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     [SerializeField] public Image image;
     [SerializeField] public string Name;                // 아이템의 이름을 저장하는 필드
     [SerializeField] public int Quality;                // 아이템의 퀄리티를 저장하는 필드 (0~3)
-    [SerializeField] public int Amount = 0;             // 아이템의 갯수를 저장하는 필드 (0~63)
+                                                        // {0 : 비정상 값}, {1 : 하}, {2 : 중}, {3 : 상}
+    [SerializeField] public int Amount = 1;             // 아이템의 갯수를 저장하는 필드 (0~63)
     [SerializeField] public int Durability = 1;         // 아이템의 내구도를 저장하는 필드 (0~15)
     public float maxDurability = 15f;
     [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드 (0~3)
@@ -251,14 +252,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     
                     // 검색
                     Managers.Crafting.OnItemForCraftingChanged.Invoke();
-                }
-                else
-                {
-                    this.Amount += item.Amount;
-                    DestroyImmediate(item.gameObject);
-                    item = null;
-                    OnValueChange.Invoke();
-                }
+                } else {}
             }
         }
     }
