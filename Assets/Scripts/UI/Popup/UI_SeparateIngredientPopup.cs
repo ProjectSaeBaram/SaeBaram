@@ -81,12 +81,14 @@ public class UI_SeparateIngredientPopup : UI_Popup
         // 재료는 로그 x
         item.IngredientInit(_originItem.Name, _originItem.Quality, int.Parse(_inputField.text), null);
         
+        // 원본 아이템은 갯수를 깎고
         _originItem.Amount -= int.Parse(_inputField.text);
         _originItem.OnValueChange.Invoke();
         
         ClosePopupUI(null);
         item.parentPanel = _originItem.parentPanel;
-        item.transform.SetParent(Managers.UI.GetTopPopupUI().transform);
+        item.UINotebookPopup = _originItem.parentPanel.transform.parent.GetComponent<UI_NotebookPopup>();
+        item.transform.SetParent(item.parentPanel.transform);
         item.Catched();
     }
 

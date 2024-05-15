@@ -2,7 +2,7 @@ using UnityEngine.EventSystems;
 
 public class UI_Inven_ProductionSlot : UI_Inven_Slot
 {
-    // ¸¶¿ì½º¿¡¼­ ¼ÕÀ» ¶§¸é
+    // ë§ˆìš°ìŠ¤ì—ì„œ ì†ì„ ë•Œë©´
     public virtual void OnDrop(PointerEventData eventData) {
 
     }

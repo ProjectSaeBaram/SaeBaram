@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -21,14 +22,22 @@ public class CraftingManager
     /// </summary>
     private Dictionary<string, int> reverseItemCodeDict;
 
+    private const int SizeOfCraftingSlot = 3;
+    
     /// <summary>
-    /// 아이템 조합 슬롯에 넣은 아이템
+    /// 아이템 조합 슬롯
     /// </summary>
-    private UI_Inven_Item[] _items = new UI_Inven_Item[3];
-
+    private UI_Inven_CraftingSlot[] _craftingSlots = new UI_Inven_CraftingSlot[SizeOfCraftingSlot];
+    
     private Button CraftingButton;
 
     private int currentKey = 0;
+    
+    /// <summary>
+    /// 조합식을 검색할 때 Invoke 될 UnityAction
+    /// 조합식은 슬롯에 아이템을 넣을 때와, 뺄 때 모두 검색한다.
+    /// </summary>
+    public UnityAction OnItemForCraftingChanged;
     
     public void Init()
     {
@@ -38,8 +47,10 @@ public class CraftingManager
 
         InitCraftingTable();
         
-        for (int i = 0; i < 3; i++)
-            _items[i] = null;
+        OnItemForCraftingChanged -= CachingUIElements;
+        OnItemForCraftingChanged -= CheckCreatable;
+        OnItemForCraftingChanged += CachingUIElements;
+        OnItemForCraftingChanged += CheckCreatable;
     }
 
     private void InitCraftingTable()
@@ -70,18 +81,25 @@ public class CraftingManager
     }
 
     /// <summary>
-    /// 재료 아이템을 조합 칸에 등록하는 함수
+    /// 조합에 필요한 UI 요소를 찾아서 캐싱하는 함수
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="item"></param>
-    public void RegisterIngredientItem(int index, UI_Inven_Item item)
+    private void CachingUIElements()
     {
-        _items[index] = item;
+        DebugEx.LogWarning($"{nameof(CachingUIElements)} called!");
         
+        // CraftingSlot들 찾아서 캐싱
+        foreach (var slot in Object.FindObjectsOfType<UI_Inven_CraftingSlot>())
+            _craftingSlots[slot.CraftingSlotIndex] = slot;
+        
+        // CraftingButton 찾아서 캐싱 (+버튼에 이벤트 바인드)
         CraftingButton = Util.FindChild<Button>(Managers.UI.GetTopPopupUI().gameObject, "Crafting_Button", true);
-
-        CraftingButton.interactable = IsCreatable();
-        CraftingButton.gameObject.AddUIEvent(VisualizeProductionItem);
+        CraftingButton.onClick.RemoveAllListeners();
+        CraftingButton.onClick.AddListener(VisualizeProductionItem);
+    }
+    
+    public void CheckCreatable()
+    {
+        IsCreatable();
     }
     
     /// <summary>
@@ -92,19 +110,19 @@ public class CraftingManager
     /// <returns></returns>
     public bool IsCreatable()
     {
-        int[] Elements = new int[3];
-        
-        for (int i = 0; i < 3; i++)
+        int[] subKeys = new int[SizeOfCraftingSlot];
+
+        for (var i = 0; i < SizeOfCraftingSlot; i++)
         {
-            if (_items[i] == null)
-                Elements[i] = 0;
+            if (_craftingSlots[i].Item != null)
+                subKeys[i] = reverseItemCodeDict[_craftingSlots[i].Item.Name];
             else
-                Elements[i] = reverseItemCodeDict[_items[i].Name];
+                subKeys[i] = 0;
         }
         
-        currentKey = (int)(Elements[0] * Mathf.Pow(10, 6) + Elements[1] * Mathf.Pow(10, 3) + Elements[2]);
+        currentKey = (int)(subKeys[0] * Mathf.Pow(10, 6) + subKeys[1] * Mathf.Pow(10, 3) + subKeys[2]);
         
-        DebugEx.LogWarning($" current Items on Table : {Elements[0]},{Elements[1]},{Elements[2]} | result : {CraftingTable[currentKey]}");
+        DebugEx.LogWarning($" current Items on Table : {subKeys[0]},{subKeys[1]},{subKeys[2]} | result : {CraftingTable[currentKey]}");
         
         return CraftingTable[currentKey] != null;
     }
@@ -112,7 +130,7 @@ public class CraftingManager
     /// <summary>
     /// 조합 결과 아이템을 실제로 만드는 함수
     /// </summary>
-    public void VisualizeProductionItem(PointerEventData eventData)
+    public void VisualizeProductionItem()
     {
         if (!IsCreatable()) return;
         

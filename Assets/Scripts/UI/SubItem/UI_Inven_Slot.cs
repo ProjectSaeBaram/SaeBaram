@@ -24,8 +24,16 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
                 // eventData가 들고있는 InventoryItem을 받고
                 Item = eventData.pointerDrag.GetComponent<UI_Inven_Item>();
 
-                // Inventory의 parentAfterDrag를 자신의 transform으로 저장. (복귀 위치가 변경됨.)
+                
+                // parentAfterDrag를 자신의 transform으로 저장. (복귀 위치가 변경됨.)
                 Item.parentAfterDrag.GetComponent<UI_Inven_Slot>().Item = null;
+                
+                // (+ 만약 이 아이템이 CraftingSlot에서 꺼내어졌다면, 이 아이템이 없는 버전으로 검색해야한다)
+                if (Item.parentAfterDrag.GetComponent<UI_Inven_Slot>() is UI_Inven_CraftingSlot)
+                {
+                    Managers.Crafting.OnItemForCraftingChanged.Invoke();
+                }
+                
                 Item.parentAfterDrag = transform;
                 
             }
@@ -40,15 +48,17 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            // InventorySlot의 자식이 없을 때
+            // Slot의 자식이 없을 때
             if(transform.childCount == 0) {
 
                 // eventData가 들고있는 InventoryItem을 받고
-                Item = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)?.CatchedItem;
+                Item = UINotebookPopup.CatchedItem;
                 Item?.transform.SetParent(transform);
                 Item?.Released();
-                // Inventory의 parentAfterDrag를 자신의 transform으로 저장. (복귀 위치가 변경됨.)
-                (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)!.CatchedItem = null;
+                
+                // parentAfterDrag를 자신의 transform으로 저장. (복귀 위치가 변경됨.)
+                UINotebookPopup.CatchedItem = null;
+                Item.parentAfterDrag = transform;
             }
         }
     }
