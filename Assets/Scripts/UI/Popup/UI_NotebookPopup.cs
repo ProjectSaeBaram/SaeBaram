@@ -46,7 +46,7 @@ public class UI_NotebookPopup : UI_Popup
     private Dictionary<Buttons, GameObjects> BookmarksAndLayers = new();
     
     // 현재 시각화된 Layer
-    [SerializeField] private GameObject VisualizedLayer;
+    [SerializeField] public GameObject VisualizedLayer;
 
     [SerializeField] public UI_Inven_Item CatchedItem = null;
 
@@ -146,7 +146,6 @@ public class UI_NotebookPopup : UI_Popup
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
                     visualizedItems[i].parentPanel = VisualizedLayer;
-                    visualizedItems[i].Init();
                     visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount, tool!.Logs);
                     break;
                 }
@@ -154,7 +153,6 @@ public class UI_NotebookPopup : UI_Popup
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
                     visualizedItems[i].parentPanel = VisualizedLayer;
-                    visualizedItems[i].Init();
                     visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount, ingredient!.Logs);
                     break;
                 }

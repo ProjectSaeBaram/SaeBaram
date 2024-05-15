@@ -11,7 +11,8 @@ using UnityEngine.UI;
 /// UI_Base를 상속받아, 인벤토리 아이템의 개별 UI 요소를 초기화하고 관리합니다.
 /// 이런식으로 관리 가능한 UI 오소로는 아이콘이 있다.
 /// </summary>
-public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerUpHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
+public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragHandler, 
+    IPointerClickHandler, IPointerUpHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private readonly int Max_Amount = 63;
     
@@ -44,13 +45,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     
     [Header("UI")] 
     [SerializeField] public GameObject parentPanel;
-    [SerializeField] private Image image;
+    [SerializeField] public Image image;
     [SerializeField] public string Name;                // 아이템의 이름을 저장하는 필드
-    [SerializeField] public int Quality;                // 아이템의 퀄리티를 저장하는 필드
-    [SerializeField] public int Amount = 0;             // 아이템의 갯수를 저장하는 필드
-    [SerializeField] public int Durability = 1;         // 아이템의 내구도를 저장하는 필드
+    [SerializeField] public int Quality;                // 아이템의 퀄리티를 저장하는 필드 (0~3)
+    [SerializeField] public int Amount = 0;             // 아이템의 갯수를 저장하는 필드 (0~63)
+    [SerializeField] public int Durability = 1;         // 아이템의 내구도를 저장하는 필드 (0~15)
     public float maxDurability = 15f;
-    [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드
+    [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드 (0~3)
     [SerializeField] public ItemType itemType;          // 아이템의 타입을 저장하기 위한 필드
 
     private UI_NotebookPopup uiNotebookPopup;
@@ -75,6 +76,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         uiNotebookPopup = parentPanel.transform.parent.GetComponent<UI_NotebookPopup>();
 
         _rectTransform = GetComponent<RectTransform>();
+        _rectTransform.anchoredPosition = Vector2.zero;
     }
 
     /// <summary>
@@ -280,7 +282,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     
     #endregion
     
-    #region Tooptip
+    #region Tooltip
 
     public void OnPointerEnter(PointerEventData eventData)
     {

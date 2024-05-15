@@ -99,6 +99,8 @@ public class DataManager
         { 8, "돌 판" },
         { 9, "철 판" },
         { 10, "회로" },
+        { 11, "동물 가죽" },
+        { 12, "섬유" },
         // BOUNDARY
         { 128, "돌 곡괭이" },
         { 129, "돌 도끼" },
@@ -131,6 +133,8 @@ public class DataManager
         { "돌 판", 8 },
         { "철 판", 9 },
         { "회로", 10 },
+        { "동물 가죽", 11},
+        { "섬유", 12},
         // BOUNDARY
         { "돌 곡괭이", 128 },
         { "돌 도끼", 129 },
@@ -151,7 +155,7 @@ public class DataManager
     /// Item을 Ingredient와 Tool로 구분하는 기준 Boundary.
     /// Item의 id가 BOUNDARY보다 크거나 같으면 Tool, 보다 작으면 Ingredient.
     /// </summary>
-    public const int BOUNDARY = 128;
+    public readonly int BOUNDARY = 128;
     
     /// <summary>
     ///  게임이 꺼질 때 Invoke되는 UnityAction
@@ -207,7 +211,7 @@ public class DataManager
         InventoryTable[0] = (ushort)0;
         InventoryTable[1] = (ushort)57663;            // 종결옵 돌 단검 (퀄리티 최상, 풀내구도, 풀강)
         InventoryTable[2] = (ushort)8544;             // 똥 활 (퀄리티 최하, 내구도 절반, 0강)
-        InventoryTable[3] = (ushort)16449;            // 나무 재료 (중간 퀄리티, 1개)
+        InventoryTable[3] = (ushort)16511;            // 나무 재료 (중간 퀄리티, 63개)
         InventoryTable[4] = (ushort)16575;            // 돌 재료 (중간 퀄리티, 63개)
         InventoryTable[5] = (ushort)16636;            // 철 재료 (중간 퀄리티, 63개)
 

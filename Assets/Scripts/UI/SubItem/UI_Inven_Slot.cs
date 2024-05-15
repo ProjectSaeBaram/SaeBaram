@@ -10,8 +10,6 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
     public UI_Inven_Item Item;
     public UI_NotebookPopup UINotebookPopup;
     
-    protected UnityAction<int, UI_Inven_Item> OnRegister;
-    
     public override void Init()
     {
         
@@ -38,7 +36,7 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public virtual void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
