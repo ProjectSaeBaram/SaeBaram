@@ -252,6 +252,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     // 검색
                     Managers.Crafting.OnItemForCraftingChanged.Invoke();
                 }
+                else
+                {
+                    this.Amount += item.Amount;
+                    DestroyImmediate(item.gameObject);
+                    item = null;
+                    OnValueChange.Invoke();
+                }
             }
         }
     }

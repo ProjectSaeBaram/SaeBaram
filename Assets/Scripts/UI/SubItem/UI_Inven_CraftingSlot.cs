@@ -71,6 +71,7 @@ public class UI_Inven_CraftingSlot : UI_Inven_Slot, IPointerExitHandler, IPointe
     {
         try
         {
+            
         }
         catch (Exception)
         {
