@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ee65c7a01356a4580dcc2a0e339fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDatabase: {fileID: 11400000, guid: d0b26067c9f2f8b4287a8887cceda435, type: 2}
+  itemDatabase: {fileID: 11400000, guid: 1eea3455fcd905a48b45d26f80a9f098, type: 2}
   parentPanel: {fileID: 0}
   image: {fileID: 0}
   Name: 

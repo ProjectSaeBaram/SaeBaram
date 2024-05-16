@@ -6,10 +6,8 @@ using UnityEngine.UI;
 
 public class CraftingManager
 {
-    /// <summary>
-    /// 조합법을 들고 있는 해시테이블 캐싱
-    /// </summary>
-    private Hashtable CraftingTable = new Hashtable();
+    // 조합식을 저장한 스크립터블 오브젝트 참조
+    public CraftingRecipeDatabase craftingRecipeDatabase; 
     
     /// <summary>
     /// 아이템 id에 해당하는 아이템의 이름을 저장하는 딕셔너리
@@ -37,8 +35,6 @@ public class CraftingManager
     /// 조합 결과물 아이템 슬롯
     /// </summary>
     private UI_Inven_ProductionSlot ProductionSlot;
-
-    private int currentKey = 0;
     
     /// <summary>
     /// 조합식을 검색할 때 Invoke 될 UnityAction
@@ -48,45 +44,17 @@ public class CraftingManager
     
     public void Init()
     {
-        CraftingTable = new Hashtable();
+        craftingRecipeDatabase = Managers.Resource.Load<CraftingRecipeDatabase>("Contents/CraftingRecipeDatabase");
+        
         itemCodeDict = Managers.Data.itemCodeDict;
         reverseItemCodeDict = Managers.Data.reverseItemCodeDict;
-
-        InitCraftingTable();
         
         OnItemForCraftingChanged -= CachingUIElements;
         OnItemForCraftingChanged -= CheckCreatable;
         OnItemForCraftingChanged += CachingUIElements;
         OnItemForCraftingChanged += CheckCreatable;
     }
-
-    private void InitCraftingTable()
-    {
-        // 기본 조합식
-        CraftingTable.Add(002004002, 128);
-        CraftingTable.Add(004002000, 129);
-        CraftingTable.Add(002004000, 130);
-        CraftingTable.Add(002002004, 131);
-        CraftingTable.Add(004002002, 132);
-        CraftingTable.Add(004004012, 133);
-        CraftingTable.Add(004001001, 134);
-        CraftingTable.Add(003004003, 135);
-        CraftingTable.Add(004003000, 136);
-        CraftingTable.Add(003004000, 137);
-        CraftingTable.Add(003003004, 138);
-        CraftingTable.Add(004003003, 139);
-        CraftingTable.Add(011010135, 140);
-        CraftingTable.Add(001001000, 007);
-        CraftingTable.Add(001001001, 012);
-        CraftingTable.Add(001000001, 004);
-
-        CraftingTable.Add(002002000, 008);
-        CraftingTable.Add(002000002, 005);
-        
-        CraftingTable.Add(003003000, 009);
-        CraftingTable.Add(003000003, 006);
-    }
-
+    
     /// <summary>
     /// 조합에 필요한 UI 요소를 찾아서 캐싱하는 함수
     /// </summary>
@@ -128,12 +96,11 @@ public class CraftingManager
             else
                 subKeys[i] = 0;
         }
-        
-        currentKey = (int)(subKeys[0] * Mathf.Pow(10, 6) + subKeys[1] * Mathf.Pow(10, 3) + subKeys[2]);
-        
-        DebugEx.LogWarning($" current Items on Table : {subKeys[0]},{subKeys[1]},{subKeys[2]} | result : {CraftingTable[currentKey]}");
-        
-        return CraftingTable[currentKey] != null;
+
+        int? outputItemId = craftingRecipeDatabase.GetOutputItemId(subKeys);
+        DebugEx.LogWarning($" current Items on Table : {subKeys[0]},{subKeys[1]},{subKeys[2]} | result : {outputItemId}");
+
+        return outputItemId != null;
     }
     
     /// <summary>
@@ -148,8 +115,6 @@ public class CraftingManager
         foreach (var craftingSlot in _craftingSlots)
             if (craftingSlot.Item is not null) 
                 qualityPoint += craftingSlot.Item.Quality * craftingSlot.Item.Amount;
-            
-    
         
         const int ensureHighQuality = 22;            // 무조건 상 품질을 보장하는 경계
         const int betweenHighAndMedium = 12;         // 상 품질과 중 품질을 구분짓는 경계
@@ -205,41 +170,68 @@ public class CraftingManager
     /// </summary>
     public void VisualizeProductionItem()
     {
-        if (!IsCreatable() || ProductionSlot.Item is not null) return;
-        
-        int productionItemId = int.Parse(CraftingTable[currentKey].ToString());
+        if (!IsCreatable() || ProductionSlot.Item != null) return;
+    
+        int[] subKeys = new int[SizeOfCraftingSlot];
+        for (var i = 0; i < SizeOfCraftingSlot; i++)
+        {
+            if (_craftingSlots[i].Item != null)
+                subKeys[i] = reverseItemCodeDict[_craftingSlots[i].Item.Name];
+            else
+                subKeys[i] = 0;
+        }
+        int? outputItemId = craftingRecipeDatabase.GetOutputItemId(subKeys);
+        if (outputItemId == null) return;
+
+        int productionItemId = outputItemId.Value;
 
         UI_Inven_Item productionItem = Managers.UI.MakeSubItem<UI_Inven_Item>(ProductionSlot.transform);
         ProductionSlot.Item = productionItem;
         string name = itemCodeDict[productionItemId];
         int quality = GetQualityOfProductionItem();
-        
+
         UI_Inven_Item.ItemType type = (productionItemId >= Managers.Data.BOUNDARY)
             ? UI_Inven_Item.ItemType.Tool
             : UI_Inven_Item.ItemType.Ingredient;
-        
+
         switch (type)
         {
             case UI_Inven_Item.ItemType.Ingredient:
-                productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)!.VisualizedLayer;
+                productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)?.VisualizedLayer;
                 productionItem.IngredientInit(name, quality, 1, null);
                 break;
             case UI_Inven_Item.ItemType.Tool:
-                productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)!.VisualizedLayer;
+                productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)?.VisualizedLayer;
                 productionItem.ToolInit(name, quality, 15, 0, null);
                 break;
         }
 
         foreach (var craftingSlot in _craftingSlots)
         {
-            if (craftingSlot.Item is not null)
+            if (craftingSlot.Item != null)
             {
                 Object.DestroyImmediate(craftingSlot.Item.gameObject);
                 craftingSlot.Item = null;
             }
-                
         }
     }
-
     
+    /// <summary>
+    /// 조합식을 추가하는 메서드
+    /// </summary>
+    /// <param name="inputItemIds">재료로 사용되는 아이템의 id를 담은 배열 (size:3)</param>
+    /// <param name="outputItemId">조합 결과로 나올 아이템</param>
+    public void AddCraftingRecipe(int[] inputItemIds, int outputItemId)
+    {
+        craftingRecipeDatabase.AddRecipe(inputItemIds, outputItemId);
+    }
+
+    /// <summary>
+    /// 조합식을 제거하는 메서드
+    /// </summary>
+    /// <param name="inputItemIds">재료로 사용되는 아이템의 id를 담은 배열 (size:3)</param>
+    public void RemoveCraftingRecipe(int[] inputItemIds)
+    {
+        craftingRecipeDatabase.RemoveRecipe(inputItemIds);
+    }
 }

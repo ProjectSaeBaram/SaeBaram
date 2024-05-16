@@ -60,13 +60,11 @@ public class DataManager
     /// 저장 경로 
     /// </summary>
     private string _defaultPath;
-    
-    // /// <summary>
-    // /// 게임 내 정보를 담는 Dictionary. 
-    // /// 처음 게임이 시작될 때, Init() 함수를 통해 필요한 정보를 여기에 캐싱하고,
-    // /// 이후에 필요할 때는 여기를 참조해 정보를 활용한다.
-    // /// </summary>
-    //public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
+
+    /// <summary>
+    /// 아이템 코드 데이터베이스 스크립터블 오브젝트
+    /// </summary>
+    public ItemCodeDatabase itemCodeDatabase;
 
     /// <summary>
     /// 인벤토리 칸의 갯수. 현재는 테스트용으로 30칸만 존재한다.
@@ -82,86 +80,28 @@ public class DataManager
     /// 인벤토리 내 전체 아이템들의 로그를 저장하는 객체
     /// </summary>
     public EntireLog EntireLog;
-    
+
     /// <summary>
     /// 아이템 id에 해당하는 아이템의 이름을 저장하는 딕셔너리
     /// </summary>
-    public Dictionary<int, string> itemCodeDict = new Dictionary<int, string>()
-    {
-        { 0, "NONE"},
-        { 1, "나무" },
-        { 2, "돌" },
-        { 3, "철" },
-        { 4, "나무 막대기" },
-        { 5, "돌 막대기" },
-        { 6, "철 막대기" },
-        { 7, "나무 판" },
-        { 8, "돌 판" },
-        { 9, "철 판" },
-        { 10, "회로" },
-        { 11, "동물 가죽" },
-        { 12, "섬유" },
-        // BOUNDARY
-        { 128, "돌 곡괭이" },
-        { 129, "돌 도끼" },
-        { 130, "돌 망치" },
-        { 131, "돌 드라이버" },
-        { 132, "돌 단검" },
-        { 133, "활" },
-        { 134, "나무 몽둥이" },
-        { 135, "철 곡괭이" },
-        { 136, "철 도끼" },
-        { 137, "철 망치" },
-        { 138, "철 드라이버" },
-        { 139, "철 단검" },
-        { 140, "드릴" }
-    };
-    
+    public Dictionary<int, string> itemCodeDict;
+
     /// <summary>
     /// 아이템 이름에 해당하는 아이템의 코드를 저장하는 딕셔너리
     /// </summary>
-    public Dictionary<string, int> reverseItemCodeDict = new Dictionary<string, int>()
-    {
-        { "NONE", 0},
-        { "나무", 1 },
-        { "돌", 2 },
-        { "철", 3 },
-        { "나무 막대기", 4 },
-        { "돌 막대기", 5 },
-        { "철 막대기", 6 },
-        { "나무 판", 7 },
-        { "돌 판", 8 },
-        { "철 판", 9 },
-        { "회로", 10 },
-        { "동물 가죽", 11},
-        { "섬유", 12},
-        // BOUNDARY
-        { "돌 곡괭이", 128 },
-        { "돌 도끼", 129 },
-        { "돌 망치", 130 },
-        { "돌 드라이버", 131 },
-        { "돌 단검", 132 },
-        { "활", 133 },
-        { "나무 몽둥이", 134 },
-        { "철 곡괭이", 135 },
-        { "철 도끼", 136 },
-        { "철 망치", 137 },
-        { "철 드라이버", 138 },
-        { "철 단검", 139 },
-        { "드릴", 140 }
-    };
+    public Dictionary<string, int> reverseItemCodeDict;
 
     /// <summary>
     /// Item을 Ingredient와 Tool로 구분하는 기준 Boundary.
     /// Item의 id가 BOUNDARY보다 크거나 같으면 Tool, 보다 작으면 Ingredient.
     /// </summary>
     public readonly int BOUNDARY = 128;
-    
+
     /// <summary>
     ///  게임이 꺼질 때 Invoke되는 UnityAction
     /// </summary>
     public UnityAction OnClose = null;
-    
+
     /// <summary>
     /// 게임이 시작할 때 데이터를 로드하는 초기화 메서드. 
     /// LoadJson 메서드를 사용해 지정된 경로의 Json 파일로부터 데이터를 로드하고,
@@ -171,19 +111,21 @@ public class DataManager
     {
         // 데이터 저장 기본 경로
         _defaultPath = Application.persistentDataPath + "/";
-        
-        // 다음과 같은 형태로 사용 가능
-        // StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
-        
+
+        // 아이템 코드 딕셔너리 초기화
+        itemCodeDatabase = Managers.Resource.Load<ItemCodeDatabase>("Contents/ItemCodeDatabase");
+        itemCodeDict = itemCodeDatabase.GetItemCodeDict();
+        reverseItemCodeDict = itemCodeDatabase.GetReverseItemCodeDict();
+
         // 인벤토리 데이터 초기화
         InventoryTable = new ushort[NumberOfInventorySlots];
-        for(int i = 0; i < NumberOfInventorySlots; i++)
+        for (int i = 0; i < NumberOfInventorySlots; i++)
             InventoryTable[i] = (ushort)0;
 
-        if(!LoadInventoryData())
+        if (!LoadInventoryData())
             // 인벤토리를 테스트 데이터로 채우는 함수
             MakeItemTest();
-        
+
         // EntireLog를 Json으로부터 불러오기 
         EntireLog = LoadEntireLogFromJson(_defaultPath + "/LogsForItems.json");
     }
@@ -201,7 +143,7 @@ public class DataManager
         TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
         return JsonUtility.FromJson<TLoader>(textAsset.text);
     }
-    
+
     /// <summary>
     /// 인벤토리를 테스트 데이터로 채우는 함수
     /// </summary>
@@ -232,7 +174,7 @@ public class DataManager
     {
         const string dataFileName = "save.bin";
         const string entireLogFileName = "LogsForItems.json";
-        
+
         FileStream fs = File.Open(_defaultPath + dataFileName, FileMode.Create);
 
         using (BinaryWriter wr = new BinaryWriter(fs))
@@ -272,7 +214,7 @@ public class DataManager
                 }
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             DebugEx.LogWarning("There are no any save files.");
             DebugEx.Log($"Exception message : {e}");
@@ -285,7 +227,7 @@ public class DataManager
             DebugEx.Log(InventoryTable[i]);
         }
         DebugEx.Log("LoadInventoryData ============== ");
-    
+
         return true;
     }
 
@@ -295,33 +237,33 @@ public class DataManager
     public List<ItemData> ItemInfos(bool printConsole = false)
     {
         List<ItemData> itemDatas = new List<ItemData>();
-        
-        if(printConsole)
+
+        if (printConsole)
             DebugEx.Log("############# ItemDescription ##############");
-        
-        for(int i = 0; i < NumberOfInventorySlots; i++)
+
+        for (int i = 0; i < NumberOfInventorySlots; i++)
         {
             // 1. 아이템 퀄리티 구하기 (상위 2bit)
             int quality = (InventoryTable[i] >> 14);
-            
+
             // 2. 아이템 종류 구하기 (퀄리티 이후 8bit)
             int id = ((int)InventoryTable[i] >> 6) & 255;
             string name = itemCodeDict[id];
-            
+
             // 3. 아이템 내구도, 강화도 (갯수) 구하기
             // (도구인 경우 4bit가 내구도, 2bit가 강화도)
             // (재료인경우 6bit가 갯수)
             int durability = (InventoryTable[i] & 63) >> 2;
             int numOfReinforce = InventoryTable[i] & 3;
-            
+
             // amount = durability * 4 + numOfReinforce              // 뒤 6비트로 갯수를 파악 (숫자를 1~64로 받기위해 + 1)
-            
+
             if (printConsole)
             {
                 string data = $"{name} {durability * 4 + numOfReinforce} 개";
                 DebugEx.Log(data);
             }
-            
+
             // 지금 읽어온 아이템이 Tool인지, Material인지 구분해야한다.
 
             ItemData itemData = null;
@@ -331,7 +273,7 @@ public class DataManager
                 itemData = new Tool(id, name, quality, durability, numOfReinforce);
             else
                 itemData = new Ingredient(id, name, quality, durability * 4 + numOfReinforce);
-            
+
             // 4. 현재 아이템이 로그를 가지고 있다면, 로그를 추가해준다.
             foreach (var logForOneItem in EntireLog.logs)
             {
@@ -340,10 +282,10 @@ public class DataManager
                     itemData.SetLogFromLogDatas(logForOneItem.data);
                 }
             }
-            
+
             itemDatas.Add(itemData);
         }
-        if(printConsole)
+        if (printConsole)
             DebugEx.Log("############# ItemDescription ##############");
 
         return itemDatas;
@@ -358,21 +300,21 @@ public class DataManager
     {
         ushort[] _inventoryTable = new ushort[NumberOfInventorySlots];
         EntireLog _entireLog = new EntireLog();
-        
+
         for (int i = 0; i < inventory.Count; i++)
         {
             ushort data = 0;
 
             ushort quality = (ushort)inventory[i].Quality;
             // item 이름으로 코드 찾기
-            ushort id = (ushort) reverseItemCodeDict[inventory[i].GetName()];
+            ushort id = (ushort)reverseItemCodeDict[inventory[i].GetName()];
 
             // 아이템 품질 (상위 2bit)
             data |= (ushort)(quality << 14);
 
             // 아이템 ID (다음 8bit)
             data |= (ushort)(id << 6);
-            
+
             if (inventory[i] is Tool)
             {
                 Tool tool = (Tool)inventory[i];
@@ -388,7 +330,7 @@ public class DataManager
             }
             // 변환된 데이터 저장
             _inventoryTable[i] = data;
-            
+
             // 로그 저장 (있는 경우에만)
             if (inventory[i].Logs.Count > 0)
             {
@@ -398,7 +340,7 @@ public class DataManager
                 {
                     logForOneItem.data.Add(new LogData(logString));
                 }
-                _entireLog.logs.Add(logForOneItem);    
+                _entireLog.logs.Add(logForOneItem);
             }
         }
         InventoryTable = _inventoryTable;
@@ -410,13 +352,15 @@ public class DataManager
 
     public EntireLog LoadEntireLogFromJson(string path)
     {
-        try{
+        try
+        {
             using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();
                 return JsonUtility.FromJson<EntireLog>(json);
             }
-        } catch(Exception e)
+        }
+        catch (Exception e)
         {
             DebugEx.LogWarning("There are no saved EntireLog json file.");
             DebugEx.Log($"Exception message : {e}");
@@ -428,7 +372,7 @@ public class DataManager
             return JsonUtility.FromJson<EntireLog>(testData);
         }
     }
-    
+
     public void SaveEntireLogIntoJson(string path, EntireLog entireLog)
     {
         string json = JsonUtility.ToJson(entireLog, true);
@@ -437,5 +381,5 @@ public class DataManager
     }
 
     #endregion
-    
+
 }
