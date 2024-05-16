@@ -16,6 +16,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 {
     private readonly int Max_Amount = 63;
     
+    public ItemDatabase itemDatabase;       // 참조할 아이템 데이터베이스
+    
     enum Texts
     {
         ItemNameText,           // 아이템 이름 표시 텍스트
@@ -97,9 +99,15 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
         // 이미지 설정
         image = Get<Image>((int)Images.ItemIcon);
+        if (itemDatabase != null && image != null)
+        {
+            int itemId = Managers.Data.reverseItemCodeDict[Name];
+            Sprite itemSprite = itemDatabase.GetItemImageById(itemId);
+            if (itemSprite != null) image.sprite = itemSprite;
+        }
         
         // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
-        Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
+        // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
         Get<TextMeshProUGUI>((int)Texts.ItemAmountText).gameObject.SetActive(false);
         Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
         Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
@@ -126,9 +134,15 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
         // 이미지 설정
         image = Get<Image>((int)Images.ItemIcon);
+        if (itemDatabase != null && image != null)
+        {
+            int itemId = Managers.Data.reverseItemCodeDict[Name];
+            Sprite itemSprite = itemDatabase.GetItemImageById(itemId);
+            if (itemSprite != null) image.sprite = itemSprite;
+        }
         
         // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
-        Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
+        // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
         Get<Slider>((int)Sliders.ItemDurabilitySlider).gameObject.SetActive(false);
         Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).gameObject.SetActive(false);
         Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
@@ -149,7 +163,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     private void RefreshUI()
     {
         // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
-        Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
+        // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
         Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
         Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
         Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
@@ -213,11 +227,24 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                 }
                 else
                 {
-                    this.Amount += catchedItem.Amount;
-                    DestroyImmediate(catchedItem.gameObject);
-                    catchedItem = null;
-                    // RefreshUI();
-                    OnValueChange.Invoke();
+                    // (+ 만약 이 아이템이 CraftingSlot에서 꺼내어졌다면, 이 아이템이 없는 버전으로 검색해야한다)
+                    if (catchedItem.parentAfterDrag.GetComponent<UI_Inven_Slot>() is UI_Inven_CraftingSlot)
+                    {
+                        this.Amount += catchedItem.Amount;
+                        DestroyImmediate(catchedItem.gameObject);
+                        catchedItem = null;
+                        OnValueChange.Invoke();
+                    
+                        // 검색
+                        Managers.Crafting.OnItemForCraftingChanged.Invoke();
+                    }
+                    else
+                    {
+                        this.Amount += catchedItem.Amount;
+                        DestroyImmediate(catchedItem.gameObject);
+                        catchedItem = null;
+                        OnValueChange.Invoke();
+                    }
                 }
             }
         }
@@ -252,7 +279,14 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     
                     // 검색
                     Managers.Crafting.OnItemForCraftingChanged.Invoke();
-                } else {}
+                }
+                else
+                {
+                    this.Amount += item.Amount;
+                    DestroyImmediate(item.gameObject);
+                    item = null;
+                    OnValueChange.Invoke();
+                }
             }
         }
     }
