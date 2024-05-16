@@ -211,7 +211,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NotebookLastPage_ExpBar1
+      name: NotebookLastPage_Courage
       rect:
         serializedVersion: 2
         x: 276
@@ -236,7 +236,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NotebookLastPage_ExpBar2
+      name: NotebookLastPage_Dexterity
       rect:
         serializedVersion: 2
         x: 276
@@ -261,7 +261,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NotebookLastPage_ExpBar3
+      name: NotebookLastPage_Knowledge
       rect:
         serializedVersion: 2
         x: 276
@@ -298,10 +298,10 @@ TextureImporter:
     nameFileIdTable:
       NotebookLastPage_Background: -1003748399
       NotebookLastPage_CharacterPortrait: 503647750
-      NotebookLastPage_ExpBar1: -1847090014
-      NotebookLastPage_ExpBar2: 1982382642
-      NotebookLastPage_ExpBar3: -1795009875
+      NotebookLastPage_Courage: -1847090014
+      NotebookLastPage_Dexterity: 1982382642
       NotebookLastPage_ExpBarEdge: -1817022975
+      NotebookLastPage_Knowledge: -1795009875
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
