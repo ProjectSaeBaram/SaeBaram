@@ -9,6 +9,7 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
 {
     public UI_Inven_Item Item;
     public UI_NotebookPopup UINotebookPopup;
+    public int SlotIndex;
     
     public override void Init()
     {

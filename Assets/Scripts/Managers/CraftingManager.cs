@@ -190,17 +190,17 @@ public class CraftingManager
         string name = itemCodeDict[productionItemId];
         int quality = GetQualityOfProductionItem();
 
-        UI_Inven_Item.ItemType type = (productionItemId >= Managers.Data.BOUNDARY)
-            ? UI_Inven_Item.ItemType.Tool
-            : UI_Inven_Item.ItemType.Ingredient;
+        Define.ItemType type = (productionItemId >= Managers.Data.BOUNDARY)
+            ? Define.ItemType.Tool
+            : Define.ItemType.Ingredient;
 
         switch (type)
         {
-            case UI_Inven_Item.ItemType.Ingredient:
+            case Define.ItemType.Ingredient:
                 productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)?.VisualizedLayer;
                 productionItem.IngredientInit(name, quality, 1, null);
                 break;
-            case UI_Inven_Item.ItemType.Tool:
+            case Define.ItemType.Tool:
                 productionItem.parentPanel = (Managers.UI.GetTopPopupUI() as UI_NotebookPopup)?.VisualizedLayer;
                 productionItem.ToolInit(name, quality, 15, 0, null);
                 break;

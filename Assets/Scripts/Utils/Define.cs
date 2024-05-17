@@ -56,6 +56,7 @@ public class Define
         Unknown,
         Player,
         Monster,
+        DroppedItem,
     }
     
     // 지금 게임 세션이 새로운 게임인지, 저장된 데이터를 불러온 게임인지 구분하는 열거형.
@@ -64,5 +65,13 @@ public class Define
     {
         NewGame,
         LoadedGame,
+    }
+    
+    // 아이템의 종류를 구분하는 enum
+    public enum ItemType
+    {
+        Tool,
+        Ingredient,
+        Dummy,
     }
 }

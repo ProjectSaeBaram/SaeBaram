@@ -22,7 +22,6 @@ public class UI_NotebookPopup : UI_Popup
 
     enum Images
     {
-        BackPanel,
         NoteBook_Background,
     }
     
@@ -62,9 +61,7 @@ public class UI_NotebookPopup : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
-
-        Get<Image>((int)Images.BackPanel).gameObject.AddUIEvent(ClosePopupUI);
-
+        
         uiItemTooltip = Get<GameObject>((int)GameObjects.ItemToolTip).GetComponent<UI_ItemTooltip>();
         Get<GameObject>((int)GameObjects.ItemToolTip).SetActive(false);
         
@@ -136,6 +133,7 @@ public class UI_NotebookPopup : UI_Popup
             UI_Inven_Slot slot = Managers.UI.MakeSubItem<UI_Inven_Slot>(content);
             slot.SetNotebookPopup(this);
             itemSlots.Add(slot);
+            slot.SlotIndex = i;
             
             // 아이템
             ItemData item = _itemDataList[i];
@@ -206,10 +204,10 @@ public class UI_NotebookPopup : UI_Popup
                 
                 switch (itemUI.itemType)
                 {
-                    case UI_Inven_Item.ItemType.Tool:
+                    case Define.ItemType.Tool:
                         itemData = new Tool(0, itemUI.Name, itemUI.Quality, itemUI.Durability, itemUI.ReinforceCount);
                         break;
-                    case UI_Inven_Item.ItemType.Ingredient:
+                    case Define.ItemType.Ingredient:
                         itemData = new Ingredient(0, itemUI.Name, itemUI.Quality, itemUI.Amount);
                         break;
                 }
@@ -283,13 +281,15 @@ public class UI_NotebookPopup : UI_Popup
     
     public override void ClosePopupUI(PointerEventData action)
     {
-        
         // 인벤토리의 데이터 저장
         Managers.Data.OnClose?.Invoke();    // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
         
         Time.timeScale = 1;
         Managers.Data.OnClose -= ExportInventoryData;
         Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
+
+        if (CatchedItem != null)
+            Managers.Data.RemoveItemFromInventory(CatchedItem);
         
         base.ClosePopupUI(action);
     }

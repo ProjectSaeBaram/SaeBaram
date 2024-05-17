@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class UI_Inven_CraftingSlot : UI_Inven_Slot, IPointerExitHandler, IPointerEnterHandler
+public class UI_Inven_CraftingSlot : UI_Inven_Slot
 {
     [SerializeField] public int CraftingSlotIndex;
     
@@ -54,31 +54,12 @@ public class UI_Inven_CraftingSlot : UI_Inven_Slot, IPointerExitHandler, IPointe
             }
         }
     }
-    
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        try
-        {
-            
-        }
-        catch (Exception)
-        {
-            
-        }
-    }
-    
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        try
-        {
-            
-        }
-        catch (Exception)
-        {
-            
-        }
-    }
 
-    
-    
+    private void OnDisable()
+    {
+        if (Item != null)
+        {
+            Managers.Data.RemoveItemFromInventory(Item);
+        }
+    }
 }

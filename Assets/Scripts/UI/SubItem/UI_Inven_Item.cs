@@ -35,14 +35,6 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemDurabilitySlider,       // 아이템 내구도 표시 슬라이더
     }
 
-    // 아이템의 종류를 구분하는 enum
-    public enum ItemType
-    {
-        Tool,
-        Ingredient,
-        Dummy,
-    }
-
     private RectTransform _rectTransform;
     
     [Header("UI")] 
@@ -55,7 +47,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     [SerializeField] public int Durability = 1;         // 아이템의 내구도를 저장하는 필드 (0~15)
     public float maxDurability = 15f;
     [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드 (0~3)
-    [SerializeField] public ItemType itemType;          // 아이템의 타입을 저장하기 위한 필드
+    [SerializeField] public Define.ItemType itemType;          // 아이템의 타입을 저장하기 위한 필드
 
     public UI_NotebookPopup UINotebookPopup;
     
@@ -115,7 +107,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // 로그 받아오기
         Logs = logs;
         
-        itemType = ItemType.Tool;
+        itemType = Define.ItemType.Tool;
+        parentAfterDrag = transform.parent;
     }
 
     /// <summary>
@@ -150,7 +143,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // 로그 받아오기
         Logs = logs;
         
-        itemType = ItemType.Ingredient;
+        itemType = Define.ItemType.Ingredient;
+        parentAfterDrag = transform.parent;
     }
 
     private void Update()
@@ -204,6 +198,16 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
         _rectTransform.anchoredPosition = Vector2.zero;
         _rectTransform.localScale = Vector2.one;
+
+        foreach (var hoverd in eventData.hovered)
+        {
+            if(hoverd.GetComponent<NotebookBackPanel>() != null)
+            {
+                Managers.Data.RemoveItemFromInventory(this);
+                UINotebookPopup.ClosePopupUI(eventData);
+            }
+        }
+        
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -211,7 +215,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             UI_Inven_Item catchedItem = UINotebookPopup.CatchedItem;
-            if (catchedItem != null && catchedItem?.itemType == ItemType.Ingredient && this.itemType == ItemType.Ingredient && catchedItem.Name == this.Name
+            if (catchedItem != null && catchedItem?.itemType == Define.ItemType.Ingredient && this.itemType == Define.ItemType.Ingredient && catchedItem.Name == this.Name
                 && catchedItem?.Quality == this.Quality)
             {
                 if (catchedItem.Amount + this.Amount > Max_Amount)
@@ -253,7 +257,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public void OnDrop(PointerEventData eventData)
     {
         var item = eventData.pointerDrag.GetComponent<UI_Inven_Item>();
-        if (item != null && item?.itemType == ItemType.Ingredient && this.itemType == ItemType.Ingredient && item?.Name == this.Name 
+        if (item != null && item?.itemType == Define.ItemType.Ingredient && this.itemType == Define.ItemType.Ingredient && item?.Name == this.Name 
             && item?.Quality == this.Quality)
         {
             if (item.Amount + this.Amount > Max_Amount)
@@ -298,7 +302,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public void OnPointerClick(PointerEventData eventData)
     {
         // 우클릭인 경우에 동작
-        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != ItemType.Tool && UINotebookPopup.CatchedItem == null)
+        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && UINotebookPopup.CatchedItem == null)
         {
             UI_SeparateIngredientPopup popup = Managers.UI.ShowPopupUI<UI_SeparateIngredientPopup>();
             popup.InitItemReference(this);

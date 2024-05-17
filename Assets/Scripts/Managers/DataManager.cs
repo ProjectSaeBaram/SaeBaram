@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// Json으로 읽어들이는 데이터의 포맷 클래스는 ILoader인터페이스를 구현해야 함.
@@ -64,22 +65,22 @@ public class DataManager
     /// <summary>
     /// 아이템 코드 데이터베이스 스크립터블 오브젝트
     /// </summary>
-    public ItemCodeDatabase itemCodeDatabase;
+    private ItemCodeDatabase itemCodeDatabase;
 
     /// <summary>
     /// 인벤토리 칸의 갯수. 현재는 테스트용으로 30칸만 존재한다.
     /// </summary>
-    public const int NumberOfInventorySlots = 30;
+    private const int NumberOfInventorySlots = 30;
 
     /// <summary>
     /// 아이템 정보를 캐싱하는 ushort 배열
     /// </summary>
-    public ushort[] InventoryTable;
+    private ushort[] InventoryTable;
 
     /// <summary>
     /// 인벤토리 내 전체 아이템들의 로그를 저장하는 객체
     /// </summary>
-    public EntireLog EntireLog;
+    private EntireLog EntireLog;
 
     /// <summary>
     /// 아이템 id에 해당하는 아이템의 이름을 저장하는 딕셔너리
@@ -96,7 +97,7 @@ public class DataManager
     /// Item의 id가 BOUNDARY보다 크거나 같으면 Tool, 보다 작으면 Ingredient.
     /// </summary>
     public readonly int BOUNDARY = 128;
-
+    
     /// <summary>
     ///  게임이 꺼질 때 Invoke되는 UnityAction
     /// </summary>
@@ -347,7 +348,79 @@ public class DataManager
         EntireLog = _entireLog;
         DebugEx.Log("Exported from InventoryPopup to DataManager");
     }
+    
+    /// <summary>
+    /// 인벤토리에 아이템을 추가하는 함수
+    /// </summary>
+    public void AddItemInInventory(DroppedItem droppedItem)
+    {
+        // 인벤토리 내 넣을 수 있는 공간 찾기
+        
+        int availableSlotIndex = 0;
+        for (; availableSlotIndex < NumberOfInventorySlots; availableSlotIndex++)
+            if (InventoryTable[availableSlotIndex] == 0) break;
+        
+        #region 인벤토리에 새로만들어서 넣기
+        ushort newItem = 0;
+        // TODO : id, itemType, quality, amount, durability, reinforceCount, logs
+        
+        ushort id = (ushort)droppedItem.ItemId;
+        ushort quality = (ushort)droppedItem.Quality;
 
+        // 아이템 품질 (상위 2bit)
+        newItem |= (ushort)(quality << 14);
+
+        // 아이템 ID (다음 8bit)
+        newItem |= (ushort)(id << 6);
+
+        if (droppedItem.itemType == Define.ItemType.Tool)
+        {
+            // 도구의 경우, 내구도 (4bit)와 강화도 (2bit)
+            newItem |= (ushort)((droppedItem.Durability & 0xF) << 2); // 4bit
+            newItem |= (ushort)(droppedItem.ReinforceCount & 0x3); // 마지막 2bit
+        }
+        else if (droppedItem.itemType == Define.ItemType.Ingredient)
+        {
+            // 재료의 경우, 갯수 (6bit)
+            newItem |= (ushort)(droppedItem.Amount & 0x3F); // 마지막 6bit
+        }
+        
+        // 인벤토리 내 비어있는 칸에 아이템 저장 
+        InventoryTable[availableSlotIndex] = newItem;
+
+        // 로그 저장 (있는 경우에만)
+        if (droppedItem.Logs.Count > 0)
+        {
+            LogForOneItem logForOneItem = new LogForOneItem();
+            logForOneItem.index = availableSlotIndex;
+            foreach (var logString in droppedItem.Logs)
+            {
+                logForOneItem.data.Add(new LogData(logString));
+            }
+            EntireLog.logs.Add(logForOneItem);
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// 인벤토리에서 아이템을 꺼내어 DroppedItem으로 만드는 함수
+    /// </summary>
+    public void RemoveItemFromInventory(UI_Inven_Item item)
+    {
+        // TODO : 아이템 제거
+        if (item.parentAfterDrag.GetComponent<UI_Inven_Slot>() is not UI_Inven_CraftingSlot)
+        {
+            int fromIndex = item.parentAfterDrag.GetComponent<UI_Inven_Slot>().SlotIndex;
+            InventoryTable[fromIndex] = 0;
+        }
+
+        DroppedItem droppedItem = Managers.Game.Spawn(Define.WorldObject.DroppedItem, "DroppedItem").GetComponent<DroppedItem>();
+        droppedItem.transform.position = Managers.Game.GetPlayer().transform.position + Vector3.up * 30;
+
+        droppedItem.InitInfo(item);
+        Object.DestroyImmediate(item.gameObject);
+    }
+    
     #region About ItemLog
 
     public EntireLog LoadEntireLogFromJson(string path)
@@ -382,4 +455,13 @@ public class DataManager
 
     #endregion
 
+    /// <summary>
+    /// 아이템 id로 아이템 타입을 찾는 함수
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Define.ItemType ItemTypeById(int id)
+    {
+        return (id >= BOUNDARY) ? Define.ItemType.Tool : Define.ItemType.Ingredient;
+    }
 }
