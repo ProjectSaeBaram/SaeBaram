@@ -17,7 +17,7 @@ public class NpcData : MonoBehaviour
     [SerializeField] public string npcName;
     [SerializeField] public bool isNpc;
     [SerializeField] public Sprite[] npcPortrait;
-    [SerializeField] public TextAsset[] dialogue;
+    [SerializeField] public List<TextAsset> dialogue;
     [SerializeField] public string loc;
     [Tab("Quest Inform")]
     [SerializeField] public int[] questId;
@@ -26,7 +26,8 @@ public class NpcData : MonoBehaviour
     [SerializeField] public PlayerController playerController;
     [SerializeField] public int questActionIndex;
     [Tab("Chapter Inform")]
-    [SerializeField] public static string Chap = "Dialogue/Chap";
+    [SerializeField] public static string Chap_Good = "Dialogue/Good/Chap";
+    [SerializeField] public static string Chap_Bad = "Dialogue/Bad/Chap";
     [SerializeField] public int ChapNum;
 
     private static NpcData instance;
@@ -42,22 +43,24 @@ public class NpcData : MonoBehaviour
     {
         questIndex = 0;
         playerInRange = false;
+        dialogue = new List<TextAsset>();
         foreach (var c in visualCue)
         {
             c.gameObject.SetActive(false);
         }
-       dialogue=new TextAsset[3];
-        if(questId.Length > 1 ) 
+        if(questId.Length >= 1 ) 
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < questId.Length*3; i++)
             {
                 //dialogue[i] = Resources.Load("Dialogue/Chap0/Ruda/Ruda0") as TextAsset;
-                dialogue[i] = Resources.Load(Chap + ChapNum.ToString() + "/" + npcName + "/" + npcName + i.ToString()) as TextAsset;
+                //TextAsset t = Resources.Load(Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + i.ToString()) as TextAsset;
+                //Debug.Log(Resources.Load(Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + i.ToString()) as TextAsset);
+                dialogue.Add(Resources.Load(Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + i.ToString()) as TextAsset);
             }
         }
         else
         {
-            dialogue[0] = Resources.Load(Chap + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0") as TextAsset;
+            dialogue.Add(Resources.Load(Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0") as TextAsset);
         }
        
         npcName = this.name;

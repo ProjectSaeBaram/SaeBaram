@@ -14,6 +14,7 @@ public class UI_DialoguePopup : UI_Popup
     [SerializeField] public TextMeshProUGUI displayNameText;
     [SerializeField] public Image portraitImage;
     [SerializeField] public Animator layoutAnimator;
+    [SerializeField] public GameObject continueIcon;
 
 
     [SerializeField] public TextMeshProUGUI[] choicesText;

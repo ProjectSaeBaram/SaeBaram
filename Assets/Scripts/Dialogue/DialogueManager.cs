@@ -13,7 +13,8 @@ using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
-
+    [Header("Load Globals JSON")]
+    [SerializeField] private TextAsset loadGlobalsJSON;
 
     private NpcData npcdata;
     private Story currentStory;                                     //Ink 로 생성된 텍스트를 받아올 Class변수
@@ -22,18 +23,22 @@ public class DialogueManager : MonoBehaviour
     private const string PORTRAIT_TAG = "portrait";
     private const string PLAYER_TAG = "player";
     private const string LAYOUT_TAG = "layout";
+    private const string GOOD_TAG = "good";
+    private const string BAD_TAG = "bad";
     public UI_DialoguePopup popup;
     public QuestLayer qpanel;
     public PlayerController playerController;
     
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
-    //퀘스트 진행상황은 퀘스트 메니저에서 관리
-
+                                                                    //퀘스트 진행상황은 퀘스트 메니저에서 관리
+    private DialogueVariables dialogueVariables;
     public static DialogueManager instance;
 
     private void Awake()
     {
         instance = this;
+
+        dialogueVariables = new DialogueVariables(loadGlobalsJSON);
     }
 
     public static DialogueManager GetInstance()
@@ -47,36 +52,38 @@ public class DialogueManager : MonoBehaviour
         {
             return;
         }
-        if (playerController.GetInteractPressed())
+        if (currentStory.currentChoices.Count==0 && playerController.GetInteractPressed())
         {
             ContinueStory();
         }
     }
 
+
     public void GetTalk2(NpcData npc)
     {
         npcdata = npc;
+        
         if (QuestManager.GetInstance().CheckState(npc.questId[npc.questIndex]) == QuestState.FINISHED)
         {
-            currentStory = new Story(npc.dialogue[npc.dialogue.Length-1].text);
+            currentStory = new Story(npc.dialogue[npc.dialogue.Count-1].text);                          //퀘스트가 끝났다면 제일 마지막 대화 출력
         }
         else
         {
-            if (npc.questId.Length > 1)
+            if (npc.questId.Length >= 1)
             {   
                 //questIndex : 0부터 시작
-                //questActionIndex : 0 시작 1; 중간 2: 끝낼수있을때 3: 끝  4베수로 시작 
+                //questActionIndex : 0 시작 1: 중간 2: 끝낼수있을때 3: 끝  4베수로 시작 
                 currentStory = new Story(npc.dialogue[(npc.questIndex*4 + QuestManager.GetInstance().questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때 
             }
-            else
+            else             // 퀘스트가 없을 때 
             {
-                currentStory = new Story(npc.dialogue[(npc.questIndex + npc.questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때
+                currentStory = new Story(npc.dialogue[0].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때
             }
             
         }
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);
-
+        dialogueVariables.StartListening(currentStory);
         //태그 초기화
         popup.displayNameText.text = "???";
         ContinueStory();
@@ -86,6 +93,7 @@ public class DialogueManager : MonoBehaviour
 
     private void ExitDialogueMode()
     {
+        dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
         popup.dialoguePanel.SetActive(false);
         popup.dialogueText.text = "";
@@ -115,10 +123,10 @@ public class DialogueManager : MonoBehaviour
             string[] splitTag = tag.Split(':');
             if (splitTag.Length != 2)
             {
-                Debug.LogError("Tag parsed error : " + tag);
+                Debug.LogError("Tag parsed error : " + tag+splitTag);
             }
             string tagkey = splitTag[0].Trim();
-            string tagvalue = splitTag[1].Trim();
+            string tagvalue = splitTag[1].Trim();   
 
             switch (tagkey)
             {
@@ -133,6 +141,12 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case LAYOUT_TAG:
                     popup.layoutAnimator.Play(tagvalue);
+                    break;
+                case GOOD_TAG:
+                    Debug.Log("Good+"+tagvalue);
+                    break;
+                case BAD_TAG:
+                    Debug.Log("Bad+"+tagvalue);
                     break;
                 default:
                     Debug.LogWarning("Tag exists but not handled");
@@ -192,6 +206,7 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
+        ContinueStory();
         DebugEx.Log(choice);
     }
 
