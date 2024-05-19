@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DroppedItem : MonoBehaviour
 {
-   [SerializeField] private ItemDatabase _itemDatabase;
+   [FormerlySerializedAs("_itemDatabase")] [SerializeField] private ItemSpriteDatabase itemSpriteDatabase;
    
    [SerializeField] private SpriteRenderer _itemAppearance;
    
@@ -22,7 +23,7 @@ public class DroppedItem : MonoBehaviour
    
    private void OnEnable()
    {
-      _itemAppearance.sprite = _itemDatabase.GetItemImageById(ItemId);
+      _itemAppearance.sprite = itemSpriteDatabase.GetItemImageById(ItemId);
    }
 
    public void InitInfo(UI_Inven_Item uiInvenItem)
