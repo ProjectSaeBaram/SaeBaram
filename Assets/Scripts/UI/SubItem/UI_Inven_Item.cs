@@ -16,7 +16,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 {
     private readonly int Max_Amount = 63;
     
-    public ItemDatabase itemDatabase;       // 참조할 아이템 데이터베이스
+    [FormerlySerializedAs("itemDatabase")] public ItemSpriteDatabase itemSpriteDatabase;       // 참조할 아이템 데이터베이스
     
     enum Texts
     {
@@ -91,10 +91,10 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
         // 이미지 설정
         image = Get<Image>((int)Images.ItemIcon);
-        if (itemDatabase != null && image != null)
+        if (itemSpriteDatabase != null && image != null)
         {
             int itemId = Managers.Data.reverseItemCodeDict[Name];
-            Sprite itemSprite = itemDatabase.GetItemImageById(itemId);
+            Sprite itemSprite = itemSpriteDatabase.GetItemImageById(itemId);
             if (itemSprite != null) image.sprite = itemSprite;
         }
         
@@ -127,10 +127,10 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
         // 이미지 설정
         image = Get<Image>((int)Images.ItemIcon);
-        if (itemDatabase != null && image != null)
+        if (itemSpriteDatabase != null && image != null)
         {
             int itemId = Managers.Data.reverseItemCodeDict[Name];
-            Sprite itemSprite = itemDatabase.GetItemImageById(itemId);
+            Sprite itemSprite = itemSpriteDatabase.GetItemImageById(itemId);
             if (itemSprite != null) image.sprite = itemSprite;
         }
         

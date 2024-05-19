@@ -74,4 +74,15 @@ public class Define
         Ingredient,
         Dummy,
     }
+
+    /// <summary>
+    /// 아이템의 주 스텟 종류
+    /// </summary>
+    public enum ItemMainStatType
+    {
+        Lumbering,
+        Dismantling,
+        Mining,
+        Attack,
+    }
 }
