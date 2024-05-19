@@ -41,7 +41,8 @@ public class NpcData : MonoBehaviour
 
     private void Awake()
     {
-        questIndex = DialogueManager.GetInstance().GetQuestIndex(npcId);
+        //questIndex = DialogueManager.GetInstance().GetQuestIndex(npcId);
+        questIndex = 0;
         playerInRange = false;
         dialogue = new List<TextAsset>();
         foreach (var c in visualCue)

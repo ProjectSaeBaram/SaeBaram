@@ -40,7 +40,7 @@ public class DialogueManager : MonoBehaviour
     {
         instance = this;
         //TODO : Json으로 저장된 챕터별 npc 아이디와 대화인덱스 변수 가져와서 변수 초기화
-        dialogueVariables = new DialogueVariables(loadGlobalsJSON);
+        //dialogueVariables = new DialogueVariables(loadGlobalsJSON);
     }
 
     public static DialogueManager GetInstance()
@@ -96,7 +96,7 @@ public class DialogueManager : MonoBehaviour
         }
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);
-        dialogueVariables.StartListening(currentStory);
+        //dialogueVariables.StartListening(currentStory);
         //태그 초기화
         popup.displayNameText.text = "???";
         ContinueStory();
@@ -106,7 +106,7 @@ public class DialogueManager : MonoBehaviour
 
     private void ExitDialogueMode()
     {
-        dialogueVariables.StopListening(currentStory);
+        //dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
         popup.dialoguePanel.SetActive(false);
         popup.dialogueText.text = "";
