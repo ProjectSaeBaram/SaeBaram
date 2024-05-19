@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_SeparateIngredient : UI_Popup
+public class UI_SeparateIngredientPopup : UI_Popup
 {
     enum Images
     {
@@ -22,14 +22,12 @@ public class UI_SeparateIngredient : UI_Popup
         Increase,
         Decrease,
         Confirm,
-        Deny,
+        Cancel,
     }
 
     private TMP_InputField _inputField;
     
-    private UI_Inven_Item _originItem;
-    
-    private int _itemOriginAmount;      // 아이템의 원래 갯수
+    [SerializeField] private UI_Inven_Item _originItem;
     
     public override void Init()
     {
@@ -41,7 +39,7 @@ public class UI_SeparateIngredient : UI_Popup
         Get<Button>((int)Buttons.Increase).onClick.AddListener(Increase);
         Get<Button>((int)Buttons.Decrease).onClick.AddListener(Decrease);
         Get<Button>((int)Buttons.Confirm).onClick.AddListener(Confirm);
-        Get<Button>((int)Buttons.Deny).onClick.AddListener(Deny);
+        Get<Button>((int)Buttons.Cancel).onClick.AddListener(Deny);
 
         _inputField = Get<TMP_InputField>((int)InputFields.InputField);
         _inputField.onValueChanged.AddListener(CheckValue);
@@ -50,7 +48,6 @@ public class UI_SeparateIngredient : UI_Popup
     public void InitItemReference(UI_Inven_Item originItem)
     {
         _originItem = originItem;
-        _itemOriginAmount = _originItem.Amount;
     }
 
     /// <summary>
@@ -65,6 +62,7 @@ public class UI_SeparateIngredient : UI_Popup
     void Increase()
     {
         var current = int.Parse(_inputField.text);
+        if (current == (_originItem.Amount - 1)) return;
         _inputField.text = $"{current + 1}";
     }
     
@@ -79,13 +77,19 @@ public class UI_SeparateIngredient : UI_Popup
     {
         // 분리된 아이템이 마우스 커서에 생겨야 한다.
         UI_Inven_Item item = Managers.UI.MakeSubItem<UI_Inven_Item>();
-        item.IngredientInit(_originItem.Name, _originItem.Quality, int.Parse(_inputField.text));
         
+        // 재료는 로그 x
+        item.IngredientInit(_originItem.Name, _originItem.Quality, int.Parse(_inputField.text), null);
+        
+        // 원본 아이템은 갯수를 깎고
         _originItem.Amount -= int.Parse(_inputField.text);
         _originItem.OnValueChange.Invoke();
         
         ClosePopupUI(null);
-        item.transform.SetParent(Managers.UI.GetTopPopupUI().transform);
+        item.parentPanel = _originItem.parentPanel;
+        item.parentAfterDrag = _originItem.parentAfterDrag;
+        item.UINotebookPopup = _originItem.parentPanel.transform.parent.GetComponent<UI_NotebookPopup>();
+        item.transform.SetParent(item.parentPanel.transform);
         item.Catched();
     }
 

@@ -45,6 +45,8 @@ public class GameManagerEx
             case Define.WorldObject.Player:
                 _player = go;
                 break;
+            case Define.WorldObject.DroppedItem:
+                break;
         }
         return go;
     }

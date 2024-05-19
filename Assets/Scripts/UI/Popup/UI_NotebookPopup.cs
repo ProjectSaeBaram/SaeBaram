@@ -17,11 +17,11 @@ public class UI_NotebookPopup : UI_Popup
         DiaryLayer,
         MapLayer,
         LastPage,
+        ItemToolTip,
     }
 
     enum Images
     {
-        BackPanel,
         NoteBook_Background,
     }
     
@@ -45,9 +45,11 @@ public class UI_NotebookPopup : UI_Popup
     private Dictionary<Buttons, GameObjects> BookmarksAndLayers = new();
     
     // 현재 시각화된 Layer
-    [SerializeField] private GameObject VisualizedLayer;
+    [SerializeField] public GameObject VisualizedLayer;
 
     [SerializeField] public UI_Inven_Item CatchedItem = null;
+
+    [SerializeField] private UI_ItemTooltip uiItemTooltip;
     
     void Start()
     {
@@ -59,18 +61,20 @@ public class UI_NotebookPopup : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
-
-        Get<Image>((int)Images.BackPanel).gameObject.AddUIEvent(ClosePopupUI);
+        
+        uiItemTooltip = Get<GameObject>((int)GameObjects.ItemToolTip).GetComponent<UI_ItemTooltip>();
+        Get<GameObject>((int)GameObjects.ItemToolTip).SetActive(false);
         
         // 여기 안에서 동작하는 함수들의 순서는 서로 매우 긴밀하게 연결되어있음. 조작 시 주의할 것.
         
         // 북마크들을 각각 자신에 해당하는 레이어들과 연결
         ConnectBookmarksIntoLayers();
         
-        // 팝업이 열릴 때, CraftingLayer를 시각화. (기본값)
         WhenOpened();
         
         // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
+        // Managers.Data.OnClose -= ExportInventoryData;
+        // Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
         Managers.Data.OnClose += ExportInventoryData;
         Managers.Data.OnClose += Managers.Data.SaveInventoryData;
         
@@ -80,6 +84,7 @@ public class UI_NotebookPopup : UI_Popup
 
     /// <summary>
     /// 팝업이 열릴 때, CraftingLayer를 시각화. (기본값)
+    /// 인벤토리 데이터도 함께 로드
     /// </summary>
     void WhenOpened()
     {
@@ -125,7 +130,10 @@ public class UI_NotebookPopup : UI_Popup
         for (int i = 0; i < numberOfItemSlots; i++)
         {
             // 아이템 슬롯
-            itemSlots.Add(Managers.UI.MakeSubItem<UI_Inven_Slot>(content));
+            UI_Inven_Slot slot = Managers.UI.MakeSubItem<UI_Inven_Slot>(content);
+            slot.SetNotebookPopup(this);
+            itemSlots.Add(slot);
+            slot.SlotIndex = i;
             
             // 아이템
             ItemData item = _itemDataList[i];
@@ -135,15 +143,15 @@ public class UI_NotebookPopup : UI_Popup
                 case Tool tool:
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
-                    visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount);
                     visualizedItems[i].parentPanel = VisualizedLayer;
+                    visualizedItems[i].ToolInit(tool!.Name, tool!.Quality, tool!.Durability, tool!.ReinforceCount, tool!.Logs);
                     break;
                 }
                 case Ingredient ingredient:
                 {
                     visualizedItems.Add(Managers.UI.MakeSubItem<UI_Inven_Item>(itemSlots[i].transform));
-                    visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount);
                     visualizedItems[i].parentPanel = VisualizedLayer;
+                    visualizedItems[i].IngredientInit(ingredient!.Name, ingredient!.Quality, ingredient!.Amount, ingredient!.Logs);
                     break;
                 }
                 case DummyItem:
@@ -171,6 +179,16 @@ public class UI_NotebookPopup : UI_Popup
     /// </summary>
     public void ExportInventoryData()
     {
+        try
+        {
+            bool proove = this.gameObject.activeSelf;
+        }
+        catch (Exception)
+        {
+            DebugEx.Log("Skipped Exporting from InventoryPopup to DataManager");
+            return;
+        }
+        
         for (int i = 0; i < numberOfItemSlots; i++)
         {
             UI_Inven_Item itemUI = itemSlots[i].Item;
@@ -182,23 +200,40 @@ public class UI_NotebookPopup : UI_Popup
             }
             else
             {
+                ItemData itemData = null;
+                
                 switch (itemUI.itemType)
                 {
-                    case UI_Inven_Item.ItemType.Tool:
-                        _itemDataList[i] = 
-                            new Tool(0, itemUI.Name, itemUI.Quality, itemUI.Durability, itemUI.ReinforceCount);
+                    case Define.ItemType.Tool:
+                        itemData = new Tool(0, itemUI.Name, itemUI.Quality, itemUI.Durability, itemUI.ReinforceCount);
                         break;
-                    case UI_Inven_Item.ItemType.Ingredient:
-                        _itemDataList[i] = new Ingredient(0, itemUI.Name, itemUI.Quality, itemUI.Amount);
-                        break;
-                    case UI_Inven_Item.ItemType.Dummy:
-                        _itemDataList[i] = new DummyItem();
+                    case Define.ItemType.Ingredient:
+                        itemData = new Ingredient(0, itemUI.Name, itemUI.Quality, itemUI.Amount);
                         break;
                 }
+                
+                if (itemUI.Logs != null)
+                {
+                    itemData.SetLogFromLogString(itemUI.Logs);
+                }
+                
+                _itemDataList[i] = itemData;
             }
         }
     
         Managers.Data.TransDataListIntoArray(_itemDataList);
+    }
+
+    public void ShowToolTip(UI_Inven_Item invenItem, PointerEventData eventData)
+    {
+        uiItemTooltip.gameObject.SetActive(true);
+        uiItemTooltip.ShowTooltip(invenItem, eventData);
+    }
+
+    public void HideTooltip()
+    {
+        uiItemTooltip.gameObject.SetActive(false);
+        uiItemTooltip.UnsetPointerEventData();
     }
     
     #endregion
@@ -246,10 +281,16 @@ public class UI_NotebookPopup : UI_Popup
     
     public override void ClosePopupUI(PointerEventData action)
     {
-        Time.timeScale = 1;
-        base.ClosePopupUI(action);
-
         // 인벤토리의 데이터 저장
         Managers.Data.OnClose?.Invoke();    // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
+        
+        Time.timeScale = 1;
+        Managers.Data.OnClose -= ExportInventoryData;
+        Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
+
+        if (CatchedItem != null)
+            Managers.Data.RemoveItemFromInventory(CatchedItem);
+        
+        base.ClosePopupUI(action);
     }
 }

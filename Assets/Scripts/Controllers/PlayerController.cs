@@ -433,7 +433,13 @@ public class PlayerController : MonoBehaviour
     #region Interact
     void InteractStarted(InputAction.CallbackContext context)
     {
-        // DebugEx.Log($"InteractStarted");
+        DebugEx.Log($"InteractStarted");
+        
+        if (context.control.name == "z")
+        {
+            CheckDroppedItem();
+        }
+        
     }
     void InteractPerformed(InputAction.CallbackContext context)
     {
@@ -456,7 +462,23 @@ public class PlayerController : MonoBehaviour
     void InteractCanceled(InputAction.CallbackContext context)
     {
         // DebugEx.Log($"InteractCanceled");
+        
+        if (context.control.name == "z")
+        {
+            
+        }
     }
+
+    void CheckDroppedItem()
+    {
+        Collider2D underMyFeet = Physics2D.OverlapBox(transform.position, Vector2.one * 60, 0, 1 << 10);
+        
+        if (underMyFeet != null && underMyFeet.GetComponent<DroppedItem>() is not null)
+        {
+            underMyFeet.GetComponent<DroppedItem>().Fed();
+        }
+    }
+    
     #endregion
 
     #region Pause
@@ -502,7 +524,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             notebookPopup.ClosePopupUI(null);
-            Time.timeScale = 1;
         }
     }
     
