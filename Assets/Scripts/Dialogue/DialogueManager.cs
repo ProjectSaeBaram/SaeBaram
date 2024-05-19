@@ -15,7 +15,9 @@ public class DialogueManager : MonoBehaviour
 {
     [Header("Load Globals JSON")]
     [SerializeField] private TextAsset loadGlobalsJSON;
-
+    [Header("NPC Data")]
+    [SerializeField] private Dictionary<int, int> ChapNpcInfo;
+    [SerializeField] private Dictionary<int, int> npcDindex;                //npc 별 대화인덱스 저장할 변수
     private NpcData npcdata;
     private Story currentStory;                                     //Ink 로 생성된 텍스트를 받아올 Class변수
 
@@ -37,7 +39,7 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
+        //TODO : Json으로 저장된 챕터별 npc 아이디와 대화인덱스 변수 가져와서 변수 초기화
         dialogueVariables = new DialogueVariables(loadGlobalsJSON);
     }
 
@@ -45,6 +47,17 @@ public class DialogueManager : MonoBehaviour
     {
         return instance;
     }
+
+    public int GetQuestIndex(int id)
+    {
+        return npcDindex[id];
+    }
+    
+    public void setQuestIndex(int id,int idx)
+    {
+        npcDindex[id] = idx;
+    }
+    
 
     private void Update()
     {
@@ -73,7 +86,7 @@ public class DialogueManager : MonoBehaviour
             {   
                 //questIndex : 0부터 시작
                 //questActionIndex : 0 시작 1: 중간 2: 끝낼수있을때 3: 끝  4베수로 시작 
-                currentStory = new Story(npc.dialogue[(npc.questIndex*4 + QuestManager.GetInstance().questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때 
+                currentStory = new Story(npc.dialogue[(npc.questIndex*4 + npc.questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때 
             }
             else             // 퀘스트가 없을 때 
             {

@@ -254,8 +254,6 @@ public class PlayerController : MonoBehaviour
         InitStates();
         DialogueManager.GetInstance().playerController = this;
         _localScale = transform.localScale;
-        questIdx = 0;
-        QuestManager.GetInstance().CheckRequirement(questIdx);
         interactPressed = false;
         instance = this;
     }

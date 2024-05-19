@@ -36,14 +36,12 @@ public class QuestManager : MonoBehaviour
 
     public void AdvanceQuest(int id,NpcData npc)            //퀘스트 진행상황 업데이트
     {
-
-        npc.questActionIndex++;
         questNpc.Add(id, npc);
         questList[npc.questIndex].qs++;
         Debug.Log(questList[id].qs);
         if (questList[questIndex].qs == QuestState.FINISHED)
         {
-            AdvanceIndex(id,npc);
+            AdvanceIndex(npc);
             return;
         }      
 
@@ -92,14 +90,13 @@ public class QuestManager : MonoBehaviour
     {
         return questIndex + questActionIndex;
     }
-    public void AdvanceIndex(int qid,NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
+    public void AdvanceIndex(NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
     {
-        PlayerController.GetInstance().questIdx++;
-        if (questNpc[qid].questId.Length > 1)
+        if (npc.questId.Length > 1)
         {
-            questNpc[qid].questIndex++;
+            npc.questIndex++;
+            DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.questIndex);
         }
-        npc.questActionIndex = 0;
     }
     public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
     {
