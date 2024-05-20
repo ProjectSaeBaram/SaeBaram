@@ -89,6 +89,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PickupItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""d10956f2-a0ba-4a84-8dc7-7fab32e148ea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -226,17 +235,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""212eac73-e86e-4061-b273-87145d385dbd"",
-                    ""path"": ""<Keyboard>/z"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""50040575-f2d3-4b34-a78b-6270f50d8ce3"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
@@ -353,6 +351,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""OpenNotebook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3ef8200-9363-41fd-ab2b-fabe1db62792"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickupItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -914,6 +923,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerAction_Escape = m_PlayerAction.FindAction("Escape", throwIfNotFound: true);
         m_PlayerAction_RunningSwitch = m_PlayerAction.FindAction("RunningSwitch", throwIfNotFound: true);
         m_PlayerAction_OpenNotebook = m_PlayerAction.FindAction("OpenNotebook", throwIfNotFound: true);
+        m_PlayerAction_PickupItem = m_PlayerAction.FindAction("PickupItem", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -994,6 +1004,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerAction_Escape;
     private readonly InputAction m_PlayerAction_RunningSwitch;
     private readonly InputAction m_PlayerAction_OpenNotebook;
+    private readonly InputAction m_PlayerAction_PickupItem;
     public struct PlayerActionActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1005,6 +1016,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Escape => m_Wrapper.m_PlayerAction_Escape;
         public InputAction @RunningSwitch => m_Wrapper.m_PlayerAction_RunningSwitch;
         public InputAction @OpenNotebook => m_Wrapper.m_PlayerAction_OpenNotebook;
+        public InputAction @PickupItem => m_Wrapper.m_PlayerAction_PickupItem;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1035,6 +1047,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OpenNotebook.started += instance.OnOpenNotebook;
             @OpenNotebook.performed += instance.OnOpenNotebook;
             @OpenNotebook.canceled += instance.OnOpenNotebook;
+            @PickupItem.started += instance.OnPickupItem;
+            @PickupItem.performed += instance.OnPickupItem;
+            @PickupItem.canceled += instance.OnPickupItem;
         }
 
         private void UnregisterCallbacks(IPlayerActionActions instance)
@@ -1060,6 +1075,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OpenNotebook.started -= instance.OnOpenNotebook;
             @OpenNotebook.performed -= instance.OnOpenNotebook;
             @OpenNotebook.canceled -= instance.OnOpenNotebook;
+            @PickupItem.started -= instance.OnPickupItem;
+            @PickupItem.performed -= instance.OnPickupItem;
+            @PickupItem.canceled -= instance.OnPickupItem;
         }
 
         public void RemoveCallbacks(IPlayerActionActions instance)
@@ -1222,6 +1240,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnEscape(InputAction.CallbackContext context);
         void OnRunningSwitch(InputAction.CallbackContext context);
         void OnOpenNotebook(InputAction.CallbackContext context);
+        void OnPickupItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

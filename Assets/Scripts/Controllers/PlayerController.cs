@@ -434,12 +434,6 @@ public class PlayerController : MonoBehaviour
     void InteractStarted(InputAction.CallbackContext context)
     {
         DebugEx.Log($"InteractStarted");
-        
-        if (context.control.name == "z")
-        {
-            CheckDroppedItem();
-        }
-        
     }
     void InteractPerformed(InputAction.CallbackContext context)
     {
@@ -459,14 +453,10 @@ public class PlayerController : MonoBehaviour
         interactPressed = false;
         return result;
     }
+    
     void InteractCanceled(InputAction.CallbackContext context)
     {
         // DebugEx.Log($"InteractCanceled");
-        
-        if (context.control.name == "z")
-        {
-            
-        }
     }
 
     void CheckDroppedItem()
@@ -481,6 +471,11 @@ public class PlayerController : MonoBehaviour
     
     #endregion
 
+    void PickupStarted(InputAction.CallbackContext context)
+    {
+        CheckDroppedItem();
+    }
+    
     #region Pause
 
     void PauseOrResume(InputAction.CallbackContext context)
@@ -532,7 +527,6 @@ public class PlayerController : MonoBehaviour
     #region About PlayerInput
     private void OnEnable()
     {
-
         // PlayerInput을 컴포넌트 대신 스크립트로
         _playerInputActions.PlayerAction.Move.started += MoveStarted;
         _playerInputActions.PlayerAction.Move.performed += MovePerformed;
@@ -548,7 +542,8 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
-        _playerInputActions.Enable();
+        _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+        _playerInputActions.Enable();   
     }
     
     private void OnDisable()
@@ -568,6 +563,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
+        _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
         _playerInputActions.Disable();
     }
     
