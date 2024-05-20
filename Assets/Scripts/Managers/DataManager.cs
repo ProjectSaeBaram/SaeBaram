@@ -400,6 +400,8 @@ public class DataManager
             EntireLog.logs.Add(logForOneItem);
         }
         #endregion
+
+        SaveInventoryData();
     }
 
     /// <summary>

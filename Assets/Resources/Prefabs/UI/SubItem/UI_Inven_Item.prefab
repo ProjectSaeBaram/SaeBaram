@@ -137,9 +137,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ee65c7a01356a4580dcc2a0e339fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDatabase: {fileID: 11400000, guid: 1eea3455fcd905a48b45d26f80a9f098, type: 2}
+  itemSpriteDatabase: {fileID: 11400000, guid: 1eea3455fcd905a48b45d26f80a9f098, type: 2}
+  ItemNameText: {fileID: 2298926675161624303}
+  ItemAmountText: {fileID: 5018793961557046338}
+  ItemReinforceCount: {fileID: 6051617670413530292}
+  image: {fileID: 6607078393334262664}
+  DurabilitySlider: {fileID: 3191628516455048752}
   parentPanel: {fileID: 0}
-  image: {fileID: 0}
   Name: 
   Quality: 0
   Amount: 1

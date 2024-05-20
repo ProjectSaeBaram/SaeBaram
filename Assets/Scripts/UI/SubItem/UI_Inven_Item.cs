@@ -17,29 +17,17 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     private readonly int Max_Amount = 63;
     
     [FormerlySerializedAs("itemDatabase")] public ItemSpriteDatabase itemSpriteDatabase;       // 참조할 아이템 데이터베이스
-    
-    enum Texts
-    {
-        ItemNameText,           // 아이템 이름 표시 텍스트
-        ItemAmountText,         // 아이템 갯수 표시 텍스트
-        ItemReinforceCount,     // 아이템 강화 횟수 표시 텍스트
-    }
-
-    enum Images
-    {
-        ItemIcon,       // 아이템 아이콘 이미지
-    }
-
-    enum Sliders
-    {
-        ItemDurabilitySlider,       // 아이템 내구도 표시 슬라이더
-    }
 
     private RectTransform _rectTransform;
-    
+
     [Header("UI")] 
+    [SerializeField] private TextMeshProUGUI ItemNameText;              // 아이템 이름 표시 텍스트
+    [SerializeField] private TextMeshProUGUI ItemAmountText;            // 아이템 갯수 표시 텍스트
+    [SerializeField] private TextMeshProUGUI ItemReinforceCount;        // 아이템 강화 횟수 표시 텍스트
+    [SerializeField] public Image image;                                // 아이템 이미지
+    [SerializeField] private Slider DurabilitySlider;                   // 아이템 내구도 표시 슬라이더
+    
     [SerializeField] public GameObject parentPanel;
-    [SerializeField] public Image image;
     [SerializeField] public string Name;                // 아이템의 이름을 저장하는 필드
     [SerializeField] public int Quality;                // 아이템의 퀄리티를 저장하는 필드 (0~3)
                                                         // {0 : 비정상 값}, {1 : 하}, {2 : 중}, {3 : 상}
@@ -79,18 +67,12 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     /// </summary>
     public void ToolInit(string name, int quality, int durability, int reinforceCount, List<string> logs)
     {
-        // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
-        Bind<TextMeshProUGUI>(typeof(Texts)); 
-        Bind<Image>(typeof(Images));
-        Bind<Slider>(typeof(Sliders));
-        
         Name = name;                        // 아이템 이름을 저장.
         Quality = quality;                  // 아이템 품질을 저장.
         Durability = durability;            // 아이템 내구도를 저장.
         ReinforceCount = reinforceCount;    // 아이템의 강화 횟수를 저장.
         
         // 이미지 설정
-        image = Get<Image>((int)Images.ItemIcon);
         if (itemSpriteDatabase != null && image != null)
         {
             int itemId = Managers.Data.reverseItemCodeDict[Name];
@@ -99,10 +81,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         }
         
         // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
-        // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
-        Get<TextMeshProUGUI>((int)Texts.ItemAmountText).gameObject.SetActive(false);
-        Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
-        Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
+        DurabilitySlider.value = Durability / maxDurability;
+        ItemReinforceCount.text = ReinforceCount.ToString();
+        ItemAmountText.gameObject.SetActive(false);
 
         // 로그 받아오기
         Logs = logs;
@@ -116,17 +97,11 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     /// </summary>
     public void IngredientInit(string name, int quality, int amount, List<string> logs)
     {
-        // UI_Base의 Bind 메서드를 사용하여 UI 요소들을 바인딩.
-        Bind<TextMeshProUGUI>(typeof(Texts)); 
-        Bind<Image>(typeof(Images));
-        Bind<Slider>(typeof(Sliders));
-        
         Name = name;                        // 아이템 이름을 저장.
         Quality = quality;                  // 아이템 품질을 저장.
         Amount = amount;                    // 아이템 갯수를 저장.
         
         // 이미지 설정
-        image = Get<Image>((int)Images.ItemIcon);
         if (itemSpriteDatabase != null && image != null)
         {
             int itemId = Managers.Data.reverseItemCodeDict[Name];
@@ -136,9 +111,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
         // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
         // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
-        Get<Slider>((int)Sliders.ItemDurabilitySlider).gameObject.SetActive(false);
-        Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).gameObject.SetActive(false);
-        Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
+        DurabilitySlider.gameObject.SetActive(false);
+        ItemReinforceCount.gameObject.SetActive(false);
+        ItemAmountText.text = Amount.ToString();
 
         // 로그 받아오기
         Logs = logs;
@@ -158,9 +133,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         // 아이템 이름 텍스트 UI에 아이템 이름을 설정.
         // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
-        Get<TextMeshProUGUI>((int)Texts.ItemAmountText).text = Amount.ToString();
-        Get<Slider>((int)Sliders.ItemDurabilitySlider).value = Durability / maxDurability;
-        Get<TextMeshProUGUI>((int)Texts.ItemReinforceCount).text = ReinforceCount.ToString();
+        ItemAmountText.text = Amount.ToString();
+        ItemReinforceCount.text = ReinforceCount.ToString();
+        DurabilitySlider.value = Durability / maxDurability;
     }
 
     #region Drag and Drop
@@ -312,7 +287,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public void Catched()
     {
         isCatched = true;
-        Get<Image>((int)Images.ItemIcon).color = new Color(1,1,1,0.8f);
+        image.color = new Color(1,1,1,0.8f);
         UINotebookPopup.CatchedItem = this;
         image.raycastTarget = false;
     }
@@ -320,7 +295,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public void Released()
     {
         isCatched = false;
-        Get<Image>((int)Images.ItemIcon).color = new Color(1,1,1,1);
+        image.color = new Color(1,1,1,1);
         _rectTransform.anchoredPosition = Vector2.zero;
         _rectTransform.localScale = Vector2.one;
         image.raycastTarget = true;

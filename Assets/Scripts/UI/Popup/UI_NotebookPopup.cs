@@ -50,12 +50,28 @@ public class UI_NotebookPopup : UI_Popup
     [SerializeField] public UI_Inven_Item CatchedItem = null;
 
     [SerializeField] private UI_ItemTooltip uiItemTooltip;
+
+    [SerializeField] private UI_Game_QuickSlotGroup _quickSlotGroup;
+    
+    private bool initialized = false;
     
     void Start()
     {
         Init();
     }
-    
+
+    private void OnEnable()
+    {
+        // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
+        Managers.Data.OnClose -= ExportInventoryData;
+        Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
+        Managers.Data.OnClose += ExportInventoryData;
+        Managers.Data.OnClose += Managers.Data.SaveInventoryData;
+        
+        if(initialized)
+            WhenOpened();
+    }
+
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
@@ -71,15 +87,11 @@ public class UI_NotebookPopup : UI_Popup
         ConnectBookmarksIntoLayers();
         
         WhenOpened();
+
+        UI_Game_QuickSlotGroup quickSlotGroup = FindObjectOfType<UI_Game_QuickSlotGroup>();
+        quickSlotGroup.InitQuickSlotsNotebookRef(this);
         
-        // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
-        // Managers.Data.OnClose -= ExportInventoryData;
-        // Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
-        Managers.Data.OnClose += ExportInventoryData;
-        Managers.Data.OnClose += Managers.Data.SaveInventoryData;
-        
-        // 노트북 팝업이 열릴 때는 시간 정지
-        Time.timeScale = 0;
+        initialized = true;
     }
 
     /// <summary>
@@ -96,6 +108,9 @@ public class UI_NotebookPopup : UI_Popup
         VisualizedLayer.SetActive(true);
         
         VisualizeItemsInTheGrid(true);
+        
+        // 노트북 팝업이 열릴 때는 시간 정지
+        Time.timeScale = 0;
     }
     
     #region Inventory
@@ -170,6 +185,7 @@ public class UI_NotebookPopup : UI_Popup
     /// </summary>
     private void GetItemDataFromDataManager()
     {
+        Managers.Data.LoadInventoryData();
         _itemDataList = Managers.Data.ItemInfos();
     }
 
@@ -290,6 +306,17 @@ public class UI_NotebookPopup : UI_Popup
 
         if (CatchedItem != null)
             Managers.Data.RemoveItemFromInventory(CatchedItem);
+        
+        // 아이템 제거
+        for (int i = 0; i < numberOfItemSlots; i++)
+        {
+            DestroyImmediate(itemSlots[i].gameObject);
+            // itemSlots[i] = null;
+            // visualizedItems[i] = null;
+        }
+        
+        itemSlots.Clear();
+        visualizedItems.Clear();
         
         base.ClosePopupUI(action);
     }
