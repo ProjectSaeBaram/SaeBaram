@@ -297,6 +297,8 @@ public class UI_NotebookPopup : UI_Popup
     
     public override void ClosePopupUI(PointerEventData action)
     {
+        if (Managers.UI.GetTopPopupUI() != this) return;
+        
         // 인벤토리의 데이터 저장
         Managers.Data.OnClose?.Invoke();    // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
         
