@@ -566,6 +566,17 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
         _playerInputActions.Disable();
     }
+
+    public void DisablePickupItem()
+    {
+        _playerInputActions.PlayerAction.PickupItem.Disable();
+    }
+
+    public void EnablePickupItem()
+    {
+        _playerInputActions.PlayerAction.PickupItem.Enable();
+
+    }
     
         #endregion
 }

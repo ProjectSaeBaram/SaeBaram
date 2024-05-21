@@ -111,6 +111,25 @@ public class UI_NotebookPopup : UI_Popup
         
         // 노트북 팝업이 열릴 때는 시간 정지
         Time.timeScale = 0;
+
+        // 플레이어 아이템 줍기 기능 비활성화 
+        DisablePickupItem();
+    }
+
+    /// <summary>
+    /// 플레이어 아이템 줍기 기능 비활성화 
+    /// </summary>
+    void DisablePickupItem()
+    {
+        Managers.Game.GetPlayer().GetComponent<PlayerController>().DisablePickupItem();
+    }
+    
+    /// <summary>
+    /// 플레이어 아이템 줍기 기능 활성화 
+    /// </summary>
+    void EnablePickupItem()
+    {
+        Managers.Game.GetPlayer().GetComponent<PlayerController>().EnablePickupItem();
     }
     
     #region Inventory
@@ -319,6 +338,9 @@ public class UI_NotebookPopup : UI_Popup
         
         itemSlots.Clear();
         visualizedItems.Clear();
+        
+        // 플레이어 아이템 줍기 기능 활성화 
+        EnablePickupItem();
         
         base.ClosePopupUI(action);
     }
