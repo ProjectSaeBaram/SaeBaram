@@ -981,7 +981,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -1020,6 +1020,10 @@ MonoBehaviour:
   isJumpable: 0
   jumpForced: 0
   shiftToggled: 0
+  playerPortrait: []
+  _questManager: {fileID: 0}
+  questIdx: 0
+  isQuestPanelActive: 0
   _rigidbody2D: {fileID: 0}
   _animator: {fileID: 0}
   _rightHandBone: {fileID: 7936561779221067104}

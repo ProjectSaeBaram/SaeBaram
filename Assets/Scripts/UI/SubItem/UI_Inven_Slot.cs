@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
@@ -17,7 +13,8 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
     }
     
     // 마우스에서 손을 때면
-    public virtual void OnDrop(PointerEventData eventData) {
+    public virtual void OnDrop(PointerEventData eventData)
+    {
         // InventorySlot의 자식이 없을 때
         if(transform.childCount == 0) {
             try
