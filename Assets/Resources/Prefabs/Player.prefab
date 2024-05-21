@@ -680,6 +680,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8718808017486044597, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 102
+      objectReference: {fileID: 0}
+    - target: {fileID: -8715299325575886562, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 103
+      objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -756,6 +764,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: -6298696705940564334, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 110
+      objectReference: {fileID: 0}
     - target: {fileID: -5916609726877105543, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -788,13 +800,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: -3451337215694431727, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 109
+      objectReference: {fileID: 0}
     - target: {fileID: -3346276223636773435, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -1314928179157554263, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 110
       objectReference: {fileID: 0}
     - target: {fileID: -1024815538560704356, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_Layer
@@ -824,6 +840,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3944329456786465281, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 108
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074980493223467285, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 101
+      objectReference: {fileID: 0}
     - target: {fileID: 4157741701538757237, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -832,9 +856,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6597319622431546463, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182487608461937877, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 107
+      objectReference: {fileID: 0}
     - target: {fileID: 7853988585027479369, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8974631497896269103, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 104
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -922,7 +958,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -942,10 +978,10 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -984,9 +1020,6 @@ MonoBehaviour:
   isJumpable: 0
   jumpForced: 0
   shiftToggled: 0
-  playerPortrait: []
-  _questManager: {fileID: 8178310703521705546, guid: 579ee51f6129542409d4aa2dbe29d000, type: 3}
-  isQuestPanelActive: 0
   _rigidbody2D: {fileID: 0}
   _animator: {fileID: 0}
   _rightHandBone: {fileID: 7936561779221067104}
