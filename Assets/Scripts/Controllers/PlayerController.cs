@@ -238,7 +238,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _rightHandBone;
-
+    [SerializeField] public UI_Game_QuickSlotGroup _quickSlotGroup;
+    
     private PlayerInputActions _playerInputActions;
     private Vector3 _localScale;
 
@@ -296,13 +297,16 @@ public class PlayerController : MonoBehaviour
     {
         DebugEx.Log($"Changed to {context.control.name}th tool!");
 
-        int targetTool = int.Parse(context.control.name) - 1;
+        int targetIndex = int.Parse(context.control.name) - 1;
 
         for (int i = 0; i < _rightHandBone.childCount; i++)
             _rightHandBone.GetChild(i).gameObject.SetActive(false);
 
-        _rightHandBone.GetChild(targetTool).gameObject.SetActive(true);
-        _rightHandBone.GetChild(targetTool).gameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        UI_Inven_Item handledUIItem = _quickSlotGroup.ChangeItemInHand(targetIndex);
+        
+        _rightHandBone.GetChild(targetIndex).gameObject.GetComponent<Handled_Item>()
+            .ItemUIReferenceSetter(handledUIItem);
+        _rightHandBone.GetChild(targetIndex).gameObject.SetActive(true);
     }
 
     private void FixedUpdate()

@@ -10,6 +10,8 @@ public class UI_Game_QuickSlotGroup : UI_Base
     
     public override void Init()
     {
+        Managers.Game.GetPlayer().GetComponent<PlayerController>()._quickSlotGroup = this;
+        
         // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
         Managers.Data.OnCloseQ -= ExportQuickSlotData;
         Managers.Data.OnCloseQ -= Managers.Data.SaveQuickSlotData;
@@ -19,6 +21,8 @@ public class UI_Game_QuickSlotGroup : UI_Base
         // UI 요소 시각화 하는 과정 필요함
 
         VisualizeItemsInTheGrid();
+        
+        
     }
 
     /// <summary>
@@ -117,5 +121,16 @@ public class UI_Game_QuickSlotGroup : UI_Base
         }
     
         Managers.Data.TransDataListIntoArrayForQuickSlots(_itemDataList);
+    }
+
+    public UI_Inven_Item ChangeItemInHand(int index)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            _quickSlots[i].transform.SetParent(transform);
+        }
+        _quickSlots[index].transform.SetParent(transform.parent);
+
+        return _quickSlots[index].Item;
     }
 }
