@@ -270,7 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 0}
   UINotebookPopup: {fileID: 0}
-  SlotIndex: 0
+  SlotIndex: 7
 --- !u!1 &3557883046810820313
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 0}
   UINotebookPopup: {fileID: 0}
-  SlotIndex: 0
+  SlotIndex: 5
 --- !u!1 &3815615254794895630
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 0}
   UINotebookPopup: {fileID: 0}
-  SlotIndex: 0
+  SlotIndex: 2
 --- !u!1 &3823623418408693156
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 0}
   UINotebookPopup: {fileID: 0}
-  SlotIndex: 0
+  SlotIndex: 3
 --- !u!1 &5540129946388829380
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 0}
   UINotebookPopup: {fileID: 0}
-  SlotIndex: 0
+  SlotIndex: 6
 --- !u!1 &5611423149021722677
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 0}
   UINotebookPopup: {fileID: 0}
-  SlotIndex: 0
+  SlotIndex: 1
 --- !u!1 &7442980035661683415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,4 +1167,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 0}
   UINotebookPopup: {fileID: 0}
-  SlotIndex: 0
+  SlotIndex: 4

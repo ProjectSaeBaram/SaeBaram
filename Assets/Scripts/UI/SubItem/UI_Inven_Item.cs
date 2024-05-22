@@ -146,6 +146,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (isCatched) return;
         
+        
         // image.raycastTarget = true 면, 최상위가 자기 자신이라서 InventorySlot을 지정할 수 없음. 
         image.raycastTarget = false;
         // 정확한 위치에 옮기지 않았을 경우 원래 자리로 되돌아가기 위함.
@@ -155,6 +156,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
         // 마우스 커서 클릭 위치 오프셋 적용
         _dragOffset = transform.position - Input.mousePosition;
+        
+        image.color = new Color(1,1,1,0.8f);
     }
     
     public void OnDrag(PointerEventData eventData) {
@@ -183,6 +186,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
             }
         }
         
+        image.color = new Color(1,1,1,1f);
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -307,13 +311,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        UINotebookPopup.ShowToolTip(this, eventData);
+        UINotebookPopup?.ShowToolTip(this, eventData);
         
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        UINotebookPopup.HideTooltip();
+        UINotebookPopup?.HideTooltip();
     }
     
     #endregion
