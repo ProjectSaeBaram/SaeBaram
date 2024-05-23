@@ -19,6 +19,9 @@ public class QuestManager : MonoBehaviour
         questList = new Dictionary<int, QuestData>();               //퀘스트 아이디: 퀘스트 정보
         questNpc = new Dictionary<int, NpcData>();
         GenerateData();
+
+        CheckRequirement();
+
     }
 
     public static QuestManager GetInstance()
@@ -28,16 +31,15 @@ public class QuestManager : MonoBehaviour
 
     void GenerateData()
     {
-        questList.Add(0, new MeetPeopleQuest("대화하기", 1000,"할아버지",0,QuestState.REQUIREMENTS_NOT_MET,10,"튜토리얼 마을"));
-
-        questList.Add(1, new CoincollectQuest("코인 모으기", 1000, "할아버지", 1, QuestState.REQUIREMENTS_NOT_MET, 20, "튜토리얼 마을"));
+        questList.Add(0, new DestroyBlock("코인 모으기", 1000, "할아버지", 0, QuestState.REQUIREMENTS_NOT_MET, 10, "튜토리얼"));
+        EntitiyBlock.GetInstance().BlockDead.AddListener(DestroyBlock.GetInstance().updateQuest);
 
     }
 
     public void AdvanceQuest(int id,NpcData npc)            //퀘스트 진행상황 업데이트
     {
-        questNpc.Add(id, npc);
-        questList[npc.questIndex].qs++;
+        //questNpc.Add(id, npc);
+        questList[npc.DialogueIndex].qs++;
         Debug.Log(questList[id].qs);
         if (questList[questIndex].qs == QuestState.FINISHED)
         {
@@ -61,10 +63,10 @@ public class QuestManager : MonoBehaviour
 
     }
 
-    public void CheckRequirement(int index)             //진행 순서가 맞아진다면 시작가능한 퀘스트 체크
+    public void CheckRequirement()             //진행 순서가 맞아진다면 시작가능한 퀘스트 체크
     {
         for (int i = 0; i < questList.Count; i ++){
-            if (index >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED || questList[i].qs!=QuestState.IN_PROGRESS))
+            if (PlayerController.GetInstance().GetquestIdex() >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED || questList[i].qs!=QuestState.IN_PROGRESS))
             {
                 questList[i].qs = QuestState.CAN_START;
                 Debug.Log(questList[i].qs);
@@ -92,18 +94,24 @@ public class QuestManager : MonoBehaviour
     }
     public void AdvanceIndex(NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
     {
-        if (npc.questId.Length > 1)
+        if (npc.questId.Length >= (npc.DialogueIndex+1))
         {
-            npc.questIndex++;
-            DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.questIndex);
+            npc.DialogueIndex++;
+            DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.DialogueIndex);
         }
+        //else        //더 퀘스트가 없다면
+        //{
+        //    npc.DialogueIndex = 99;
+        //    DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.DialogueIndex);
+        //}
+        PlayerController.GetInstance().IncreaseQuestIdx();
     }
     public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
     {
         questIndex += 10;
         if (questNpc[qid].questId.Length>1)
         {
-            questNpc[qid].questIndex++;
+            questNpc[qid].DialogueIndex++;
         }
         questActionIndex = 0;
     }

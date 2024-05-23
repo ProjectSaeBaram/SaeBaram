@@ -170,11 +170,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite[] playerPortrait;
     [Tab("Quest & Dialogue")]
     [SerializeField] private QuestManager _questManager;
-    [SerializeField] public int questIdx;
+    [SerializeField] public int questIdx=0;                 //TODO: 새로 시작할 때는 0 아닐때는 저장된 questIdx 값 가져오기 
     [SerializeField] public bool isQuestPanelActive;
     private bool interactPressed;
     private static PlayerController instance;
     public static PlayerController GetInstance() { return instance; }
+
+    public int GetquestIdex()
+    {
+        return questIdx;
+    }
+    public void IncreaseQuestIdx()
+    {
+        questIdx++;
+    }
     public Sprite getplayerPortrait(int num)
     {
         return playerPortrait[num];
@@ -256,7 +265,10 @@ public class PlayerController : MonoBehaviour
         _localScale = transform.localScale;
         interactPressed = false;
         instance = this;
+        
     }
+
+
 
     /// <summary>
     /// 플레이어 컨트롤러에서 중요한 역할을 하는 컴포넌트를 초기화하는 함수.
@@ -451,6 +463,7 @@ public class PlayerController : MonoBehaviour
         //    UI_DialoguePopup.GetInstance().choiceButton[id].onClick.Invoke();
         //}
         interactPressed = true;
+        //EntitiyBlock.GetInstance().Damaged(50);
     }
 
     public bool GetInteractPressed()

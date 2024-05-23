@@ -103,6 +103,8 @@ public class DataManager
     /// </summary>
     public UnityAction OnClose = null;
 
+   
+
     /// <summary>
     /// 게임이 시작할 때 데이터를 로드하는 초기화 메서드. 
     /// LoadJson 메서드를 사용해 지정된 경로의 Json 파일로부터 데이터를 로드하고,

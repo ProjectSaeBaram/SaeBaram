@@ -16,6 +16,8 @@ public abstract class QuestData
     [Header("Reward Info")]
     public int goldReward;
 
+    
+
     public QuestData(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t=QuestType.None)
     {
         questName = name;
