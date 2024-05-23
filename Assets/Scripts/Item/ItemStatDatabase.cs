@@ -69,6 +69,17 @@ public class ToolStatsDatabase : ScriptableObject
         {
             return mainStatType;
         }
+
+        /// <summary>
+        /// 엔티티와 상호작용을 위한 함수
+        /// 엔티티의 타입에 맞는 스텟을 반환한다.
+        /// </summary>
+        /// <param name="entityType">엔티티의 타입</param>
+        /// <returns></returns>
+        public int GetStatValueForEntityType(Define.ItemMainStatType entityType)
+        {
+            return Stats[entityType];
+        }
     }
 
     /// <summary>

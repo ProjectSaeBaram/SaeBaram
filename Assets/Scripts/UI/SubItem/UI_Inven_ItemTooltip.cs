@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_ItemTooltip : UI_Base
+public class UI_Inven_ItemTooltip : UI_Base
 {
     [SerializeField] private TextMeshProUGUI ItemName;
     [SerializeField] private TextMeshProUGUI ItemContext;
@@ -63,7 +63,7 @@ public class UI_ItemTooltip : UI_Base
         for (int i = 0; i < Logs.Count; i++)
         {
             Logs[i].text = "";
-            // Ã¹¹øÂ° Log Text¸¸ È°¼ºÈ­
+            // ì²«ë²ˆì§¸ Log Textë§Œ í™œì„±í™”
             Logs[i].gameObject.SetActive(i == 0);
         }
 

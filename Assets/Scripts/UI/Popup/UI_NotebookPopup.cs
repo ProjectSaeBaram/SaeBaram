@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_NotebookPopup : UI_Popup
@@ -49,7 +50,7 @@ public class UI_NotebookPopup : UI_Popup
 
     [SerializeField] public UI_Inven_Item CatchedItem = null;
 
-    [SerializeField] private UI_ItemTooltip uiItemTooltip;
+    [FormerlySerializedAs("uiItemTooltip")] [SerializeField] private UI_Inven_ItemTooltip uiInvenItemTooltip;
 
     [SerializeField] private UI_Game_QuickSlotGroup _quickSlotGroup;
     
@@ -78,7 +79,7 @@ public class UI_NotebookPopup : UI_Popup
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
         
-        uiItemTooltip = Get<GameObject>((int)GameObjects.ItemToolTip).GetComponent<UI_ItemTooltip>();
+        uiInvenItemTooltip = Get<GameObject>((int)GameObjects.ItemToolTip).GetComponent<UI_Inven_ItemTooltip>();
         Get<GameObject>((int)GameObjects.ItemToolTip).SetActive(false);
         
         // 여기 안에서 동작하는 함수들의 순서는 서로 매우 긴밀하게 연결되어있음. 조작 시 주의할 것.
@@ -112,24 +113,28 @@ public class UI_NotebookPopup : UI_Popup
         // 노트북 팝업이 열릴 때는 시간 정지
         Time.timeScale = 0;
 
-        // 플레이어 아이템 줍기 기능 비활성화 
+        // 플레이어 액션 일부 비활성화 
         DisablePickupItem();
     }
 
     /// <summary>
-    /// 플레이어 아이템 줍기 기능 비활성화 
+    /// 플레이어 아이템 줍기 기능 & 공격 기능 비활성화 
     /// </summary>
     void DisablePickupItem()
     {
-        Managers.Game.GetPlayer().GetComponent<PlayerController>().DisablePickupItem();
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.DisablePickupItem();
+        player.DisableClick();
     }
     
     /// <summary>
-    /// 플레이어 아이템 줍기 기능 활성화 
+    /// 플레이어 아이템 줍기 기능 & 공격 기능 활성화 
     /// </summary>
     void EnablePickupItem()
     {
-        Managers.Game.GetPlayer().GetComponent<PlayerController>().EnablePickupItem();
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.EnablePickupItem();
+        player.EnableClick();
     }
     
     #region Inventory
@@ -261,14 +266,14 @@ public class UI_NotebookPopup : UI_Popup
 
     public void ShowToolTip(UI_Inven_Item invenItem, PointerEventData eventData)
     {
-        uiItemTooltip.gameObject.SetActive(true);
-        uiItemTooltip.ShowTooltip(invenItem, eventData);
+        uiInvenItemTooltip.gameObject.SetActive(true);
+        uiInvenItemTooltip.ShowTooltip(invenItem, eventData);
     }
 
     public void HideTooltip()
     {
-        uiItemTooltip.gameObject.SetActive(false);
-        uiItemTooltip.UnsetPointerEventData();
+        uiInvenItemTooltip.gameObject.SetActive(false);
+        uiInvenItemTooltip.UnsetPointerEventData();
     }
     
     #endregion

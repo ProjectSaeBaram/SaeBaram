@@ -52,11 +52,10 @@ MonoBehaviour:
   _itemAppearance: {fileID: 5596753587474704417}
   ItemId: 0
   Quality: 0
-  Amount: 0
+  Amount: 1
   Durability: 0
   ReinforceCount: 0
   itemType: 2
-  isEatable: 0
   Logs: []
 --- !u!61 &4405160857241228835
 BoxCollider2D:

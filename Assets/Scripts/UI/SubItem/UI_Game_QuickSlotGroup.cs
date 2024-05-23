@@ -21,8 +21,6 @@ public class UI_Game_QuickSlotGroup : UI_Base
         // UI 요소 시각화 하는 과정 필요함
 
         VisualizeItemsInTheGrid();
-        
-        
     }
 
     /// <summary>

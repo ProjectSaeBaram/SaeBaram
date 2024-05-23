@@ -215,6 +215,7 @@ public class PlayerController : MonoBehaviour
                     _animator.CrossFade("PlayerFall", fallCFCoef);
                     break;
                 case PlayerAttackState playerAttackState:
+                    _animator.CrossFade("PlayerAttack", fallCFCoef);
                     break;
             }
 
@@ -289,6 +290,9 @@ public class PlayerController : MonoBehaviour
         CurrentState = _idleState;
     }
 
+
+    [SerializeField] private Handled_Item _handledItem;
+    
     /// <summary>
     /// 손에 쥔 물건을 바꾸는 함수
     /// </summary>
@@ -303,9 +307,9 @@ public class PlayerController : MonoBehaviour
             _rightHandBone.GetChild(i).gameObject.SetActive(false);
 
         UI_Inven_Item handledUIItem = _quickSlotGroup.ChangeItemInHand(targetIndex);
-        
-        _rightHandBone.GetChild(targetIndex).gameObject.GetComponent<Handled_Item>()
-            .ItemUIReferenceSetter(handledUIItem);
+
+        _handledItem = _rightHandBone.GetChild(targetIndex).gameObject.GetComponent<Handled_Item>();
+        _handledItem.ItemUIReferenceSetter(handledUIItem);
         _rightHandBone.GetChild(targetIndex).gameObject.SetActive(true);
     }
 
@@ -527,8 +531,50 @@ public class PlayerController : MonoBehaviour
     }
     
     #endregion
+
+    #region Click
+
+    void OnClick(InputAction.CallbackContext context)
+    {
+        // 들고있는 아이템을 휘두르기
+        CurrentState = _attackState;
+    }
+
+    void EndAttackState()
+    {
+        // 공격이 끝났으니까, IdleState로 복귀
+        CurrentState = _idleState;
+    }
+
+    /// <summary>
+    /// 손에 쥔 도구를 휘두르기 시작할 때 Call되는 함수
+    /// </summary>
+    void SwingStart()
+    {
+        _handledItem?.Activate();
+    }
+    /// <summary>
+    /// 손에 쥔 도구를 휘두르는게 끝날 때 Call되는 함수
+    /// </summary>
+    void SwingEnd()
+    {
+        _handledItem?.Deactivate();
+    }
+    
+    #endregion
     
     #region About PlayerInput
+
+    public void DisableClick()
+    {
+        _playerInputActions.PlayerAction.Click.Disable();
+    }
+    
+    public void EnableClick()
+    {
+        _playerInputActions.PlayerAction.Click.Enable();
+    }
+    
     private void OnEnable()
     {
         // PlayerInput을 컴포넌트 대신 스크립트로
@@ -547,6 +593,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+        _playerInputActions.PlayerAction.Click.performed += OnClick;
         _playerInputActions.Enable();   
     }
     
@@ -568,6 +615,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
+        _playerInputActions.PlayerAction.Click.performed -= OnClick;
         _playerInputActions.Disable();
     }
 

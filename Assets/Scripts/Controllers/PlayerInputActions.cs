@@ -98,6 +98,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""90cd49c8-2c53-444b-ae5b-c18fdcc3e07c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -362,6 +371,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PickupItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41b1308b-311c-4423-bcd0-de7b4cfd2d21"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -924,6 +944,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerAction_RunningSwitch = m_PlayerAction.FindAction("RunningSwitch", throwIfNotFound: true);
         m_PlayerAction_OpenNotebook = m_PlayerAction.FindAction("OpenNotebook", throwIfNotFound: true);
         m_PlayerAction_PickupItem = m_PlayerAction.FindAction("PickupItem", throwIfNotFound: true);
+        m_PlayerAction_Click = m_PlayerAction.FindAction("Click", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1005,6 +1026,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerAction_RunningSwitch;
     private readonly InputAction m_PlayerAction_OpenNotebook;
     private readonly InputAction m_PlayerAction_PickupItem;
+    private readonly InputAction m_PlayerAction_Click;
     public struct PlayerActionActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1017,6 +1039,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @RunningSwitch => m_Wrapper.m_PlayerAction_RunningSwitch;
         public InputAction @OpenNotebook => m_Wrapper.m_PlayerAction_OpenNotebook;
         public InputAction @PickupItem => m_Wrapper.m_PlayerAction_PickupItem;
+        public InputAction @Click => m_Wrapper.m_PlayerAction_Click;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1050,6 +1073,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PickupItem.started += instance.OnPickupItem;
             @PickupItem.performed += instance.OnPickupItem;
             @PickupItem.canceled += instance.OnPickupItem;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
         }
 
         private void UnregisterCallbacks(IPlayerActionActions instance)
@@ -1078,6 +1104,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PickupItem.started -= instance.OnPickupItem;
             @PickupItem.performed -= instance.OnPickupItem;
             @PickupItem.canceled -= instance.OnPickupItem;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
         }
 
         public void RemoveCallbacks(IPlayerActionActions instance)
@@ -1241,6 +1270,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnRunningSwitch(InputAction.CallbackContext context);
         void OnOpenNotebook(InputAction.CallbackContext context);
         void OnPickupItem(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

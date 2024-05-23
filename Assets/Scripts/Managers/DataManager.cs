@@ -606,10 +606,10 @@ public class DataManager
             InventoryTable[fromIndex] = 0;
         }
 
-        DroppedItem droppedItem = Managers.Game.Spawn(Define.WorldObject.DroppedItem, "DroppedItem").GetComponent<DroppedItem>();
+        DroppedItem droppedItem = Managers.Game.Spawn(Define.WorldObject.DroppedItem, "Item/DroppedItem").GetComponent<DroppedItem>();
         droppedItem.transform.position = Managers.Game.GetPlayer().transform.position + Vector3.up * 30;
 
-        droppedItem.InitInfo(item);
+        droppedItem.InitInfoByUI(item);
         Object.DestroyImmediate(item.gameObject);
     }
     
