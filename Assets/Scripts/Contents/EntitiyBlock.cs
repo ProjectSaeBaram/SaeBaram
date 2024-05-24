@@ -10,7 +10,7 @@ public class EntitiyBlock : EntityInfo
     [SerializeField] private int EHp;
 
     public bool playerInRange;
-    public UnityAction BlockDead;
+    public UnityEvent BlockDead;
     public static EntitiyBlock Instance;
     public NpcData npc;
     private void Awake()
@@ -18,6 +18,10 @@ public class EntitiyBlock : EntityInfo
         EHp = 100;
         Instance = this;
         playerInRange = false;
+        if (BlockDead == null)
+        {
+            BlockDead = new UnityEvent();
+        }
     }
 
     private void FixedUpdate()

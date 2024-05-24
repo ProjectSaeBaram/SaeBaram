@@ -468,7 +468,7 @@ public class PlayerController : MonoBehaviour
         //    UI_DialoguePopup.GetInstance().choiceButton[id].onClick.Invoke();
         //}
         //EntitiyBlock.GetInstance().Damaged(50);
-
+        interactPressed = true;
     }
 
     public bool GetInteractPressed()
