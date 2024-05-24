@@ -5,8 +5,8 @@ using UnityEngine.Serialization;
 /// <summary>
 /// 아이템 스텟 데이터베이스를 관리하는 스크립터블 오브젝트 클래스
 /// </summary>
-[CreateAssetMenu(fileName = "ItemStatsDatabase", menuName = "Inventory/ItemStatsDatabase")]
-public class ItemStatsDatabase : ScriptableObject
+[CreateAssetMenu(fileName = "ToolStatsDatabase", menuName = "Inventory/ToolStatsDatabase")]
+public class ToolStatsDatabase : ScriptableObject
 {
     /// <summary>
     /// 아이템의 스탯을 저장하는 클래스
@@ -15,19 +15,22 @@ public class ItemStatsDatabase : ScriptableObject
     public class ItemStats
     {
         [Tooltip("아이템 ID")] 
-        [SerializeField] public int id; // 아이템의 고유 ID
+        [SerializeField] public int id;             // 아이템의 고유 ID
 
         [Tooltip("벌목 능력치")] 
-        [SerializeField] private int lumbering; // 벌목 능력치
+        [SerializeField] private int lumbering;     // 벌목 능력치
 
         [Tooltip("분해 능력치")] 
-        [SerializeField] private int dismantling; // 분해 능력치
+        [SerializeField] private int dismantlingHammer;   // 분해 능력치 - 망치버전 
+        
+        [Tooltip("분해 능력치")] 
+        [SerializeField] private int dismantlingDriver;   // 분해 능력치 - 드라이버 버전
 
         [Tooltip("채광 능력치")] 
-        [SerializeField] private int mining; // 채광 능력치
+        [SerializeField] private int mining;        // 채광 능력치
 
         [Tooltip("공격 능력치")] 
-        [SerializeField] private int attack; // 공격 능력치
+        [SerializeField] private int attack;        // 공격 능력치
 
         [FormerlySerializedAs("mainStat")]
         [Tooltip("주 능력치")] 
@@ -43,10 +46,11 @@ public class ItemStatsDatabase : ScriptableObject
         {
             Stats.Clear();
             Stats[Define.ItemMainStatType.Lumbering] = lumbering;
-            Stats[Define.ItemMainStatType.Dismantling] = dismantling;
+            Stats[Define.ItemMainStatType.DismantlingHammer] = dismantlingHammer;
+            Stats[Define.ItemMainStatType.DismantlingDriver] = dismantlingDriver;
             Stats[Define.ItemMainStatType.Mining] = mining;
             Stats[Define.ItemMainStatType.Attack] = attack;
-        }
+        }   
         
         /// <summary>
         /// 아이템의 주 능력치 값을 반환하는 함수
@@ -64,6 +68,17 @@ public class ItemStatsDatabase : ScriptableObject
         public Define.ItemMainStatType GetMainStatType()
         {
             return mainStatType;
+        }
+
+        /// <summary>
+        /// 엔티티와 상호작용을 위한 함수
+        /// 엔티티의 타입에 맞는 스텟을 반환한다.
+        /// </summary>
+        /// <param name="entityType">엔티티의 타입</param>
+        /// <returns></returns>
+        public int GetStatValueForEntityType(Define.ItemMainStatType entityType)
+        {
+            return Stats[entityType];
         }
     }
 

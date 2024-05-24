@@ -136,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wood_Stick
+      name: Fiber
       rect:
         serializedVersion: 2
         x: 0
@@ -147,10 +147,10 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 48, y: 48}
-        - {x: -48, y: 48}
-        - {x: -48, y: -48}
+      - - {x: -48, y: -48}
         - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
       physicsShape: []
       tessellationDetail: 0
       bones: []
@@ -161,7 +161,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Iron_Plate
+      name: Leather
       rect:
         serializedVersion: 2
         x: 96
@@ -172,10 +172,10 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 48, y: 48}
-        - {x: -48, y: 48}
-        - {x: -48, y: -48}
+      - - {x: -48, y: -48}
         - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
       physicsShape: []
       tessellationDetail: 0
       bones: []
@@ -186,51 +186,251 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Stone
+      name: Wood_Stick
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
+        x: 0
+        y: 192
         width: 96
         height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 48, y: 48}
-        - {x: -48, y: 48}
-        - {x: -48, y: -48}
+      - - {x: -48, y: -48}
         - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7245f2905eb342049a3f64122c98ea76
-      internalID: -1886493791
+      spriteID: d0a401ed4447fef45858f7dbcc45fcd5
+      internalID: 1641108432
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Empty
+      name: Stone_Plate
       rect:
         serializedVersion: 2
-        x: 288
-        y: 0
+        x: 96
+        y: 192
         width: 96
         height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 48, y: 48}
-        - {x: -48, y: 48}
-        - {x: -48, y: -48}
+      - - {x: -48, y: -48}
         - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4cea5069676bf540a1390bca3f05939
-      internalID: -1498598452
+      spriteID: 7624cb02b0ef0af47a4629c0f940cfd6
+      internalID: 1126518132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18166cd8ba08cc94ea48818ad5c52045
+      internalID: -1110393955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wood
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 192
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84b03a21d4511314d9e448fd45d60d01
+      internalID: -1449860392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iron
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a68b52039414574bab2f78f8f52bd14
+      internalID: 1237924245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone_Stick
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b739a687353ecb4cb0d4d4ce6d750a8
+      internalID: 2007092098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iron_Stick
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc755af7e33504440988187ab9e9a568
+      internalID: 2142968402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Iron_Plate
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 96
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cc53420b36cafe4e8f8694ca15c7f0a
+      internalID: -1463147223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wood_Plate
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 96
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73774be76a633104bad7243213129a20
+      internalID: -1231190645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Circuit
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 96
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 872ad8de2e95632439181eaf9e4ffa19
+      internalID: 163211460
       vertices: []
       indices: 
       edges: []
@@ -246,10 +446,20 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Circuit: 163211460
       Empty: -1498598452
-      Iron_Plate: 1863807134
-      Stone: -1886493791
-      Wood_Stick: -26076695
+      Fiber: -26076695
+      Iron: 1237924245
+      Iron_Plate: -1463147223
+      Iron_Stick: 2142968402
+      Leather: 1863807134
+      Stone: -1110393955
+      Stone_Plate: 1126518132
+      Stone_Stick: 2007092098
+      Wood: -1449860392
+      Wood_Plate: -1231190645
+      Wood_Stick: 1641108432
+      a: -1886493791
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

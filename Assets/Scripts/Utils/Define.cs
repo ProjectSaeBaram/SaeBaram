@@ -81,8 +81,11 @@ public class Define
     public enum ItemMainStatType
     {
         Lumbering,
-        Dismantling,
+        DismantlingHammer,
+        DismantlingDriver,
         Mining,
         Attack,
+        Mechanic,
     }
+    
 }

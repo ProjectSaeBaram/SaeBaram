@@ -227,6 +227,7 @@ public class PlayerController : MonoBehaviour
                     _animator.CrossFade("PlayerFall", fallCFCoef);
                     break;
                 case PlayerAttackState playerAttackState:
+                    _animator.CrossFade("PlayerAttack", fallCFCoef);
                     break;
             }
 
@@ -250,7 +251,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _rightHandBone;
-
+    [SerializeField] public UI_Game_QuickSlotGroup _quickSlotGroup;
+    
     private PlayerInputActions _playerInputActions;
     private Vector3 _localScale;
 
@@ -303,6 +305,9 @@ public class PlayerController : MonoBehaviour
         CurrentState = _idleState;
     }
 
+
+    [SerializeField] private Handled_Item _handledItem;
+    
     /// <summary>
     /// 손에 쥔 물건을 바꾸는 함수
     /// </summary>
@@ -311,13 +316,16 @@ public class PlayerController : MonoBehaviour
     {
         DebugEx.Log($"Changed to {context.control.name}th tool!");
 
-        int targetTool = int.Parse(context.control.name) - 1;
+        int targetIndex = int.Parse(context.control.name) - 1;
 
         for (int i = 0; i < _rightHandBone.childCount; i++)
             _rightHandBone.GetChild(i).gameObject.SetActive(false);
 
-        _rightHandBone.GetChild(targetTool).gameObject.SetActive(true);
-        _rightHandBone.GetChild(targetTool).gameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        UI_Inven_Item handledUIItem = _quickSlotGroup.ChangeItemInHand(targetIndex);
+
+        _handledItem = _rightHandBone.GetChild(targetIndex).gameObject.GetComponent<Handled_Item>();
+        _handledItem.ItemUIReferenceSetter(handledUIItem);
+        _rightHandBone.GetChild(targetIndex).gameObject.SetActive(true);
     }
 
     private void FixedUpdate()
@@ -449,12 +457,6 @@ public class PlayerController : MonoBehaviour
     void InteractStarted(InputAction.CallbackContext context)
     {
         DebugEx.Log($"InteractStarted");
-        
-        if (context.control.name == "z")
-        {
-            CheckDroppedItem();
-        }
-        
     }
     void InteractPerformed(InputAction.CallbackContext context)
     {
@@ -475,15 +477,10 @@ public class PlayerController : MonoBehaviour
         interactPressed = false;
         return result;
     }
-
+    
     void InteractCanceled(InputAction.CallbackContext context)
     {
         // DebugEx.Log($"InteractCanceled");
-        
-        if (context.control.name == "z")
-        {
-            
-        }
     }
 
     void CheckDroppedItem()
@@ -498,6 +495,11 @@ public class PlayerController : MonoBehaviour
     
     #endregion
 
+    void PickupStarted(InputAction.CallbackContext context)
+    {
+        CheckDroppedItem();
+    }
+    
     #region Pause
 
     void PauseOrResume(InputAction.CallbackContext context)
@@ -545,11 +547,52 @@ public class PlayerController : MonoBehaviour
     }
     
     #endregion
+
+    #region Click
+
+    void OnClick(InputAction.CallbackContext context)
+    {
+        // 들고있는 아이템을 휘두르기
+        CurrentState = _attackState;
+    }
+
+    void EndAttackState()
+    {
+        // 공격이 끝났으니까, IdleState로 복귀
+        CurrentState = _idleState;
+    }
+
+    /// <summary>
+    /// 손에 쥔 도구를 휘두르기 시작할 때 Call되는 함수
+    /// </summary>
+    void SwingStart()
+    {
+        _handledItem?.Activate();
+    }
+    /// <summary>
+    /// 손에 쥔 도구를 휘두르는게 끝날 때 Call되는 함수
+    /// </summary>
+    void SwingEnd()
+    {
+        _handledItem?.Deactivate();
+    }
+    
+    #endregion
     
     #region About PlayerInput
+
+    public void DisableClick()
+    {
+        _playerInputActions.PlayerAction.Click.Disable();
+    }
+    
+    public void EnableClick()
+    {
+        _playerInputActions.PlayerAction.Click.Enable();
+    }
+    
     private void OnEnable()
     {
-
         // PlayerInput을 컴포넌트 대신 스크립트로
         _playerInputActions.PlayerAction.Move.started += MoveStarted;
         _playerInputActions.PlayerAction.Move.performed += MovePerformed;
@@ -565,7 +608,9 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
-        _playerInputActions.Enable();
+        _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+        _playerInputActions.PlayerAction.Click.performed += OnClick;
+        _playerInputActions.Enable();   
     }
     
     private void OnDisable()
@@ -585,7 +630,20 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
+        _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
+        _playerInputActions.PlayerAction.Click.performed -= OnClick;
         _playerInputActions.Disable();
+    }
+
+    public void DisablePickupItem()
+    {
+        _playerInputActions.PlayerAction.PickupItem.Disable();
+    }
+
+    public void EnablePickupItem()
+    {
+        _playerInputActions.PlayerAction.PickupItem.Enable();
+
     }
     
         #endregion

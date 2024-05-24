@@ -65,3 +65,11 @@ MonoBehaviour:
     name: "\uCCA0 \uB2E8\uAC80"
   - id: 140
     name: "\uB4DC\uB9B4"
+  - id: 252
+    name: "\uD560\uC544\uBC84\uC9C0\uC758 \uACE1\uAD2D\uC774"
+  - id: 253
+    name: "\uD560\uC544\uBC84\uC9C0\uC758 \uB3C4\uB07C"
+  - id: 254
+    name: "\uD560\uC544\uBC84\uC9C0\uC758 \uB9DD\uCE58"
+  - id: 255
+    name: "\uD560\uC544\uBC84\uC9C0\uC758 \uB4DC\uB77C\uC774\uBC84"

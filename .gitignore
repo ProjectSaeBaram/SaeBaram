@@ -71,4 +71,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 .idea/*
-Assets/vFolders/vFolders Data.asset
+ProjectSettings/InkSettings.asset
+ProjectSettings/ShaderGraphSettings.asset
+ProjectSettings/InkSettings.asset
+/Assets/vFolders/*
+/Assets/vHierarchy/*

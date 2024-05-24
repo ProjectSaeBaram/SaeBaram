@@ -67,6 +67,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PickupItem",
+                    "type": "Button",
+                    "id": "d10956f2-a0ba-4a84-8dc7-7fab32e148ea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Click",
+                    "type": "PassThrough",
+                    "id": "90cd49c8-2c53-444b-ae5b-c18fdcc3e07c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -204,17 +222,6 @@
                 },
                 {
                     "name": "",
-                    "id": "212eac73-e86e-4061-b273-87145d385dbd",
-                    "path": "<Keyboard>/z",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "50040575-f2d3-4b34-a78b-6270f50d8ce3",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -331,6 +338,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenNotebook",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3ef8200-9363-41fd-ab2b-fabe1db62792",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PickupItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41b1308b-311c-4423-bcd0-de7b4cfd2d21",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
