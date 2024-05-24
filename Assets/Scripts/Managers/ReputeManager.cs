@@ -15,10 +15,28 @@ public class ReputeManager : MonoBehaviour
         ReputeScore = 50;
     }
 
+    public ReputeState SetReputeState(int score)
+    {
+        if (score >= 60)
+        {
+            return ReputeState.Good;
+        }
+        else if(score<=60&&score>=40)
+        {
+            return ReputeState.Normal;
+        }
+        else
+        {
+            return ReputeState.Bad;
+        }
+ 
+    }
+
     public int GetRepute()
     {
-       return ReputeScore;
+       return this.ReputeScore;
     }
+
 
     public void SetRepute(int score)
     {

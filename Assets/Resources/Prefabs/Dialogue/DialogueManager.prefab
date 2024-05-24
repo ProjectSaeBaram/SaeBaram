@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e9e3818dc1f8c4e849fcef9e83bf6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadGlobalsJSON: {fileID: 0}
   popup: {fileID: 530071769588551860, guid: d272d641fa635094f8402ea942c6c382, type: 3}
+  ui_merchant: {fileID: 1636374434416000092, guid: bd896f28b2c7f7e40b6d2431acc7dea5, type: 3}
   qpanel: {fileID: 1494453506043453802, guid: 18769c06e8772714e91f7c0d2777545c, type: 3}
   playerController: {fileID: 908189072290955293, guid: 67087b5bc904d9244a0a7f527838c92f, type: 3}

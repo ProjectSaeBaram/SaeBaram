@@ -10,17 +10,14 @@ public class EntitiyBlock : EntityInfo
     [SerializeField] private int EHp;
 
     public bool playerInRange;
-    public UnityEvent BlockDead;
+    public UnityAction BlockDead;
     public static EntitiyBlock Instance;
+    public NpcData npc;
     private void Awake()
     {
         EHp = 100;
         Instance = this;
         playerInRange = false;
-        if (BlockDead == null)
-        {
-            BlockDead = new UnityEvent();
-        }
     }
 
     private void FixedUpdate()
@@ -42,21 +39,35 @@ public class EntitiyBlock : EntityInfo
     private void OnTriggerEnter2D(Collider2D collider)
     {
         playerInRange = true;
+        if (collider.tag == "Player")
+        {
+            npc = collider.gameObject.GetComponent<NpcData>();
+        }
+        
     }
 
     public override void Damaged(int damage)
     {
-        if (EHp - damage > 0)
+        if (QuestManager.GetInstance().CheckState(0) == QuestState.IN_PROGRESS)
         {
-            EHp -= damage;
-            DebugEx.Log("Damage : "+damage+"!");
+            if (EHp - damage > 0)
+            {
+                EHp -= damage;
+                DebugEx.Log("Damage : " + damage + "!");
+            }
+            else
+            {
+                EHp = 0;
+                DebugEx.Log(EHp);
+                Debug.Log(QuestManager.GetInstance().CheckState(0));
+                if (QuestManager.GetInstance().CheckState(0) == QuestState.IN_PROGRESS)
+                {
+                    Destroy(this.gameObject);
+                    BlockDead.Invoke(); // 엔티티가 죽을 때 이벤트 호출
+                }
+            }
         }
-        else
-        {
-            EHp= 0;
-            DebugEx.Log(EHp);
-            BlockDead.Invoke(); // 엔티티가 죽을 때 이벤트 호출
-        }
+       
     }
 
 }

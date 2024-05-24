@@ -28,12 +28,14 @@ public class DialogueManager : MonoBehaviour
     private const string BAD_TAG = "bad";
     private const string DIALOGUE_TAG = "Dialogue";
     public UI_DialoguePopup popup;
+    public UI_Merchant ui_merchant;
     public QuestLayer qpanel;
     public PlayerController playerController;
     
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
     private DialogueVariables dialogueVariables;
+
     public static DialogueManager instance;
 
     private void Awake()
@@ -41,7 +43,9 @@ public class DialogueManager : MonoBehaviour
         instance = this;
         //TODO : Json으로 저장된 챕터별 npc 아이디와 대화인덱스 변수 가져와서 변수 초기화
         //dialogueVariables = new DialogueVariables(loadGlobalsJSON);
+
     }
+
 
     public static DialogueManager GetInstance()
     {
@@ -75,27 +79,8 @@ public class DialogueManager : MonoBehaviour
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
         npcdata = npc;
-
-        //if (QuestManager.GetInstance().CheckState(npc.questId[npc.questIndex]) == QuestState.FINISHED)
-        //{
-        //    currentStory = new Story(npc.dialogue[npc.dialogue.Count-1].text);                          //퀘스트가 끝났다면 제일 마지막 대화 출력
-        //}
-        //else
-        //{
-        //    if (npc.questId.Length >= 1)
-        //    {   
-        //        //questIndex : 0부터 시작
-        //        //questActionIndex : 0 시작 1: 중간 2: 끝낼수있을때 3: 끝  4베수로 시작 
-        //        currentStory = new Story(npc.dialogue[(npc.questIndex*4 + npc.questActionIndex)].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때 
-        //    }
-        //    else             // 퀘스트가 없을 때 
-        //    {
-        //        currentStory = new Story(npc.dialogue[0].text);         //0:퀘스트시작 2: 퀘스트중간 3: 퀘스트 끝낼수 있을때 4: 퀘스트끝나고 퀘스트없을때
-        //    }
-
-        //}
+        npcdata.SetMerchant(false);
         currentStory = new Story(dialogue.text);
-        Debug.Log(dialogue.text);
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
@@ -163,7 +148,11 @@ public class DialogueManager : MonoBehaviour
                 case BAD_TAG:
                     Debug.Log("Bad+"+tagvalue);
                     break;
-                case DIALOGUE_TAG:              //퀘스트, 상점 구분 
+                case DIALOGUE_TAG:              //퀘스트, 상점 구분
+                    if (tagvalue == "Merchant")
+                    {
+                        npcdata.SetMerchant(true);
+                    }
                     break;
                 default:
                     Debug.LogWarning("Tag exists but not handled");
@@ -221,6 +210,12 @@ public class DialogueManager : MonoBehaviour
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
                 }
+            }
+
+            if(npcdata.GetMerchant())
+            {
+                Managers.UI.CloseAllPopupUI();
+                Managers.UI.ShowPopupUI<UI_Merchant>();
             }
         }
         ContinueStory();

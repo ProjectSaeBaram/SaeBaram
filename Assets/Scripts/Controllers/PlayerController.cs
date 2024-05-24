@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using VInspector;
 using Vector2 = UnityEngine.Vector2;
@@ -172,6 +173,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private QuestManager _questManager;
     [SerializeField] public int questIdx=0;                 //TODO: 새로 시작할 때는 0 아닐때는 저장된 questIdx 값 가져오기 
     [SerializeField] public bool isQuestPanelActive;
+    [SerializeField] public ReputeState RState;
+    [SerializeField] public UnityAction OnInteract;
     private bool interactPressed;
     private static PlayerController instance;
     public static PlayerController GetInstance() { return instance; }
@@ -265,7 +268,7 @@ public class PlayerController : MonoBehaviour
         _localScale = transform.localScale;
         interactPressed = false;
         instance = this;
-        
+        RState = Managers.Repute.SetReputeState(Managers.Repute.GetRepute());
     }
 
 
@@ -462,8 +465,8 @@ public class PlayerController : MonoBehaviour
         //    int id = DialogueManager.GetInstance().curchoice;
         //    UI_DialoguePopup.GetInstance().choiceButton[id].onClick.Invoke();
         //}
-        interactPressed = true;
         //EntitiyBlock.GetInstance().Damaged(50);
+
     }
 
     public bool GetInteractPressed()
@@ -472,6 +475,7 @@ public class PlayerController : MonoBehaviour
         interactPressed = false;
         return result;
     }
+
     void InteractCanceled(InputAction.CallbackContext context)
     {
         // DebugEx.Log($"InteractCanceled");
