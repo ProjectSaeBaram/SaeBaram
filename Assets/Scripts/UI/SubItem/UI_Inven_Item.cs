@@ -193,7 +193,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            UI_Inven_Item catchedItem = UINotebookPopup.CatchedItem;
+            Debug.LogWarning("Check!");
+            UI_Inven_Item catchedItem = UINotebookPopup?.CatchedItem;
             if (catchedItem != null && catchedItem?.itemType == Define.ItemType.Ingredient && this.itemType == Define.ItemType.Ingredient && catchedItem.Name == this.Name
                 && catchedItem?.Quality == this.Quality)
             {
@@ -215,7 +216,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     {
                         this.Amount += catchedItem.Amount;
                         DestroyImmediate(catchedItem.gameObject);
-                        catchedItem = null;
+                        // catchedItem = null;
                         OnValueChange.Invoke();
                     
                         // 검색
@@ -225,10 +226,19 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     {
                         this.Amount += catchedItem.Amount;
                         DestroyImmediate(catchedItem.gameObject);
-                        catchedItem = null;
+                        // catchedItem = null;
                         OnValueChange.Invoke();
                     }
                 }
+            }
+            
+            // (+ 만약 이 아이템이 QuickSlot에서 꺼내어졌다면, QuickSlot을 갱신하고 캐릭터의 손과 동기화 해야 한다)
+            var item = eventData.pointerDrag.GetComponent<UI_Inven_Item>();
+            if (item != null && item.parentAfterDrag.GetComponent<UI_Inven_Slot>() is UI_Game_QuickSlot)
+            {
+                PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+                if(item.parentAfterDrag.GetComponent<UI_Game_QuickSlot>().SlotIndex == player._handledItem.Index)
+                    player._handledItem.ItemUIReferenceSetter(null);
             }
         }
     }

@@ -48,6 +48,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 710736570674196846}
     m_Modifications:
     - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
+      propertyPath: Index
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
       propertyPath: _spriteRenderer
       value: 
       objectReference: {fileID: 4951080628374632959}
@@ -135,6 +139,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 710736570674196846}
     m_Modifications:
     - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
+      propertyPath: Index
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
       propertyPath: _spriteRenderer
       value: 
       objectReference: {fileID: 6914045286446276336}
@@ -221,6 +229,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 710736570674196846}
     m_Modifications:
+    - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
+      propertyPath: Index
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
       propertyPath: _spriteRenderer
       value: 
@@ -408,6 +420,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 710736570674196846}
     m_Modifications:
     - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
+      propertyPath: Index
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
       propertyPath: _spriteRenderer
       value: 
       objectReference: {fileID: 648376446107482273}
@@ -494,6 +510,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 710736570674196846}
     m_Modifications:
+    - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
+      propertyPath: Index
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
       propertyPath: _spriteRenderer
       value: 
@@ -911,7 +931,6 @@ MonoBehaviour:
   _rigidbody2D: {fileID: 0}
   _animator: {fileID: 0}
   _rightHandBone: {fileID: 710736570674196846}
-  _quickSlotGroup: {fileID: 0}
   _handledItem: {fileID: 0}
 --- !u!4 &7936561779221067104 stripped
 Transform:
@@ -926,6 +945,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 710736570674196846}
     m_Modifications:
+    - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
+      propertyPath: Index
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
       propertyPath: _spriteRenderer
       value: 
@@ -1013,6 +1036,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 710736570674196846}
     m_Modifications:
+    - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
+      propertyPath: Index
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4421619195122347372, guid: 9d2800eeb29f208479a640adcf4009c5, type: 3}
       propertyPath: _spriteRenderer
       value: 

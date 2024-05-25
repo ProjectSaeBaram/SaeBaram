@@ -88,7 +88,7 @@ public class UI_SeparateIngredientPopup : UI_Popup
         ClosePopupUI(null);
         item.parentPanel = _originItem.parentPanel;
         item.parentAfterDrag = _originItem.parentAfterDrag;
-        item.UINotebookPopup = _originItem.parentPanel.transform.parent.GetComponent<UI_NotebookPopup>();
+        item.UINotebookPopup = GameObject.FindObjectOfType<UI_NotebookPopup>();
         item.transform.SetParent(item.parentPanel.transform);
         item.Catched();
     }

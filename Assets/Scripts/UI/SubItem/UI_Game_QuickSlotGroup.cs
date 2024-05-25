@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class UI_Game_QuickSlotGroup : UI_Base
@@ -8,9 +9,12 @@ public class UI_Game_QuickSlotGroup : UI_Base
     [SerializeField] private List<UI_Inven_Item> visualizedItems = new List<UI_Inven_Item>();
     private List<ItemData> _itemDataList = new List<ItemData>();
     
+    private TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
+    private int initializedItemCount = 0;
+    
     public override void Init()
     {
-        Managers.Game.GetPlayer().GetComponent<PlayerController>()._quickSlotGroup = this;
+        Managers.Game.GetPlayer().GetComponent<PlayerController>().QuickSlotGroup = this;
         
         // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
         Managers.Data.OnCloseQ -= ExportQuickSlotData;
@@ -18,13 +22,39 @@ public class UI_Game_QuickSlotGroup : UI_Base
         Managers.Data.OnCloseQ += ExportQuickSlotData;
         Managers.Data.OnCloseQ += Managers.Data.SaveQuickSlotData;
 
-        // UI 요소 시각화 하는 과정 필요함
-
+        // UI 요소 시각화 하는 과정
         VisualizeItemsInTheGrid();
+        
+        // 각 슬롯의 OnItemInitialized 이벤트를 구독
+        foreach (var slot in _quickSlots)
+        {
+            slot.OnItemInitialized += OnItemInitializedHandler;
+        }
+        
+        // 각 슬롯의 Item 값이 초기화되어 있는지 확인
+        foreach (var slot in _quickSlots)
+        {
+            OnItemInitializedHandler();
+        }
+    }
+    
+    private void OnItemInitializedHandler()
+    {
+        initializedItemCount++;
+        Debug.Log("Item initialized count: " + initializedItemCount);
+        if (initializedItemCount == _quickSlots.Count)
+        {
+            _tcs.TrySetResult(true);
+        }
     }
 
+    public Task WaitForAllItemsToBeInitialized()
+    {
+        return _tcs.Task;
+    }
+    
     /// <summary>
-    /// 인벤토리가 열릴 때, 아이템을 불러들여 시각화하는 기능
+    /// 게임이 켜질 때, 아이템을 불러들여 시각화하는 기능
     /// </summary>
     public void VisualizeItemsInTheGrid()
     {
@@ -72,11 +102,11 @@ public class UI_Game_QuickSlotGroup : UI_Base
     /// 슬롯들의 아이템들 레퍼런스 잡아주기
     /// </summary>
     /// <param name="notebookPopup"></param>
-    public void InitQuickSlotsNotebookRef(UI_NotebookPopup notebookPopup)
+    public void InitQuickSlotsNotebookRef(UI_NotebookPopup notebookPopup) 
     {
-        foreach (var quickSlot in _quickSlots)
+        foreach (var quickSlot in _quickSlots) 
         {
-            quickSlot.SetNotebookPopup(notebookPopup);
+            quickSlot.SetNotebookPopup(notebookPopup); 
         }
     }
     
@@ -120,7 +150,7 @@ public class UI_Game_QuickSlotGroup : UI_Base
     
         Managers.Data.TransDataListIntoArrayForQuickSlots(_itemDataList);
     }
-
+    
     public UI_Inven_Item ChangeItemInHand(int index)
     {
         for (int i = 0; i < 8; i++)
@@ -129,6 +159,8 @@ public class UI_Game_QuickSlotGroup : UI_Base
         }
         _quickSlots[index].transform.SetParent(transform.parent);
 
+        
+        
         return _quickSlots[index].Item;
     }
 }

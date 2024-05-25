@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -239,14 +240,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _rightHandBone;
-    [SerializeField] public UI_Game_QuickSlotGroup _quickSlotGroup;
+    [SerializeField] public Handled_Item _handledItem;
+    
+    private UI_Game_QuickSlotGroup _quickSlotGroup;
     
     private PlayerInputActions _playerInputActions;
     private Vector3 _localScale;
+    
+    private TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
 
-    // [Tab("Interaction")]
-    // [SerializeField] public GameObject NPC;
-    // [SerializeField] private bool isNPCAvailable = false;
+    [SerializeField] public UI_Game_QuickSlotGroup QuickSlotGroup
+    {
+        get => _quickSlotGroup;
+        set
+        {
+            _quickSlotGroup = value;
+            if (_quickSlotGroup != null)
+            {
+                _tcs.TrySetResult(true);
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -254,10 +268,25 @@ public class PlayerController : MonoBehaviour
         InitKeyComponents();
         // State 초기화
         InitStates();
+        
         DialogueManager.GetInstance().playerController = this;
         _localScale = transform.localScale;
         interactPressed = false;
         instance = this;
+    }
+    
+    private void Start()
+    {
+        // 처음 시작할 때에는, 퀵슬롯 첫번째 칸의 아이템을 들고있는다.
+        WaitForQuickSlotGroup();
+    }
+    
+    async Task WaitForQuickSlotGroup()
+    {
+        await _tcs.Task;
+        await _quickSlotGroup.WaitForAllItemsToBeInitialized();
+        Debug.Log("QuickSlotGroup has been set.");
+        ChangeItemsInHand(1);
     }
 
     /// <summary>
@@ -289,28 +318,31 @@ public class PlayerController : MonoBehaviour
 
         CurrentState = _idleState;
     }
-
-
-    [SerializeField] private Handled_Item _handledItem;
     
     /// <summary>
     /// 손에 쥔 물건을 바꾸는 함수
     /// </summary>
     /// <param name="context"></param>
-    private void OnChange(InputAction.CallbackContext context)
+    private void OnUpperNumberKeyPressed(InputAction.CallbackContext context)
     {
-        int targetIndex = int.Parse(context.control.name) - 1;
+        ChangeItemsInHand(int.Parse(context.control.name));
+    }
+
+    void ChangeItemsInHand(int keyNumber)
+    {
+        int targetIndex = keyNumber - 1;
 
         for (int i = 0; i < _rightHandBone.childCount; i++)
             _rightHandBone.GetChild(i).gameObject.SetActive(false);
-
+        
         UI_Inven_Item handledUIItem = _quickSlotGroup.ChangeItemInHand(targetIndex);
 
         _handledItem = _rightHandBone.GetChild(targetIndex).gameObject.GetComponent<Handled_Item>();
+        
         _handledItem.ItemUIReferenceSetter(handledUIItem);
-        _rightHandBone.GetChild(targetIndex).gameObject.SetActive(true);
+        _handledItem.gameObject.SetActive(true);
     }
-
+    
     private void FixedUpdate()
     {
         CurrentState?.Execute();
@@ -587,7 +619,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Interact.started += InteractStarted;
         _playerInputActions.PlayerAction.Interact.performed += InteractPerformed;
         _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
-        _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
+        _playerInputActions.PlayerAction.WeaponChange.performed += OnUpperNumberKeyPressed;
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
@@ -609,7 +641,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Interact.started -= InteractStarted;
         _playerInputActions.PlayerAction.Interact.performed -= InteractPerformed;
         _playerInputActions.PlayerAction.Interact.canceled -= InteractCanceled;
-        _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
+        _playerInputActions.PlayerAction.WeaponChange.performed -= OnUpperNumberKeyPressed;
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
