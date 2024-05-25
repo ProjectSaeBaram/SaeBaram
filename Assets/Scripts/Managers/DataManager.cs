@@ -176,6 +176,16 @@ public class DataManager
     }
 
     /// <summary>
+    /// 아이템 id로 아이템 타입을 찾는 함수
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Define.ItemType ItemTypeById(int id)
+    {
+        return (id >= BOUNDARY) ? Define.ItemType.Tool : Define.ItemType.Ingredient;
+    }
+    
+    /// <summary>
     /// 인벤토리를 테스트 데이터로 채우는 함수
     /// </summary>
     public void MakeItemTest()
@@ -599,7 +609,6 @@ public class DataManager
     /// </summary>
     public void RemoveItemFromInventory(UI_Inven_Item item)
     {
-        // TODO : 아이템 제거
         if (item.parentAfterDrag.GetComponent<UI_Inven_Slot>() is not UI_Inven_CraftingSlot)
         {
             int fromIndex = item.parentAfterDrag.GetComponent<UI_Inven_Slot>().SlotIndex;
@@ -651,14 +660,4 @@ public class DataManager
     }
 
     #endregion
-
-    /// <summary>
-    /// 아이템 id로 아이템 타입을 찾는 함수
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public Define.ItemType ItemTypeById(int id)
-    {
-        return (id >= BOUNDARY) ? Define.ItemType.Tool : Define.ItemType.Ingredient;
-    }
 }
