@@ -299,8 +299,6 @@ public class PlayerController : MonoBehaviour
     /// <param name="context"></param>
     private void OnChange(InputAction.CallbackContext context)
     {
-        DebugEx.Log($"Changed to {context.control.name}th tool!");
-
         int targetIndex = int.Parse(context.control.name) - 1;
 
         for (int i = 0; i < _rightHandBone.childCount; i++)
@@ -551,14 +549,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void SwingStart()
     {
-        _handledItem?.Activate();
+        _handledItem?.ColliderActivate();
     }
     /// <summary>
     /// 손에 쥔 도구를 휘두르는게 끝날 때 Call되는 함수
     /// </summary>
     void SwingEnd()
     {
-        _handledItem?.Deactivate();
+        _handledItem?.ColliderDeactivate();
     }
     
     #endregion

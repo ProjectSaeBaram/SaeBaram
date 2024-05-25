@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -10,6 +11,8 @@ public class Handled_Item : MonoBehaviour
     [SerializeField] private Collider2D _collider;
 
     public ToolStatsDatabase.ItemStats _itemStats;
+
+    private HashSet<EntityController> triggeredEntities = new HashSet<EntityController>();
     
     private void OnEnable()
     {
@@ -27,14 +30,30 @@ public class Handled_Item : MonoBehaviour
         _itemStats = _toolStatsDatabase.GetItemStats(Managers.Data.reverseItemCodeDict[_uiInvenItem.Name]);
     }
 
-    public void Activate()
+    public void ColliderActivate()
     {
         _collider.enabled = true;
-        
+        triggeredEntities.Clear();
     }
 
-    public void Deactivate()
+    public void ColliderDeactivate()
     {
         _collider.enabled = false;
+    }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Entity 랑만 Trigger
+        EntityController target = other.GetComponent<EntityController>();
+        if (target == null) return;
+
+        // 이미 Trigger된 Entity라면 무시
+        if (triggeredEntities.Contains(target)) return;
+        
+        // Trigger되지 않은 새로운 Entity라면 처리
+        triggeredEntities.Add(target);
+        
+        // 대상 Entity의 맞는 함수 동작
+        target.GetHit(this, _itemStats.GetStatValueForEntityType(target.EntityType));
     }
 }
