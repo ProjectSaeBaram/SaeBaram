@@ -78,6 +78,7 @@ public class DialogueManager : MonoBehaviour
 
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
+        Time.timeScale = 0;
         npcdata = npc;
         npcdata.SetMerchant(false);
         currentStory = new Story(dialogue.text);
@@ -102,7 +103,7 @@ public class DialogueManager : MonoBehaviour
 
     private void ContinueStory()
     {
-        Time.timeScale = 0;
+        
         if (currentStory.canContinue)                   //더 보여줄 이야기가 있다면
         {
             popup.dialogueText.text = currentStory.Continue();            //한줄 출력

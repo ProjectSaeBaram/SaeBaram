@@ -674,6 +674,7 @@ MonoBehaviour:
   displayNameText: {fileID: 5478495677640288414}
   portraitImage: {fileID: 8682908052636408133}
   layoutAnimator: {fileID: 0}
+  continueIcon: {fileID: 0}
   choicesText:
   - {fileID: 5082945971848264598}
   - {fileID: 5336811801261998789}
@@ -785,7 +786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.70980394}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
