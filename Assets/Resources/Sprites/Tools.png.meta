@@ -535,6 +535,31 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Drill
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: -48}
+        - {x: 48, y: -48}
+        - {x: 48, y: 48}
+        - {x: -48, y: 48}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58014d616d0de4c44902f1a4f63a142b
+      internalID: 990661468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -548,6 +573,7 @@ TextureImporter:
     nameFileIdTable:
       Bow: 792425395
       Club: -1271333134
+      Drill: 990661468
       Granpa_Axe: 1919237178
       Granpa_Driver: -1351901248
       Granpa_Hammer: -1481072322

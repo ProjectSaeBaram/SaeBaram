@@ -39,7 +39,7 @@ public class IronOreController : EntityController
     
     protected override void WhenDestroy(Handled_Item target)
     {
-        if (target._itemStats.GetMainStatType() == EntityType)
+        if (target._itemStats.GetMainStatType() == EntityType || target._itemStats.GetMainStatType() == Define.ItemMainStatType.Mechanic)
         {
             // 철 드랍
             DropItem(3);

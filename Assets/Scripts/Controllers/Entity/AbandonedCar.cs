@@ -49,6 +49,12 @@ public class AbandonedCar : EntityController
             // 회로 드랍
             DropItem(10);
         }
+        else if (target._itemStats.GetMainStatType() == Define.ItemMainStatType.Mechanic)
+        {
+            // 철판, 회로 드랍
+            DropItem(9);
+            DropItem(10);
+        }
 
         // 사운드 재생
         int randomSound = Random.Range(0, OnDestroySound.Length);

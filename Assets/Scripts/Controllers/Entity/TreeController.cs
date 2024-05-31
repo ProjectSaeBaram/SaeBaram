@@ -38,7 +38,7 @@ public class TreeController : EntityController
     
     protected override void WhenDestroy(Handled_Item target)
     {
-        if (target._itemStats.GetMainStatType() == EntityType)
+        if (target._itemStats.GetMainStatType() == EntityType || target._itemStats.GetMainStatType() == Define.ItemMainStatType.Mechanic)
         {
             // 나무 드랍
             DropItem(1);
