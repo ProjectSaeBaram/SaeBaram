@@ -71,6 +71,5 @@ public class Handled_Item : MonoBehaviour
         // 대상 Entity가 HandledITem에게서 맞는다
         
         target.GetHit(this, _itemStats.GetStatValueForEntityType(target.EntityType));
-        
     }
 }

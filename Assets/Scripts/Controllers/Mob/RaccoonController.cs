@@ -76,7 +76,7 @@ public class RaccoonController : MobController
 
     public override bool IsPlayerDetected()
     {
-        return Vector2.Distance(transform.position, GameObject.FindWithTag("Player").transform.position) <= detectionRange;
+        return Vector2.Distance(transform.position, Managers.Game.GetPlayer().transform.position) <= detectionRange;
     }
 
     public override void SetDestination(Vector2 destination)
