@@ -66,8 +66,9 @@ public class SoundManager
     /// </summary>
     /// <param name="audioClip">AudioClip</param>
     /// <param name="type">Clip의 종류</param>
+    /// <param name="volume">재생 볼륨</param>
     /// <param name="pitch">재생 속도</param>
-    public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+    public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float volume = 1.0f, float pitch = 1.0f)
     {
         if (audioClip == null)
             return;
@@ -80,6 +81,7 @@ public class SoundManager
                 audioSource.Stop();
             
             audioSource.pitch = pitch;
+            audioSource.volume = volume;
             audioSource.clip = audioClip;
             audioSource.Play();
         }
@@ -87,6 +89,7 @@ public class SoundManager
         {
             AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
             audioSource.pitch = pitch;
+            audioSource.volume = volume;
             audioSource.PlayOneShot(audioClip);
         }
     }

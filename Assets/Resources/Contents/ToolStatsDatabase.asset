@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b7ec6128d0aba469ae89630b9d5495, type: 3}
+  m_Name: ToolStatsDatabase
+  m_EditorClassIdentifier: 
+  itemStatsList:
+  - id: 128
+    lumbering: 10
+    dismantlingHammer: 5
+    dismantlingDriver: 5
+    mining: 15
+    attack: 7
+    mainStatType: 3
+  - id: 129
+    lumbering: 15
+    dismantlingHammer: 5
+    dismantlingDriver: 5
+    mining: 10
+    attack: 10
+    mainStatType: 0
+  - id: 130
+    lumbering: 1
+    dismantlingHammer: 10
+    dismantlingDriver: 10
+    mining: 5
+    attack: 5
+    mainStatType: 1
+  - id: 131
+    lumbering: 1
+    dismantlingHammer: 10
+    dismantlingDriver: 10
+    mining: 1
+    attack: 3
+    mainStatType: 2
+  - id: 132
+    lumbering: 5
+    dismantlingHammer: 1
+    dismantlingDriver: 1
+    mining: 1
+    attack: 15
+    mainStatType: 4
+  - id: 133
+    lumbering: 1
+    dismantlingHammer: 1
+    dismantlingDriver: 1
+    mining: 1
+    attack: 10
+    mainStatType: 4
+  - id: 134
+    lumbering: 1
+    dismantlingHammer: 1
+    dismantlingDriver: 1
+    mining: 5
+    attack: 10
+    mainStatType: 4
+  - id: 135
+    lumbering: 15
+    dismantlingHammer: 10
+    dismantlingDriver: 10
+    mining: 20
+    attack: 10
+    mainStatType: 3
+  - id: 136
+    lumbering: 20
+    dismantlingHammer: 10
+    dismantlingDriver: 10
+    mining: 15
+    attack: 13
+    mainStatType: 0
+  - id: 137
+    lumbering: 1
+    dismantlingHammer: 10
+    dismantlingDriver: 10
+    mining: 15
+    attack: 8
+    mainStatType: 1
+  - id: 138
+    lumbering: 1
+    dismantlingHammer: 15
+    dismantlingDriver: 15
+    mining: 1
+    attack: 5
+    mainStatType: 2
+  - id: 139
+    lumbering: 7
+    dismantlingHammer: 1
+    dismantlingDriver: 1
+    mining: 1
+    attack: 20
+    mainStatType: 4
+  - id: 140
+    lumbering: 30
+    dismantlingHammer: 30
+    dismantlingDriver: 30
+    mining: 30
+    attack: 30
+    mainStatType: 5
+  - id: 252
+    lumbering: 100
+    dismantlingHammer: 100
+    dismantlingDriver: 100
+    mining: 100
+    attack: 100
+    mainStatType: 3
+  - id: 253
+    lumbering: 100
+    dismantlingHammer: 100
+    dismantlingDriver: 100
+    mining: 100
+    attack: 100
+    mainStatType: 0
+  - id: 254
+    lumbering: 100
+    dismantlingHammer: 100
+    dismantlingDriver: 100
+    mining: 100
+    attack: 100
+    mainStatType: 1
+  - id: 255
+    lumbering: 100
+    dismantlingHammer: 100
+    dismantlingDriver: 100
+    mining: 100
+    attack: 100
+    mainStatType: 2

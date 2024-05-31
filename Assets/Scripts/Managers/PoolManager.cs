@@ -65,7 +65,7 @@ public class PoolManager
         {
             if (poolable == null) return;
 
-            poolable.transform.parent = Root;
+            poolable.transform.SetParent(Root);
             poolable.gameObject.SetActive(false);
             poolable.isUsing = false;
             
@@ -90,9 +90,9 @@ public class PoolManager
 
             // Dont destroy on load 해제 용도
             if (parent == null)
-                poolable.transform.parent = Managers.Scene.CurrentScene.transform;
+                poolable.transform.SetParent(Managers.Scene.CurrentScene.transform);
             
-            poolable.transform.parent = parent;
+            poolable.transform.SetParent(parent);
             poolable.isUsing = true;
             
             return poolable;
@@ -160,7 +160,12 @@ public class PoolManager
     public Poolable Pop(GameObject original, Transform parent = null)
     {
         if (_pool.ContainsKey(original.name) == false)
-            CreatePool(original);
+        {
+            if (original.GetComponent<UI_NotebookPopup>() != null)
+                CreatePool(original, 1);   
+            else
+                CreatePool(original);   
+        }
         
         return _pool[original.name].Pop(parent);
     }

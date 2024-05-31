@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_NotebookPopup : UI_Popup
@@ -49,20 +50,36 @@ public class UI_NotebookPopup : UI_Popup
 
     [SerializeField] public UI_Inven_Item CatchedItem = null;
 
-    [SerializeField] private UI_ItemTooltip uiItemTooltip;
+    [FormerlySerializedAs("uiItemTooltip")] [SerializeField] private UI_Inven_ItemTooltip uiInvenItemTooltip;
+
+    [SerializeField] private UI_Game_QuickSlotGroup _quickSlotGroup;
+    
+    private bool initialized = false;
     
     void Start()
     {
         Init();
     }
-    
+
+    private void OnEnable()
+    {
+        // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
+        Managers.Data.OnClose -= ExportInventoryData;
+        Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
+        Managers.Data.OnClose += ExportInventoryData;
+        Managers.Data.OnClose += Managers.Data.SaveInventoryData;
+        
+        if(initialized)
+            WhenOpened();
+    }
+
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
         
-        uiItemTooltip = Get<GameObject>((int)GameObjects.ItemToolTip).GetComponent<UI_ItemTooltip>();
+        uiInvenItemTooltip = Get<GameObject>((int)GameObjects.ItemToolTip).GetComponent<UI_Inven_ItemTooltip>();
         Get<GameObject>((int)GameObjects.ItemToolTip).SetActive(false);
         
         // 여기 안에서 동작하는 함수들의 순서는 서로 매우 긴밀하게 연결되어있음. 조작 시 주의할 것.
@@ -71,15 +88,11 @@ public class UI_NotebookPopup : UI_Popup
         ConnectBookmarksIntoLayers();
         
         WhenOpened();
+
+        UI_Game_QuickSlotGroup quickSlotGroup = FindObjectOfType<UI_Game_QuickSlotGroup>();
+        quickSlotGroup.InitQuickSlotsNotebookRef(this);
         
-        // 팝업을 끌 때, DataManager와 통신하여 인벤토리 데이터를 저장.
-        // Managers.Data.OnClose -= ExportInventoryData;
-        // Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
-        Managers.Data.OnClose += ExportInventoryData;
-        Managers.Data.OnClose += Managers.Data.SaveInventoryData;
-        
-        // 노트북 팝업이 열릴 때는 시간 정지
-        Time.timeScale = 0;
+        initialized = true;
     }
 
     /// <summary>
@@ -96,6 +109,32 @@ public class UI_NotebookPopup : UI_Popup
         VisualizedLayer.SetActive(true);
         
         VisualizeItemsInTheGrid(true);
+        
+        // 노트북 팝업이 열릴 때는 시간 정지
+        Time.timeScale = 0;
+
+        // 플레이어 액션 일부 비활성화 
+        DisablePickupItem();
+    }
+
+    /// <summary>
+    /// 플레이어 아이템 줍기 기능 & 공격 기능 비활성화 
+    /// </summary>
+    void DisablePickupItem()
+    {
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.DisablePickupItem();
+        player.DisableClick();
+    }
+    
+    /// <summary>
+    /// 플레이어 아이템 줍기 기능 & 공격 기능 활성화 
+    /// </summary>
+    void EnablePickupItem()
+    {
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.EnablePickupItem();
+        player.EnableClick();
     }
     
     #region Inventory
@@ -170,6 +209,7 @@ public class UI_NotebookPopup : UI_Popup
     /// </summary>
     private void GetItemDataFromDataManager()
     {
+        Managers.Data.LoadInventoryData();
         _itemDataList = Managers.Data.ItemInfos();
     }
 
@@ -226,14 +266,14 @@ public class UI_NotebookPopup : UI_Popup
 
     public void ShowToolTip(UI_Inven_Item invenItem, PointerEventData eventData)
     {
-        uiItemTooltip.gameObject.SetActive(true);
-        uiItemTooltip.ShowTooltip(invenItem, eventData);
+        uiInvenItemTooltip.gameObject.SetActive(true);
+        uiInvenItemTooltip.ShowTooltip(invenItem, eventData);
     }
 
     public void HideTooltip()
     {
-        uiItemTooltip.gameObject.SetActive(false);
-        uiItemTooltip.UnsetPointerEventData();
+        uiInvenItemTooltip.gameObject.SetActive(false);
+        uiInvenItemTooltip.UnsetPointerEventData();
     }
     
     #endregion
@@ -281,15 +321,37 @@ public class UI_NotebookPopup : UI_Popup
     
     public override void ClosePopupUI(PointerEventData action)
     {
+        if (Managers.UI.GetTopPopupUI() != this) return;
+        
         // 인벤토리의 데이터 저장
         Managers.Data.OnClose?.Invoke();    // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
         
+        // 시간은 다시 흘러간다
         Time.timeScale = 1;
+        
+        // 데이터 저장 UnityAction 관리
         Managers.Data.OnClose -= ExportInventoryData;
         Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
 
         if (CatchedItem != null)
             Managers.Data.RemoveItemFromInventory(CatchedItem);
+        
+        // 아이템 제거 & 손에 들고있던 아이템은 드랍
+        for (int i = 0; i < numberOfItemSlots; i++)
+        {
+            // // 인벤 슬롯의 아이템이 슬롯 안에 없으면,
+            // if (itemSlots[i]?.item.transform.parent != itemSlots[i].transform)
+            // {
+            //     Managers.Data.RemoveItemFromInventory(itemSlots[i].item);
+            // }
+            DestroyImmediate(itemSlots[i].gameObject);
+        }
+        
+        itemSlots.Clear();
+        visualizedItems.Clear();
+        
+        // 플레이어 아이템 줍기 기능 활성화 
+        EnablePickupItem();
         
         base.ClosePopupUI(action);
     }
