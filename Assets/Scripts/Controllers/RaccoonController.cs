@@ -1,4 +1,4 @@
-using UnityEditor;
+    using UnityEditor;
 using UnityEngine;
 
 public class RaccoonController : MobController
@@ -39,7 +39,7 @@ public class RaccoonController : MobController
     {
         currentState?.Exit();
         currentState = newState;
-        currentState.Enter(this);
+        currentState.Enter();
         UpdateAnimationState(newState);
     }
 

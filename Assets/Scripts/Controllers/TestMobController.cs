@@ -40,7 +40,7 @@ public class TestMobController : MobController
     {
         currentState?.Exit();
         currentState = newState;
-        currentState.Enter(this);
+        currentState.Enter();
         UpdateAnimationState(newState);
     }
 
