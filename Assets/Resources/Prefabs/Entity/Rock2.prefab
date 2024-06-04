@@ -156,6 +156,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityType: 3
+  currentHp: 20
+  maxHp: 20
   _collider: {fileID: 7409110122313629878}
   OnHitSound:
   - {fileID: 8300000, guid: 6273b06d002548940b0d44058535e288, type: 3}

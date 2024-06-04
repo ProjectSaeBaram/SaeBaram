@@ -214,6 +214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11fca42e47c4c47b9823ada6c4cd3b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EntityType: 0
+  currentHp: 20
+  maxHp: 20
   _collider: {fileID: 3468592343855651912}
   OnHitSound:
   - {fileID: 8300000, guid: 3cbf532db5fdca24197fefb9cf5d2586, type: 3}
