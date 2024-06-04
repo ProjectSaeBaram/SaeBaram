@@ -1,6 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VInspector;
@@ -14,6 +12,8 @@ public class PlayerController : MonoBehaviour
     // 새로운 State를 추가할 때는 IPlayerState 인터페이스를 상속받는 클래스를 정의하고,
     // PlayerController가 해당 클래스의 인스턴스를 들고있도록 수정하면 바로 적용할 수 있다.
 
+    #region about state
+    
     public interface IPlayerState
     {
         void Enter(PlayerController player);
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
         void Exit();
     }
 
-    public class PlayerIdleState : IPlayerState
+    private class PlayerIdleState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public class PlayerWalkState : IPlayerState
+    private class PlayerWalkState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public class PlayerRunState : IPlayerState
+    private class PlayerRunState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public class PlayerJumpState : IPlayerState
+    private class PlayerJumpState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public class PlayerFallState : IPlayerState
+    private class PlayerFallState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public class PlayerAttackState : IPlayerState
+    private class PlayerAttackState : IPlayerState
     {
         private PlayerController _playerController;
         public void Enter(PlayerController player)
@@ -159,6 +159,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #endregion
+    
     [Tab("Information")]
     [SerializeField] private Vector2 inputVector;
     [SerializeField] private float speed = 400f;
@@ -275,10 +277,10 @@ public class PlayerController : MonoBehaviour
         instance = this;
     }
     
-    private void Start()
+    private async void Start()
     {
         // 처음 시작할 때에는, 퀵슬롯 첫번째 칸의 아이템을 들고있는다.
-        WaitForQuickSlotGroup();
+        await WaitForQuickSlotGroup();
     }
     
     async Task WaitForQuickSlotGroup()

@@ -41,7 +41,6 @@ public class UI_Game_QuickSlotGroup : UI_Base
     private void OnItemInitializedHandler()
     {
         initializedItemCount++;
-        Debug.Log("Item initialized count: " + initializedItemCount);
         if (initializedItemCount == _quickSlots.Count)
         {
             _tcs.TrySetResult(true);
