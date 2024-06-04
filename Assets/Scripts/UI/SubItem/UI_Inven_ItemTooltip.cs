@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Color = UnityEngine.Color;
 
 public class UI_Inven_ItemTooltip : UI_Base
 {
@@ -45,7 +46,24 @@ public class UI_Inven_ItemTooltip : UI_Base
 
     private void GetTextsFromTargetItem()
     {
+        // 툴팁 타이틀 색을 아이템 퀄리티에 비례하게
         ItemName.text = targetItem.Name;
+        Color NameColor = new Color();
+        switch (targetItem.Quality)
+        {
+            case 1:
+                NameColor = Color.white;
+                break;
+            case 2:
+                NameColor = Color.green;
+                break;
+            case 3:
+                NameColor = new Color(0, 0.749f, 1f);  
+                break;
+        }
+    
+        ItemName.color = NameColor;
+        
         ItemContext.text = targetItem.itemType.ToString();
 
         if (targetItem.Logs == null) return;
