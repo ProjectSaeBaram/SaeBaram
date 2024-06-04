@@ -193,7 +193,6 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.LogWarning("Check!");
             UI_Inven_Item catchedItem = UINotebookPopup?.CatchedItem;
             if (catchedItem != null && catchedItem?.itemType == Define.ItemType.Ingredient && this.itemType == Define.ItemType.Ingredient && catchedItem.Name == this.Name
                 && catchedItem?.Quality == this.Quality)
@@ -325,11 +324,30 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
     }
 
+    /
     public void OnPointerExit(PointerEventData eventData)
     {
         UINotebookPopup?.HideTooltip();
     }
     
     #endregion
+
+    /// <summary>
+    /// 아이템의 내구도를 깎는 기능
+    /// </summary>
+    public void DecreaseDurability()
+    {
+        Durability -= 1;
+        // 내구도가 0 이하로 떨어지면 사라지는 기능
+        if (Durability <= 0)
+        {
+            Destroy(this.gameObject);
+            // 퀵슬롯에 있을 때 안전하게 손에서 사라지게 하는 코드
+            PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+            if(parentAfterDrag.GetComponent<UI_Game_QuickSlot>().SlotIndex == player._handledItem.Index)
+                player._handledItem.ItemUIReferenceSetter(null);
+        }
+        RefreshUI();
+    }
     
 }

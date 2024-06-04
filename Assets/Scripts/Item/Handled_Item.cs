@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Handled_Item : MonoBehaviour
 {
@@ -47,7 +45,6 @@ public class Handled_Item : MonoBehaviour
         if (_itemStats == null) return;
         _collider.enabled = true;
         triggeredEntities.Clear();
-        
     }
 
     public void ColliderDeactivate()
@@ -59,6 +56,17 @@ public class Handled_Item : MonoBehaviour
     {
         // Entity 랑만 Trigger
         EntityController target = other.GetComponent<EntityController>();
+
+        // other에 EntityController가 없으면 부모 객체에서 검색
+        if (target == null && other.transform.parent != null)
+        {
+            target = other.transform.parent.GetComponent<EntityController>();
+        }
+
+        // // 디버그 정보 추가
+        // Debug.LogWarning($"Triggered with: {other.gameObject.name}");
+        // Debug.LogWarning($"EntityController found: {target != null}");
+     
         // 지금 HandledItem이 stat이 없는 아이템이면 기능 X
         if (target == null) return;
 
@@ -69,7 +77,9 @@ public class Handled_Item : MonoBehaviour
         triggeredEntities.Add(target);
         
         // 대상 Entity가 HandledITem에게서 맞는다
-        
         target.GetHit(this, _itemStats.GetStatValueForEntityType(target.EntityType));
+        
+        // 성공적으로 상호작용하고나면, 내구도 감소
+        _uiInvenItem.DecreaseDurability();
     }
 }
