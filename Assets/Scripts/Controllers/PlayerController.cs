@@ -645,6 +645,45 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.PickupItem.Enable();
 
     }
-    
-        #endregion
+
+    public void DisableInteract()
+    {
+        _playerInputActions.PlayerAction.Interact.Disable();
+    }
+
+    public void EnableInteract()
+    {
+        _playerInputActions.PlayerAction.Interact.Enable();
+    }
+
+    public void DisableExceptInteract()
+    {
+        _playerInputActions.PlayerAction.Move.started -= MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed -= MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled -= MoveCanCeled;
+        _playerInputActions.PlayerAction.RunningSwitch.Disable();
+        _playerInputActions.PlayerAction.Jump.Disable();
+        _playerInputActions.PlayerAction.WeaponChange.Disable();
+        _playerInputActions.PlayerAction.Escape.Disable();
+        _playerInputActions.PlayerAction.OpenNotebook.Disable();
+        _playerInputActions.PlayerAction.PickupItem.Disable();
+        _playerInputActions.PlayerAction.Click.Disable();
+        _playerInputActions.PlayerAction.Interact.Enable();
+    }
+
+    public void EnableAll()
+    {
+        _playerInputActions.PlayerAction.Move.started += MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
+        _playerInputActions.PlayerAction.RunningSwitch.Enable(); 
+        _playerInputActions.PlayerAction.Jump.Enable();
+        _playerInputActions.PlayerAction.WeaponChange.Enable() ;
+        _playerInputActions.PlayerAction.Escape.Enable();
+        _playerInputActions.PlayerAction.OpenNotebook.Enable();
+        _playerInputActions.PlayerAction.PickupItem.Enable();
+        _playerInputActions.PlayerAction.Click.Enable();
+    }
+
+    #endregion
 }

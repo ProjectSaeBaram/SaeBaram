@@ -19,7 +19,7 @@ public class GameScene : BaseScene
         SceneType = Define.Scene.GameScene;
         // 게임 씬에 필요한 UI를 표시합니다. 여기서는 인벤토리 UI를 예로 들고 있음.
         //Managers.UI.ShowPopupUI<UI_InventoryPopup>();
-        Managers.UI.ShowPopupUI<UI_DialoguePopup>();
+        //Managers.UI.ShowPopupUI<UI_DialoguePopup>();
         GameObject go = GameObject.Find("QuestManager");
         if (go == null)
         {

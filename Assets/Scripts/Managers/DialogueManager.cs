@@ -31,6 +31,7 @@ public class DialogueManager : MonoBehaviour
     public UI_Merchant ui_merchant;
     public QuestLayer qpanel;
     public PlayerController playerController;
+    private int select;
     
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
@@ -78,7 +79,8 @@ public class DialogueManager : MonoBehaviour
 
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
-        Time.timeScale = 0;
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.DisableExceptInteract();
         npcdata = npc;
         npcdata.SetMerchant(false);
         currentStory = new Story(dialogue.text);
@@ -95,10 +97,13 @@ public class DialogueManager : MonoBehaviour
     private void ExitDialogueMode()
     {
         //dialogueVariables.StopListening(currentStory);
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.EnableAll();
         dialogueIsPlaying = false;
         popup.dialoguePanel.SetActive(false);
         popup.dialogueText.text = "";
-        Time.timeScale = 1;
+        
+        
     }
 
     private void ContinueStory()
@@ -114,6 +119,12 @@ public class DialogueManager : MonoBehaviour
         else
         {
             ExitDialogueMode();
+            if (npcdata.GetMerchant()&&select==0)
+            {
+                Managers.UI.CloseAllPopupUI();
+                Managers.UI.ShowPopupUI<UI_Merchant>();
+
+            }
         }
     }
 
@@ -212,12 +223,8 @@ public class DialogueManager : MonoBehaviour
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
                 }
             }
-
-            if(npcdata.GetMerchant())
-            {
-                Managers.UI.CloseAllPopupUI();
-                Managers.UI.ShowPopupUI<UI_Merchant>();
-            }
+            select = 0;
+         
         }
         ContinueStory();
         DebugEx.Log(choice);

@@ -82,6 +82,7 @@ public class NpcData : MonoBehaviour
         {
             if (PlayerController.GetInstance().GetInteractPressed())
             {
+                Managers.UI.ShowPopupUI<UI_DialoguePopup>();
                 DialogueManager.GetInstance().GetTalk2(dialogue,this);
             }
         }
