@@ -98,7 +98,7 @@ public class DialogueManager : MonoBehaviour
     {
         //dialogueVariables.StopListening(currentStory);
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        player.EnableAll();
+        player.EnableExceptInter();
         dialogueIsPlaying = false;
         popup.dialoguePanel.SetActive(false);
         popup.dialogueText.text = "";

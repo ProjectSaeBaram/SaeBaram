@@ -2726,8 +2726,6 @@ MonoBehaviour:
   - {fileID: 3963117816598773948}
   visualizedItems: []
   VisualizedLayer: {fileID: 7968798185074780125}
-  uiInvenItemTooltip: {fileID: 0}
-  parentPanel: {fileID: 0}
 --- !u!1 &7284389978186547652
 GameObject:
   m_ObjectHideFlags: 0
@@ -3074,6 +3072,7 @@ MonoBehaviour:
   Merchant_panel: {fileID: 7899407972854965298}
   Player_panel: {fileID: 5842876055160784972}
   Ex_Button: {fileID: 8393381840836619300}
+  tooltip: {fileID: 8577947622446803463}
 --- !u!1 &8537593868876907349
 GameObject:
   m_ObjectHideFlags: 0

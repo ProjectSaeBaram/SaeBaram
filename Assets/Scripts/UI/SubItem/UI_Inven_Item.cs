@@ -37,7 +37,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드 (0~3)
     [SerializeField] public Define.ItemType itemType;          // 아이템의 타입을 저장하기 위한 필드
 
-    public UI_NotebookPopup UINotebookPopup;
+    public ITooltipHandler ToolTipHandler;
+    public ICatcher Catcher;
+    public UI_Popup Popup;
     
     [Header("Logs")] [SerializeField] public List<string> Logs;
     
@@ -56,7 +58,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         OnValueChange -= RefreshUI;
         OnValueChange += RefreshUI;
         
-        UINotebookPopup = Managers.UI.GetTopPopupUI() as UI_NotebookPopup;
+        ToolTipHandler = Managers.UI.GetTopPopupUI() as ITooltipHandler;
+        Catcher = Managers.UI.GetTopPopupUI() as ICatcher;
+        Popup = Managers.UI.GetTopPopupUI();
 
         _rectTransform = GetComponent<RectTransform>();
         _rectTransform.anchoredPosition = Vector2.zero;
@@ -182,7 +186,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
             if(hoverd.GetComponent<NotebookBackPanel>() != null)
             {
                 Managers.Data.RemoveItemFromInventory(this);
-                UINotebookPopup.ClosePopupUI(eventData);
+                Popup.ClosePopupUI(eventData);
             }
         }
         
@@ -193,7 +197,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            UI_Inven_Item catchedItem = UINotebookPopup.CatchedItem;
+            UI_Inven_Item catchedItem = Catcher.CatchedItem;
             if (catchedItem != null && catchedItem?.itemType == Define.ItemType.Ingredient && this.itemType == Define.ItemType.Ingredient && catchedItem.Name == this.Name
                 && catchedItem?.Quality == this.Quality)
             {
@@ -281,7 +285,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public void OnPointerClick(PointerEventData eventData)
     {
         // 우클릭인 경우에 동작
-        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && UINotebookPopup.CatchedItem == null)
+        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && Catcher.CatchedItem == null)
         {
             UI_SeparateIngredientPopup popup = Managers.UI.ShowPopupUI<UI_SeparateIngredientPopup>();
             popup.InitItemReference(this);
@@ -292,7 +296,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         isCatched = true;
         image.color = new Color(1,1,1,0.8f);
-        UINotebookPopup.CatchedItem = this;
+        Catcher.CatchedItem = this;
         image.raycastTarget = false;
     }
 
@@ -311,13 +315,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        UINotebookPopup?.ShowToolTip(this, eventData);
+        ToolTipHandler?.ShowToolTip(this, eventData);
         
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        UINotebookPopup?.HideTooltip();
+        ToolTipHandler?.HideTooltip();
     }
     
     #endregion

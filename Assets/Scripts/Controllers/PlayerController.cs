@@ -661,28 +661,35 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Move.started -= MoveStarted;
         _playerInputActions.PlayerAction.Move.performed -= MovePerformed;
         _playerInputActions.PlayerAction.Move.canceled -= MoveCanCeled;
-        _playerInputActions.PlayerAction.RunningSwitch.Disable();
-        _playerInputActions.PlayerAction.Jump.Disable();
-        _playerInputActions.PlayerAction.WeaponChange.Disable();
-        _playerInputActions.PlayerAction.Escape.Disable();
-        _playerInputActions.PlayerAction.OpenNotebook.Disable();
-        _playerInputActions.PlayerAction.PickupItem.Disable();
-        _playerInputActions.PlayerAction.Click.Disable();
-        _playerInputActions.PlayerAction.Interact.Enable();
+        _playerInputActions.PlayerAction.RunningSwitch.started -= RunningSwitchEnter;
+        _playerInputActions.PlayerAction.RunningSwitch.canceled -= RunningSwitchExit;
+        _playerInputActions.PlayerAction.Jump.started -= JumpStarted;
+        _playerInputActions.PlayerAction.Jump.performed -= JumpPerformed;
+        _playerInputActions.PlayerAction.Jump.canceled -= JumpCanceled;
+        _playerInputActions.PlayerAction.WeaponChange.performed -= OnChange;
+        _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
+        _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
+        _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
+        _playerInputActions.PlayerAction.Click.performed -= OnClick;
     }
 
-    public void EnableAll()
+
+
+    public void EnableExceptInter()
     {
         _playerInputActions.PlayerAction.Move.started += MoveStarted;
         _playerInputActions.PlayerAction.Move.performed += MovePerformed;
         _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
-        _playerInputActions.PlayerAction.RunningSwitch.Enable(); 
-        _playerInputActions.PlayerAction.Jump.Enable();
-        _playerInputActions.PlayerAction.WeaponChange.Enable() ;
-        _playerInputActions.PlayerAction.Escape.Enable();
-        _playerInputActions.PlayerAction.OpenNotebook.Enable();
-        _playerInputActions.PlayerAction.PickupItem.Enable();
-        _playerInputActions.PlayerAction.Click.Enable();
+        _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
+        _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
+        _playerInputActions.PlayerAction.Jump.started += JumpStarted;
+        _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
+        _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
+        _playerInputActions.PlayerAction.WeaponChange.performed += OnChange;
+        _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
+        _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
+        _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+        _playerInputActions.PlayerAction.Click.performed += OnClick;
     }
 
     #endregion
