@@ -14,7 +14,7 @@ public class UI_Merchant_PlayerInven : UI_Popup
     private List<ItemData> _itemDataList = new List<ItemData>();
     [SerializeField] public GameObject VisualizedLayer;
     private UI_Inven_ItemTooltip tooltip;
-    public UI_Merchant merchant;
+
 
     public override void Init()
     {
@@ -146,7 +146,7 @@ public class UI_Merchant_PlayerInven : UI_Popup
 
     public override void ClosePopupUI(PointerEventData action)
     {
-        if (Managers.UI.GetTopPopupUI() != merchant) return;
+        if (Managers.UI.GetTopPopupUI() != this) return;
 
       
 
@@ -174,7 +174,7 @@ public class UI_Merchant_PlayerInven : UI_Popup
         // 플레이어 아이템 줍기 기능 활성화 
         EnablePickupItem();
 
-        Managers.UI.ClosePopupUI();
+        base.ClosePopupUI(action);
     }
 
 
