@@ -39,7 +39,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
     public UI_NotebookPopup UINotebookPopup;
     
-    [Header("Logs")] [SerializeField] public List<string> Logs;
+    [Header("Logs")] [SerializeField] public List<string> Logs = new List<string>();
     
     // 드래그 이후 부모 Transform을 저장하기 위함
     [SerializeField] public Transform parentAfterDrag;
@@ -55,6 +55,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         OnValueChange -= RefreshUI;
         OnValueChange += RefreshUI;
+        OnValueChange.Invoke();
         
         UINotebookPopup = Managers.UI.GetTopPopupUI() as UI_NotebookPopup;
 
@@ -86,7 +87,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemAmountText.gameObject.SetActive(false);
 
         // 로그 받아오기
-        Logs = logs;
+        if (logs != null)
+            Logs = logs;
+        
         
         itemType = Define.ItemType.Tool;
         parentAfterDrag = transform.parent;
@@ -115,8 +118,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemReinforceCount.gameObject.SetActive(false);
         ItemAmountText.text = Amount.ToString();
 
-        // 로그 받아오기
-        Logs = logs;
+        if (logs != null)
+            Logs = logs;
         
         itemType = Define.ItemType.Ingredient;
         parentAfterDrag = transform.parent;
@@ -135,7 +138,16 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
         ItemAmountText.text = Amount.ToString();
         ItemReinforceCount.text = ReinforceCount.ToString();
-        DurabilitySlider.value = Durability / maxDurability;
+        
+        // 현재 내구도 (0~1사이 값)
+        float currentDurability = Durability / maxDurability;
+        
+        DurabilitySlider.value = currentDurability;
+        
+        // 현재 내구도 (0~1사이 값)의 비율에 맞춰 green과 red를 섞어 내구도 슬라이더 바에 시각화한다.
+        var block = DurabilitySlider.colors;
+        block.disabledColor = Color.Lerp(Color.red, Color.green, currentDurability);
+        DurabilitySlider.colors = block;
     }
 
     #region Drag and Drop
@@ -324,7 +336,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
     }
 
-    /
+    
     public void OnPointerExit(PointerEventData eventData)
     {
         UINotebookPopup?.HideTooltip();
@@ -347,7 +359,15 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
             if(parentAfterDrag.GetComponent<UI_Game_QuickSlot>().SlotIndex == player._handledItem.Index)
                 player._handledItem.ItemUIReferenceSetter(null);
         }
-        RefreshUI();
+        OnValueChange.Invoke();
     }
-    
-}
+
+    /// <summary>
+    /// 로그 추가 기능
+    /// </summary>
+    /// <param name="log"></param>
+    public void AddLog(string log)
+    {
+        Logs.Add(log);
+    }
+}   
