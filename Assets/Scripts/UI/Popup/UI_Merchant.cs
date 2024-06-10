@@ -15,7 +15,8 @@ public class UI_Merchant : UI_Popup,ICatcher, ITooltipHandler
 
     public UI_Inven_Item CatchedItem { get; set; }
 
-    private void Start()
+
+private void Start()
     {
         PlayerController _player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         _player.Disableall();
@@ -44,5 +45,15 @@ public class UI_Merchant : UI_Popup,ICatcher, ITooltipHandler
         tooltip.gameObject.SetActive(false);
         tooltip.UnsetPointerEventData();
 
+    }
+
+    public void ActivateConfirmMerchant()
+    {
+        Merchant_panel.ActivateConfirmBuy();
+    }
+
+    public void DeactivateConfirmMerchant()
+    {
+        Merchant_panel.DeactivateConfirmBuy();
     }
 }

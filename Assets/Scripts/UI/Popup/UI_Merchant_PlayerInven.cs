@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UI_NotebookPopup;
 
-public class UI_Merchant_PlayerInven : UI_Popup
+public class UI_Merchant_PlayerInven : UI_Popup, ICatcher
 {
     [Header("Items")]
     private const int numberOfItemSlots = 30;  // 기본 아이템 슬롯의 크기
@@ -13,12 +12,14 @@ public class UI_Merchant_PlayerInven : UI_Popup
     [SerializeField] private List<UI_Inven_Item> visualizedItems = new List<UI_Inven_Item>();
     private List<ItemData> _itemDataList = new List<ItemData>();
     [SerializeField] public GameObject VisualizedLayer;
+    [SerializeField] public Confirm_Player ConfirmPlayer;
     private UI_Inven_ItemTooltip tooltip;
     public UI_Merchant merchant;
+    public UI_Inven_Item CatchedItem { get; set; } // CatchedItem 필드 추가
+    
 
     public override void Init()
     {
-       
     }
 
     private void OnEnable()
@@ -28,8 +29,6 @@ public class UI_Merchant_PlayerInven : UI_Popup
         Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
         Managers.Data.OnClose += ExportInventoryData;
         Managers.Data.OnClose += Managers.Data.SaveInventoryData;
-
-
     }
 
     public void InitInventory(GameObject visualizedLayer, UI_Inven_ItemTooltip itemTooltip)
@@ -59,7 +58,7 @@ public class UI_Merchant_PlayerInven : UI_Popup
         for (int i = 0; i < numberOfItemSlots; i++)
         {
             UI_Merchat_Player_Inven_Slot slot = itemSlots[i];
-            //slot.SetNotebookPopup();
+            slot.SetUIMerchant(merchant);
             slot.SlotIndex = i;
 
             ItemData item = _itemDataList[i];
@@ -94,8 +93,6 @@ public class UI_Merchant_PlayerInven : UI_Popup
         player.EnablePickupItem();
         player.EnableClick();
     }
-
-   
 
     public void ExportInventoryData()
     {
@@ -148,24 +145,17 @@ public class UI_Merchant_PlayerInven : UI_Popup
     {
         if (Managers.UI.GetTopPopupUI() != merchant) return;
 
-      
-
         // 인벤토리의 데이터 저장
-        Managers.Data.OnClose?.Invoke();    // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
+        Managers.Data.OnClose?.Invoke();
 
         Time.timeScale = 1;
         Managers.Data.OnClose -= ExportInventoryData;
         Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
 
-        //if (CatchedItem != null)
-        //   Managers.Data.RemoveItemFromInventory(CatchedItem);
-
         // 아이템 제거
         for (int i = 0; i < numberOfItemSlots; i++)
         {
             DestroyImmediate(itemSlots[i].gameObject);
-            // itemSlots[i] = null;
-            // visualizedItems[i] = null;
         }
 
         itemSlots.Clear();
@@ -176,6 +166,4 @@ public class UI_Merchant_PlayerInven : UI_Popup
 
         Managers.UI.ClosePopupUI();
     }
-
-
 }
