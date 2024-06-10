@@ -28,7 +28,9 @@ public class UI_SeparateIngredientPopup : UI_Popup
     private TMP_InputField _inputField;
     
     [SerializeField] private UI_Inven_Item _originItem;
-    
+
+    private ICatcher _catcher;
+
     public override void Init()
     {
         Bind<Image>(typeof(Images));
@@ -48,6 +50,14 @@ public class UI_SeparateIngredientPopup : UI_Popup
     public void InitItemReference(UI_Inven_Item originItem)
     {
         _originItem = originItem;
+
+        // _catcher를 초기화
+        var parentPanel = _originItem.parentPanel.transform.parent;
+        if (parentPanel == null)
+        {
+            parentPanel = _originItem.parentPanel.transform;
+        }
+        _catcher = parentPanel.GetComponent<ICatcher>();   
     }
 
     /// <summary>
@@ -77,18 +87,24 @@ public class UI_SeparateIngredientPopup : UI_Popup
     {
         // 분리된 아이템이 마우스 커서에 생겨야 한다.
         UI_Inven_Item item = Managers.UI.MakeSubItem<UI_Inven_Item>();
-        
+
         // 재료는 로그 x
         item.IngredientInit(_originItem.Name, _originItem.Quality, int.Parse(_inputField.text), null);
-        
+
         // 원본 아이템은 갯수를 깎고
         _originItem.Amount -= int.Parse(_inputField.text);
-        _originItem.OnValueChange.Invoke();
-        
+        _originItem.OnValueChange?.Invoke();
+
         ClosePopupUI(null);
         item.parentPanel = _originItem.parentPanel;
         item.parentAfterDrag = _originItem.parentAfterDrag;
-        item.ToolTipHandler = _originItem.parentPanel.transform.parent.GetComponent<UI_NotebookPopup>();
+
+        if (_catcher != null)
+        {
+            item.ToolTipHandler = _catcher as ITooltipHandler;
+            item.Catcher = _catcher;
+        }
+
         item.transform.SetParent(item.parentPanel.transform);
         item.Catched();
     }

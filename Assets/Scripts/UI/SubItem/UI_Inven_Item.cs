@@ -49,7 +49,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     [SerializeField] private bool isCatched = false;
 
     public Action OnValueChange = null;
-    
+
+
     /// <summary>
     /// UI 요소들을 초기화하는 메서드
     /// </summary>
@@ -64,6 +65,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
         _rectTransform = GetComponent<RectTransform>();
         _rectTransform.anchoredPosition = Vector2.zero;
+
+       
     }
 
     /// <summary>
@@ -145,7 +148,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     #region Drag and Drop
 
     private Vector3 _dragOffset;
-    
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (isCatched) return;
@@ -162,12 +165,19 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         _dragOffset = transform.position - Input.mousePosition;
         
         image.color = new Color(1,1,1,0.8f);
+
+        if(Managers.UI.GetTopPopupUI().GetType()== typeof(UI_Merchant))
+        {
+            UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
+            um.ActivateConfirmMerchant();
+        }
     }
     
     public void OnDrag(PointerEventData eventData) {
         
         // InvntoryItem의 위치를 마우스 위치로 이동
         transform.position = Input.mousePosition + _dragOffset;
+
     }
     
     public void OnEndDrag(PointerEventData eventData) {
@@ -181,9 +191,15 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         _rectTransform.anchoredPosition = Vector2.zero;
         _rectTransform.localScale = Vector2.one;
 
+        // 놓인 위치의 모든 UI 요소를 검사
         foreach (var hoverd in eventData.hovered)
         {
-            if(hoverd.GetComponent<NotebookBackPanel>() != null)
+            if (hoverd.GetComponent<UI_Merchant_PlayerInven>() != null)
+            {
+                UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
+                um.DeactivateConfirmMerchant();
+            }
+            if (hoverd.GetComponent<NotebookBackPanel>() != null)
             {
                 Managers.Data.RemoveItemFromInventory(this);
                 Popup.ClosePopupUI(eventData);
@@ -296,7 +312,16 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         isCatched = true;
         image.color = new Color(1,1,1,0.8f);
-        Catcher.CatchedItem = this;
+        // Catcher를 상위 부모에서 찾아 설정
+        SetCatcherFromParent();
+        if (Catcher != null)
+        {
+            Catcher.CatchedItem = this;
+        }
+        else
+        {
+            Debug.LogWarning("Catcher가 null입니다. 아이템이 올바르게 초기화되었는지 확인하세요.");
+        }
         image.raycastTarget = false;
     }
 
@@ -323,7 +348,25 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         ToolTipHandler?.HideTooltip();
     }
-    
+
     #endregion
-    
+
+    private void SetCatcherFromParent()
+    {
+        Transform parentTransform = transform.parent;
+        while (parentTransform != null)
+        {
+            ICatcher potentialCatcher = parentTransform.GetComponent<ICatcher>();
+            if (potentialCatcher != null)
+            {
+                Catcher = potentialCatcher;
+                return;
+            }
+            parentTransform = parentTransform.parent;
+        }
+
+        // 상위 부모에서 Catcher를 찾지 못한 경우
+        Debug.LogWarning("Catcher를 찾지 못했습니다. 상위 객체를 확인하세요.");
+    }
+
 }
