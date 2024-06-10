@@ -674,6 +674,16 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    public void Disableall()
+    {
+        _playerInputActions.Disable();
+    }
+
+    public void Enableall()
+    {
+        _playerInputActions.Enable();
+    }
+
 
     public void EnableExceptInter()
     {

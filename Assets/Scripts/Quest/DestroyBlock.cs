@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,18 +6,12 @@ public class DestroyBlock : QuestData
     public UnityEvent QuestCompleted;
     private static DestroyBlock instance;
 
-    public DestroyBlock(string name, int npc, string npcn, int Index, QuestState qs, int gold, string location, QuestType t = QuestType.None) : base(name, npc, npcn, Index, qs, gold, location, t)
+    public DestroyBlock(string name, int npc, string npcn, int index, QuestState questState, int gold, string location, QuestType questType = QuestType.None)
+        : base(name, npc, npcn, index, questState, gold, location, questType)
     {
-        base.questName = name;
-        base.npcId = npc;
-        base.npcname = npcn;
-        base.Indexrequirment = Index;
-        base.qs = qs;
-        base.goldReward = gold;
-        base.type = t;
         if (QuestCompleted == null)
         {
-            QuestCompleted = new UnityEvent();  
+            QuestCompleted = new UnityEvent();
         }
         instance = this;
     }
@@ -28,8 +20,6 @@ public class DestroyBlock : QuestData
     {
         return instance;
     }
-
-
 
     public override QuestData getQuestData()
     {

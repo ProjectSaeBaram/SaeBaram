@@ -43,27 +43,13 @@ public class ReputeManager : MonoBehaviour
         ReputeScore = score;
     }
 
-    public void addRepute(int score)
+    public void AddRepute(int score)
     {
-        if((ReputeScore +score)<=100)
-        {
-            ReputeScore += score;
-        }
-        else
-        {
-            ReputeScore = 100;
-        }
+        ReputeScore = Mathf.Min(ReputeScore + score, 100);
     }
 
     public void DecreaseRepute(int score)
     {
-        if ((ReputeScore - score) >= 0)
-        {
-            ReputeScore -= score;
-        }
-        else
-        {
-            ReputeScore = 0;
-        }
+        ReputeScore = Mathf.Max(ReputeScore - score, 0);
     }
 }

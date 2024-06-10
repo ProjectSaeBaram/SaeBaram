@@ -18,18 +18,19 @@ public class UI_Merchant : UI_Popup,ICatcher, ITooltipHandler
     private void Start()
     {
         PlayerController _player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        _player.DisableExceptInteract();
+        _player.Disableall();
         Ex_Button.onClick.AddListener(() => CloseMerchant());
         //Player_panel.InitInventory(this,);
+        Player_panel.merchant = this;
         Player_panel.InitInventory(Player_panel.VisualizedLayer, tooltip);
     }
 
     public void CloseMerchant()
     {
-        Managers.UI.ClosePopupUI();
+        Player_panel.ClosePopupUI(null);
         //Player_panel.ClosePopupUI();
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        player.EnableExceptInter();
+        player.Enableall();
     }
 
     public void ShowToolTip(UI_Inven_Item invenItem, PointerEventData eventData)
