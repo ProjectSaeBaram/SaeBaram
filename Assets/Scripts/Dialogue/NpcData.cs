@@ -10,19 +10,21 @@ using VInspector;
 
 public class NpcData : MonoBehaviour
 {
-    [Tab("Visual Cue")]
-    [SerializeField] public GameObject[] visualCue;
+
     [Tab("NPC Inform")]
+    [SerializeField] private GameObject[] visualCue;
     [SerializeField] private int npcId;
     [SerializeField] private string npcName;
     [SerializeField] private bool isNpc;
     [SerializeField] public Sprite[] npcPortrait;
     [SerializeField] private TextAsset dialogue;
+    [Tab("Merchant Info")]
     [SerializeField] private bool isMerchant;
     [SerializeField] public bool isGood=false;
+
     [Tab("Quest Inform")]
     [SerializeField] public int[] questId;
-    [SerializeField] public int DialogueIndex;                     //여러퀘스트를 가지고있을때 지금 진행가능한 퀘스트번호 
+    [SerializeField] public int TalkIndex;                     //여러퀘스트를 가지고있을때 지금 진행가능한 퀘스트번호 
     [SerializeField] public QuestState qs;
     [SerializeField] public PlayerController playerController;
     [SerializeField] public int questActionIndex;
@@ -34,14 +36,7 @@ public class NpcData : MonoBehaviour
     private static string Chap_Normal= "Dialogue/Normal/Chap";
     [SerializeField] public int ChapNum;
 
-    private static NpcData instance;
 
-    public bool playerInRange;
-
-    public static NpcData GetInstance()
-    {
-        return instance;
-    }
     
     public bool GetMerchant()
     {
@@ -54,9 +49,10 @@ public class NpcData : MonoBehaviour
 
     private void Awake()
     {
-        //questIndex = DialogueManager.GetInstance().GetQuestIndex(npcId);
        
         DialogueIndex = 0;
+        
+        TalkIndex = 0;
         playerInRange = false;
         npcName = this.name;
         foreach (GameObject cue in visualCue)
@@ -81,13 +77,13 @@ public class NpcData : MonoBehaviour
             switch (PlayerController.GetInstance().RState)
             {
                 case ReputeState.Good:
-                    D_path = Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+                    D_path = Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + (TalkIndex * 5 + questActionIndex).ToString();
                     break;
                 case ReputeState.Bad:
-                    D_path = Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+                    D_path = Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + (TalkIndex * 5 + questActionIndex).ToString();
                     break;
                 case ReputeState.Normal:
-                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + (TalkIndex * 5 + questActionIndex).ToString();
                     break;
                 default:
                     D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
@@ -121,8 +117,8 @@ public class NpcData : MonoBehaviour
             
             if (questId.Length > 0)          //퀘스트아이디가 있을 때
             {
-                qs = QuestManager.GetInstance().CheckState(questId[DialogueIndex]);
-                questActionIndex = Convert.ToInt32(QuestManager.GetInstance().CheckState(questId[DialogueIndex]));
+                qs = QuestManager.GetInstance().CheckState(questId[TalkIndex]);
+                questActionIndex = Convert.ToInt32(QuestManager.GetInstance().CheckState(questId[TalkIndex]));
                 if (qs == QuestState.CAN_START)
                 {
                     visualCue[0].SetActive(true);
