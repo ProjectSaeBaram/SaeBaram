@@ -39,7 +39,7 @@ public class RaccoonController : MobController
     {
         currentState?.Exit();
         currentState = newState;
-        currentState.Enter();
+        currentState.Enter(this);
         UpdateAnimationState(newState);
     }
 

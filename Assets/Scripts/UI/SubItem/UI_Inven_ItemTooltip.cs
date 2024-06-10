@@ -51,7 +51,7 @@ public class UI_Inven_ItemTooltip : UI_Base
         Color NameColor = new Color();
         switch (targetItem.Quality)
         {
-            case 1:
+            case 1 or 0:
                 NameColor = Color.white;
                 break;
             case 2:

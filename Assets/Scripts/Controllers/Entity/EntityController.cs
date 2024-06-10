@@ -4,8 +4,8 @@ using UnityEngine.Serialization;
 public abstract class EntityController : MonoBehaviour
 {
     public Define.ItemMainStatType EntityType;
-    protected int currentHp = 100;
-    protected int maxHp = 100;
+    public int currentHp = 100;
+    public int maxHp = 100;
     
     public virtual void GetHit(Handled_Item target, int damage)
     {

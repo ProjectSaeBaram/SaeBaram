@@ -941,6 +941,8 @@ MonoBehaviour:
   jumpForced: 0
   shiftToggled: 0
   playerPortrait: []
+  isInvulnerable: 0
+  currentHp: 100
   _questManager: {fileID: 0}
   questIdx: 0
   isQuestPanelActive: 0
@@ -948,6 +950,7 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _rightHandBone: {fileID: 710736570674196846}
   _handledItem: {fileID: 0}
+  spriteRenderers: []
 --- !u!4 &7936561779221067104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8904140475197111382, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}

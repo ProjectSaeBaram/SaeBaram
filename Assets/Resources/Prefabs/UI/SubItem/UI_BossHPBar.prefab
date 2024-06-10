@@ -166,3 +166,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BackGround: {fileID: 7127331348871871591}
   CurrentHPImage: {fileID: 765033883695470623}
+  CurrentHP: 100

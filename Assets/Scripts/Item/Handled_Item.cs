@@ -23,6 +23,10 @@ public class Handled_Item : MonoBehaviour
         _spriteRenderer.sprite = null;
     }
 
+    /// <summary>
+    /// UI Item 레퍼런스 초기화
+    /// </summary>
+    /// <param name="item"></param>
     public void ItemUIReferenceSetter(UI_Inven_Item item)
     {
         if (item == null)
@@ -81,5 +85,10 @@ public class Handled_Item : MonoBehaviour
         
         // 성공적으로 상호작용하고나면, 내구도 감소
         _uiInvenItem.DecreaseDurability();
+    }
+
+    public UI_Inven_Item GetOriginItemUI()
+    {
+        return _uiInvenItem;
     }
 }

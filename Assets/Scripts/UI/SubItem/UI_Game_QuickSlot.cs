@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class UI_Game_QuickSlot : UI_Inven_Slot
 {
-    public event Action OnItemInitialized;
+    public new event Action OnItemInitialized;
     
     public override UI_Inven_Item Item
     {

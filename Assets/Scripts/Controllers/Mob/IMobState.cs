@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IMobState
 {
-    void Enter();
+    void Enter(MobController mob);
     void Execute();
     void Exit();
 }
@@ -21,7 +21,7 @@ public class PatrolState : IMobState
         currentTargetPoint = patrolPointA;
     }
 
-    public void Enter()
+    public void Enter(MobController mob)
     {
         this.mob = mob;
         mob.SetDestination(currentTargetPoint);
@@ -55,10 +55,10 @@ public class ChaseState : IMobState
     private MobController mob;
     private Transform playerTransform;
 
-    public void Enter()
+    public void Enter(MobController mob)
     {
         this.mob = mob;
-        playerTransform = GameObject.FindWithTag("Player").transform;
+        playerTransform = Managers.Game.GetPlayer().transform;
     }
 
     public void Execute()
@@ -92,7 +92,7 @@ public class AttackState : IMobState
     private float lastAttackTime;
     private float attackCooldown = 2f;
 
-    public void Enter()
+    public void Enter(MobController mob)
     {
         this.mob = mob;
         Attack();
