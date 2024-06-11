@@ -221,12 +221,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                 {
                     catchedItem.Amount = catchedItem.Amount + this.Amount - Max_Amount;
                     this.Amount = Max_Amount;
-                
                     catchedItem.transform.position = Vector3.zero;
                     //RefreshUI();
                     OnValueChange.Invoke();
                     // catchedItem.RefreshUI();
                     catchedItem.OnValueChange.Invoke();
+                   
+
                 }
                 else
                 {
@@ -243,10 +244,12 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     }
                     else
                     {
+                       
                         this.Amount += catchedItem.Amount;
                         DestroyImmediate(catchedItem.gameObject);
                         catchedItem = null;
                         OnValueChange.Invoke();
+                    
                     }
                 }
             }
@@ -263,12 +266,17 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
             {
                 item.Amount = item.Amount + this.Amount - Max_Amount;
                 this.Amount = Max_Amount;
-                
+              
                 item.transform.position = Vector3.zero;
                 //RefreshUI();
                 OnValueChange.Invoke();
                 // item.RefreshUI();
                 item.OnValueChange.Invoke();
+                if (Managers.UI.GetTopPopupUI().GetType() == typeof(UI_Merchant))
+                {
+                    UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
+                    um.DeactivateConfirmMerchant();
+                }
             }
             else
             {
@@ -289,6 +297,12 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     DestroyImmediate(item.gameObject);
                     item = null;
                     OnValueChange.Invoke();
+
+                    if (Managers.UI.GetTopPopupUI().GetType() == typeof(UI_Merchant))
+                    {
+                        UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
+                        um.DeactivateConfirmMerchant();
+                    }
                 }
             }
         }
