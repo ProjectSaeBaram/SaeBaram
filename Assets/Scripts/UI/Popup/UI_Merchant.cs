@@ -8,7 +8,7 @@ using VInspector;
 public class UI_Merchant : UI_Popup,ICatcher, ITooltipHandler
 {
     [Tab("Merchant UI")]
-    [SerializeField] private UI_MerchantInven Merchant_panel;
+    [SerializeField] private UI_MerchantInven merchantInventory;
     [SerializeField] public UI_Merchant_PlayerInven Player_panel;
     [SerializeField] private Button Ex_Button;
     [SerializeField] private UI_Inven_ItemTooltip tooltip;
@@ -23,7 +23,11 @@ private void Start()
         Ex_Button.onClick.AddListener(() => CloseMerchant());
         //Player_panel.InitInventory(this,);
         Player_panel.merchant = this;
+        merchantInventory.merchant= this;
         Player_panel.InitInventory(Player_panel.VisualizedLayer, tooltip);
+
+        // 상점 UI 초기화
+        merchantInventory.InitShopInventory(this.gameObject, tooltip);
     }
 
     public void CloseMerchant()
@@ -49,11 +53,11 @@ private void Start()
 
     public void ActivateConfirmMerchant()
     {
-        Merchant_panel.ActivateConfirmBuy();
+        merchantInventory.ActivateConfirmBuy();
     }
 
     public void DeactivateConfirmMerchant()
     {
-        Merchant_panel.DeactivateConfirmBuy();
+        merchantInventory.DeactivateConfirmBuy();
     }
 }
