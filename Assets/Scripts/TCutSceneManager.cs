@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using System;
 
 public class TCutSceneManager : MonoBehaviour
 {
     private Task fetchDataTask;
-    CharacterScript[] characterScripts;
+    private CharacterScript[] characterScripts;
+    private Coroutine coroutineHandler;
+    public event Action<KeyCode> OnKeyPressed;
 
     [System.Serializable]
     public class CharacterScript
@@ -20,8 +22,10 @@ public class TCutSceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        OnKeyPressed += HandleKeyPressed;
+
         GameObject canvasObject = new GameObject("Canvas");
-        Canvas canvas= canvasObject.AddComponent<Canvas>();
+        Canvas canvas = canvasObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObject.AddComponent<CanvasScaler>();
         canvasObject.AddComponent<GraphicRaycaster>();
@@ -36,6 +40,8 @@ public class TCutSceneManager : MonoBehaviour
         buttonImage.color = Color.white;
 
         fetchDataButton.onClick.AddListener(OnFetchDataButtonClicked);
+
+        Debug.Log("Start method completed");
     }
 
     // Update is called once per frame
@@ -47,6 +53,19 @@ public class TCutSceneManager : MonoBehaviour
             Debug.Log("Data fetch completed");
             fetchDataTask = null; // 완료된 후 다시 확인하지 않도록 설정
         }
+
+        // 키보드 입력 감지
+        if (Input.anyKeyDown)
+        {
+            foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(keyCode))
+                {
+                    Debug.Log($"Key pressed: {keyCode}");
+                    OnKeyPressed?.Invoke(keyCode);
+                }
+            }
+        }
     }
 
     private async void OnFetchDataButtonClicked()
@@ -56,7 +75,7 @@ public class TCutSceneManager : MonoBehaviour
 
         Debug.Log("Executed");
 
-        StartCoroutine(ScriptCoroutine());
+        coroutineHandler = StartCoroutine(ScriptCoroutine());
     }
 
     IEnumerator ScriptCoroutine()
@@ -80,9 +99,21 @@ public class TCutSceneManager : MonoBehaviour
             // JSON 데이터 파싱
             characterScripts = JsonUtility.FromJson<Wrapper>("{\"characters\":" + data + "}").characters;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError(ex);
+        }
+    }
+
+    // 키 입력 이벤트 핸들러
+    void HandleKeyPressed(KeyCode keyCode)
+    {
+        Debug.Log($"HandleKeyPressed invoked with key: {keyCode}");
+        if (coroutineHandler != null)
+        {
+            StopCoroutine(coroutineHandler);
+            coroutineHandler = null;
+            Debug.Log("Coroutine stopped");
         }
     }
 
