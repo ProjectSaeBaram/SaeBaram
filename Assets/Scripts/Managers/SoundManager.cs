@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,10 +56,10 @@ public class SoundManager
     /// <param name="path">음원 파일 경로</param>
     /// <param name="type">Clip의 종류</param>
     /// <param name="pitch">재생 속도</param>
-    public void Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+    public void Play(string path, Define.Sound type = Define.Sound.Effect, float volume = 1.0f, float pitch = 1.0f)
     {
         var audioClip = GetOrAddAudioClip(path, type);
-        Play(audioClip, type,pitch);
+        Play(audioClip, type, volume, pitch);
     }
 
     /// <summary>
@@ -66,8 +67,9 @@ public class SoundManager
     /// </summary>
     /// <param name="audioClip">AudioClip</param>
     /// <param name="type">Clip의 종류</param>
+    /// <param name="volume">재생 볼륨</param>
     /// <param name="pitch">재생 속도</param>
-    public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+    public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float volume = 1.0f, float pitch = 1.0f)
     {
         if (audioClip == null)
             return;
@@ -80,17 +82,36 @@ public class SoundManager
                 audioSource.Stop();
             
             audioSource.pitch = pitch;
+            audioSource.volume = volume;
             audioSource.clip = audioClip;
             audioSource.Play();
         }
         else
         {
-            AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
+            GameObject original = Managers.Resource.Load<GameObject>("Prefabs/PoolableAudioSource");
+            Poolable poolable = Managers.Pool.Pop(original);
+            AudioSource audioSource = poolable.GetComponent<AudioSource>();
+
             audioSource.pitch = pitch;
+            audioSource.volume = volume;
             audioSource.PlayOneShot(audioClip);
+
+            // 재생이 끝난 후 풀에 반환
+            CoroutineHelper.StartCoroutine(ReturnToPoolAfterPlayback(audioSource, audioClip.length));
+            
+            // AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
+            // audioSource.pitch = pitch;
+            // audioSource.volume = volume;
+            // audioSource.PlayOneShot(audioClip);
         }
     }
-
+    
+    private IEnumerator ReturnToPoolAfterPlayback(AudioSource audioSource, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Managers.Pool.Push(audioSource.GetComponent<Poolable>());
+    }
+    
     /// <summary>
     ///  AudioClip을 불러올 때 활용. 조건부 AudioClip Caching 함수.
     /// </summary>

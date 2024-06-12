@@ -1,11 +1,23 @@
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
 {
-    public UI_Inven_Item Item;
+    private UI_Inven_Item item;
     public UI_NotebookPopup UINotebookPopup;
     public int SlotIndex;
+    
+    public event Action OnItemInitialized;
+    
+    public virtual UI_Inven_Item Item
+    {
+        get => item;
+        set
+        {
+            item = value;
+        }
+    }
     
     public override void Init()
     {

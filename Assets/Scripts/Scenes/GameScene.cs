@@ -31,8 +31,9 @@ public class GameScene : BaseScene
         // Dictionary<int, Data.Stat> dict = Managers.Data.StatDict;
 
         SpawnPlayer();
-        
         Managers.UI.ShowSceneUI<UI_Game>();
+        
+        Managers.Sound.Play("Sounds/Ambience/AMBIENCE_Forest_Wind_14sec_loop_stereo", Define.Sound.Bgm, 0.3f);
     }
 
     /// <summary>

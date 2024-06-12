@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 /// <summary>
@@ -100,4 +99,3 @@ public class Managers : MonoBehaviour
         Managers.Data.OnCloseQ?.Invoke();       // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
     }
 }
-
