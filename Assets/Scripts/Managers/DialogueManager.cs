@@ -144,10 +144,10 @@ public class DialogueManager : MonoBehaviour
                     popup.layoutAnimator.Play(tagvalue);
                     break;
                 case GOOD_TAG:
-                    Debug.Log("Good+"+tagvalue);
+                    //Debug.Log("Good+"+tagvalue);
                     break;
                 case BAD_TAG:
-                    Debug.Log("Bad+"+tagvalue);
+                    //Debug.Log("Bad+"+tagvalue);
                     break;
                 case DIALOGUE_TAG:              //퀘스트, 상점 구분
                     if (tagvalue == "Merchant")

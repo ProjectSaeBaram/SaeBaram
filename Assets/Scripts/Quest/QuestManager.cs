@@ -33,6 +33,7 @@ public class QuestManager : MonoBehaviour
 
         EntitiyBlock.GetInstance().BlockDead.AddListener(() => UpdateQuestState(0));
 
+
     }
 
     public void AdvanceQuest(int id,NpcData npc)            //퀘스트 진행상황 업데이트

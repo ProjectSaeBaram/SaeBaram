@@ -40,6 +40,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public ITooltipHandler ToolTipHandler;
     public ICatcher Catcher;
     public UI_Popup Popup;
+
+    public bool isPlayer=false;
+    public bool isMerchant=false;
     
     [Header("Logs")] [SerializeField] public List<string> Logs;
     
@@ -166,11 +169,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         
         image.color = new Color(1,1,1,0.8f);
 
-        if(Managers.UI.GetTopPopupUI().GetType()== typeof(UI_Merchant))
-        {
-            UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
-            um.ActivateConfirmMerchant();
-        }
+       
     }
     
     public void OnDrag(PointerEventData eventData) {
@@ -194,16 +193,13 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // 놓인 위치의 모든 UI 요소를 검사
         foreach (var hoverd in eventData.hovered)
         {
-            if (hoverd.GetComponent<UI_Merchant_PlayerInven>() != null)
-            {
-                UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
-                um.DeactivateConfirmMerchant();
-            }
+           
             if (hoverd.GetComponent<NotebookBackPanel>() != null)
             {
                 Managers.Data.RemoveItemFromInventory(this);
                 Popup.ClosePopupUI(eventData);
             }
+          
         }
         
         image.color = new Color(1,1,1,1f);
@@ -272,11 +268,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                 OnValueChange.Invoke();
                 // item.RefreshUI();
                 item.OnValueChange.Invoke();
-                if (Managers.UI.GetTopPopupUI().GetType() == typeof(UI_Merchant))
-                {
-                    UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
-                    um.DeactivateConfirmMerchant();
-                }
+               
             }
             else
             {
@@ -298,11 +290,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     item = null;
                     OnValueChange.Invoke();
 
-                    if (Managers.UI.GetTopPopupUI().GetType() == typeof(UI_Merchant))
-                    {
-                        UI_Merchant um = Managers.UI.GetTopPopupUI() as UI_Merchant;
-                        um.DeactivateConfirmMerchant();
-                    }
+                   
                 }
             }
         }
@@ -314,8 +302,24 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // 놓인 위치의 모든 UI 요소를 검사
+        foreach (var hoverd in eventData.hovered)
+        {
+
+            if (hoverd.GetComponent<UI_Merchant_PlayerInven>() != null)
+            {
+                isPlayer = true;
+            }
+
+        }
         // 우클릭인 경우에 동작
-        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && Catcher.CatchedItem == null)
+        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && Catcher.CatchedItem == null &&
+            isPlayer)
+        {
+            UI_Perchase_Ingre popup = Managers.UI.ShowPopupUI<UI_Perchase_Ingre>();
+            popup.InitItemReference(this);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && Catcher.CatchedItem == null&&!isPlayer)
         {
             UI_SeparateIngredientPopup popup = Managers.UI.ShowPopupUI<UI_SeparateIngredientPopup>();
             popup.InitItemReference(this);

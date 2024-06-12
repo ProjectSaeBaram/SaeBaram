@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_SeparateIngredientPopup : UI_Popup
+public class UI_Perchase_Ingre : UI_Popup
 {
     enum Images
     {
@@ -26,7 +26,7 @@ public class UI_SeparateIngredientPopup : UI_Popup
     }
 
     private TMP_InputField _inputField;
-    
+
     [SerializeField] private UI_Inven_Item _originItem;
 
     private ICatcher _catcher;
@@ -36,7 +36,7 @@ public class UI_SeparateIngredientPopup : UI_Popup
         Bind<Image>(typeof(Images));
         Bind<TMP_InputField>(typeof(InputFields));
         Bind<Button>(typeof(Buttons));
-        
+
         Get<Image>((int)Images.Back).gameObject.AddUIEvent(ClosePopupUI);
         Get<Button>((int)Buttons.Increase).onClick.AddListener(Increase);
         Get<Button>((int)Buttons.Decrease).onClick.AddListener(Decrease);
@@ -46,7 +46,7 @@ public class UI_SeparateIngredientPopup : UI_Popup
         _inputField = Get<TMP_InputField>((int)InputFields.InputField);
         _inputField.onValueChanged.AddListener(CheckValue);
     }
-    
+
     public void InitItemReference(UI_Inven_Item originItem)
     {
         _originItem = originItem;
@@ -57,7 +57,7 @@ public class UI_SeparateIngredientPopup : UI_Popup
         {
             parentPanel = _originItem.parentPanel.transform;
         }
-        _catcher = parentPanel.GetComponent<ICatcher>();   
+        _catcher = parentPanel.GetComponent<ICatcher>();
     }
 
     /// <summary>
@@ -68,14 +68,14 @@ public class UI_SeparateIngredientPopup : UI_Popup
     {
         Get<Button>((int)Buttons.Confirm).interactable = int.Parse(str) != 0;
     }
-    
+
     void Increase()
     {
         var current = int.Parse(_inputField.text);
         if (current == (_originItem.Amount - 1)) return;
         _inputField.text = $"{current + 1}";
     }
-    
+
     void Decrease()
     {
         var current = int.Parse(_inputField.text);
@@ -85,7 +85,28 @@ public class UI_SeparateIngredientPopup : UI_Popup
 
     void Confirm()
     {
-        DebugEx.Log("구매!");
+        // 분리된 아이템이 마우스 커서에 생겨야 한다.
+        UI_Inven_Item item = Managers.UI.MakeSubItem<UI_Inven_Item>();
+
+        // 재료는 로그 x
+        item.IngredientInit(_originItem.Name, _originItem.Quality, int.Parse(_inputField.text), null);
+
+        // 원본 아이템은 갯수를 깎고
+        _originItem.Amount -= int.Parse(_inputField.text);
+        _originItem.OnValueChange?.Invoke();
+
+        ClosePopupUI(null);
+        item.parentPanel = _originItem.parentPanel;
+        item.parentAfterDrag = _originItem.parentAfterDrag;
+
+        if (_catcher != null)
+        {
+            item.ToolTipHandler = _catcher as ITooltipHandler;
+            item.Catcher = _catcher;
+        }
+
+        item.transform.SetParent(item.parentPanel.transform);
+        item.Catched();
     }
 
     void Deny()
