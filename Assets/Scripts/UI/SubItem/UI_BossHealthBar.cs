@@ -15,6 +15,10 @@ public class UI_BossHPBar : UI_Base
     {
     }
 
+    /// <summary>
+    /// 체력바를 Boss와 연결
+    /// </summary>
+    /// <param name="boss"></param>
     public void SetBossController(BearBossController boss)
     {
         _bossController = boss;
@@ -23,8 +27,11 @@ public class UI_BossHPBar : UI_Base
         // Boss의 체력이 변할 때마다 UI 갱신 
         _bossController.OnDamaged += VisualizeCurrentHealth;
     }
-    
-    public void VisualizeCurrentHealth()
+
+    /// <summary>
+    /// 현재 체력 시각화
+    /// </summary>
+    private void VisualizeCurrentHealth()
     {
         float max = _bossController.maxHp;
         float current = _bossController.currentHp;

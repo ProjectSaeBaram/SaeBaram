@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2732901257706001852}
   - component: {fileID: 385830468052442644}
   - component: {fileID: 5063791066520560947}
+  - component: {fileID: 3667897683840797688}
   m_Layer: 11
   m_Name: IronOre
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1002203212, guid: 649c450a97d42904a8719b49fd67dfc0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -164,3 +165,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3e04e1b47fc95314a8baf1cd75d02ac0, type: 3}
   - {fileID: 8300000, guid: e7e02dfb798a0244a8e0401642b83b55, type: 3}
   - {fileID: 8300000, guid: c5a7e8a45dfd41b49b14499f55c521d3, type: 3}
+--- !u!114 &3667897683840797688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8770152926746466718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80648692b2eb21140ae27726033c13e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParticleToSpawn: {fileID: 3001287223059188377, guid: ea945e7791385a64dbdf24bb4e4d4fd0, type: 3}

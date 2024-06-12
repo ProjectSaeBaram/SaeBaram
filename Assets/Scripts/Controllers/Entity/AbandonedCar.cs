@@ -20,6 +20,12 @@ public class AbandonedCar : EntityController
     {
         // 내 체력을 깎는다
         // 체력이 0 밑으로 떨어지면, 죽는다
+
+        if (target._itemStats.GetMainStatType() == Define.ItemMainStatType.DismantlingDriver ||
+            target._itemStats.GetMainStatType() == Define.ItemMainStatType.DismantlingHammer)
+        {
+            damage = target._itemStats.GetMainStatValue();
+        }
         
         DebugEx.LogWarning($"{damage} damage Dealt!");
         
@@ -29,7 +35,7 @@ public class AbandonedCar : EntityController
         {
             WhenDestroy(target);
             _collider.enabled = false;
-            Destroy(gameObject, 0.3f);
+            Destroy(gameObject);
             return;
         }
         
@@ -58,6 +64,6 @@ public class AbandonedCar : EntityController
 
         // 사운드 재생
         int randomSound = Random.Range(0, OnDestroySound.Length);
-        Managers.Sound.Play(OnDestroySound[randomSound], volume: 0.3f);
+        Managers.Sound.Play(OnDestroySound[randomSound], volume: 0.2f);
     }
 }

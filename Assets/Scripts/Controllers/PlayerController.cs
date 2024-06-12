@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using VInspector;
 using Vector2 = UnityEngine.Vector2;
@@ -257,9 +258,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Handled_Item _handledItem;
     
     // 피격 이펙트 시각화를 위한 필드들
-    public List<SpriteRenderer> spriteRenderers;            // 스프라이트 렌더러 리스트
+    private List<SpriteRenderer> spriteRenderers;            // 스프라이트 렌더러 리스트
     private MaterialPropertyBlock propertyBlock;            // 머티리얼 프로퍼티 블록
 
+    [Tab("SoundClips")] 
+    // 걸을 때 재생돼는 발소리
+    [SerializeField] private List<AudioClip> walkFootSteps;
+    // 달릴 때 재생되는 발소리
+    [SerializeField] private List<AudioClip> runFootSteps;
+    // 손을 휘두를 때 재생되는 효과음
+    [SerializeField] private List<AudioClip> swings;
+    
     /// <summary>
     /// 발로 디디고 설 수 있는 Ground Layer
     /// </summary>
@@ -290,7 +299,10 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
+    
+    // 마우스 커서가 UI 요소 위에 있는지 여부
+    private bool _isPointerOverUI;
+    
     private void Awake()
     {
         // 중요한 컴포넌트들을 모두 초기화
@@ -427,6 +439,11 @@ public class PlayerController : MonoBehaviour
     {
         RayCheckGround();
     }
+    
+    void LateUpdate()
+    {
+        _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
+    }
 
     public IPlayerState GetCurrentState() { return _currentState;}
 
@@ -490,7 +507,7 @@ public class PlayerController : MonoBehaviour
         
         Vector3 directedToRight = new Vector3(_localScale.x * -1, _localScale.y, _localScale.z);
         Vector3 directedToLeft = new Vector3(_localScale.x, _localScale.y, _localScale.z);
-
+        
         if (cursorWorldPosition.x < transform.position.x) transform.localScale = directedToLeft;
         else transform.localScale = directedToRight;
     }
@@ -536,7 +553,25 @@ public class PlayerController : MonoBehaviour
         if (_currentState is PlayerRunState && !shiftToggled)
             ChangeState(_walkState);
     }
-
+    
+    /// <summary>
+    /// 걸을 때 발소리를 내는 메서드
+    /// </summary>
+    public void PlayWalkFootStepSound()
+    {
+        int rand = Random.Range(0, walkFootSteps.Count);
+        Managers.Sound.Play(walkFootSteps[rand], Define.Sound.Effect, 0.8f);
+    }
+    
+    /// <summary>
+    /// 달릴 때 발소리를 내는 메서드
+    /// </summary>
+    public void PlayRunFootStepSound()
+    {
+        int rand = Random.Range(0, runFootSteps.Count);
+        Managers.Sound.Play(runFootSteps[rand], Define.Sound.Effect, 0.2f);
+    }
+    
     #endregion
 
     #region Jump
@@ -725,13 +760,15 @@ public class PlayerController : MonoBehaviour
 
     void OnClick(InputAction.CallbackContext context)
     {
+        // UI위에 마우스가 올라가 있다면
+        if (_isPointerOverUI) return;
+        
         // 들고있는 아이템을 휘두르기
         FlipImageToCursor(Input.mousePosition);
         
         ChangeState(_attackState);
     }
-
-
+    
     /// <summary>
     /// 손에 쥔 도구를 휘두르기 시작할 때 Call되는 함수
     /// </summary>
@@ -740,7 +777,11 @@ public class PlayerController : MonoBehaviour
         if (_handledItem != null)
             _handledItem.ColliderActivate();
         
+        // 휘두르는 소리
+        int rand = Random.Range(0, swings.Count);
+        Managers.Sound.Play(swings[rand], Define.Sound.Effect, 0.2f, 2f);
     }
+    
     /// <summary>
     /// 손에 쥔 도구를 휘두르는게 끝날 때 Call되는 함수
     /// </summary>

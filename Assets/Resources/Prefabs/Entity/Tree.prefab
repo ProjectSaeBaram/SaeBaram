@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8513250393304829888}
   - component: {fileID: 3468592343855651912}
   - component: {fileID: 7418571740459893024}
+  - component: {fileID: 7860041841749882002}
   m_Layer: 11
   m_Name: Tree
   m_TagString: Untagged
@@ -226,3 +227,16 @@ MonoBehaviour:
   OnDestroySound:
   - {fileID: 8300000, guid: 3e2d54e1ebf9b55428dd043f0567be1f, type: 3}
   - {fileID: 8300000, guid: 915022d1371091642b3b55d7c315078a, type: 3}
+--- !u!114 &7860041841749882002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5941621124934690057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80648692b2eb21140ae27726033c13e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParticleToSpawn: {fileID: 4543724850335190816, guid: ec947e7086475624699a25d013269ca8, type: 3}

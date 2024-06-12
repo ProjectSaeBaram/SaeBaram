@@ -832,6 +832,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 908189072290955293}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8270910442972453911}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}
 --- !u!1 &7903175597512562551 stripped
 GameObject:
@@ -940,17 +943,107 @@ MonoBehaviour:
   isJumpable: 1
   jumpForced: 0
   shiftToggled: 0
-  playerPortrait: []
   isInvulnerable: 0
+  playerPortrait: []
   currentHp: 100
   _questManager: {fileID: 0}
   questIdx: 0
   isQuestPanelActive: 0
   _rigidbody2D: {fileID: 0}
-  _animator: {fileID: 0}
+  animator: {fileID: 0}
   _rightHandBone: {fileID: 710736570674196846}
   _handledItem: {fileID: 0}
-  spriteRenderers: []
+  walkFootSteps:
+  - {fileID: 8300000, guid: 4d153daea107ba949a5a703b86cce270, type: 3}
+  - {fileID: 8300000, guid: cff43f80665a6fa48b6680e72d63d794, type: 3}
+  - {fileID: 8300000, guid: b365771bffb64c94ba88dc5db6ef05ca, type: 3}
+  - {fileID: 8300000, guid: 3b38213c919a26f4782e90f1aaf84a1e, type: 3}
+  - {fileID: 8300000, guid: 35cd960a2f72e5b4a942afaf8eda163b, type: 3}
+  - {fileID: 8300000, guid: a8beac792a167a74a8ad05d9024984f9, type: 3}
+  - {fileID: 8300000, guid: d83d9427743fbfa4ebfecf39468c216d, type: 3}
+  - {fileID: 8300000, guid: d7ff467277681d74985c032b85bf35ea, type: 3}
+  runFootSteps:
+  - {fileID: 8300000, guid: 71a733f0821afc34fbadd9f6b7fe48ad, type: 3}
+  - {fileID: 8300000, guid: c6123a6632f756a418d5eb59bc670e3e, type: 3}
+  - {fileID: 8300000, guid: 7df610dbb18079a4688c92c202447d68, type: 3}
+  - {fileID: 8300000, guid: f41a6824b6dddbb48ae3b50f2e02c85b, type: 3}
+  - {fileID: 8300000, guid: 679340ba1741d8b489ddf47eb10b24fa, type: 3}
+  - {fileID: 8300000, guid: 2a8eecf7a89cdd64ea3acaaa53915ce8, type: 3}
+  - {fileID: 8300000, guid: 81c0fc48d6783f74b9535e64ac85bd02, type: 3}
+  - {fileID: 8300000, guid: b8fddfad72a6bd349af7fb85b1555942, type: 3}
+  swings:
+  - {fileID: 8300000, guid: 2aa32f9f25d947a4a9e83a59588e7182, type: 3}
+  - {fileID: 8300000, guid: 1e621e554a771f64e94a8492d8780719, type: 3}
+  - {fileID: 8300000, guid: ee551ae665ec3384bb6036e48f630299, type: 3}
+  - {fileID: 8300000, guid: 9f44021f95a0fd54aba8013652464ae3, type: 3}
+  - {fileID: 8300000, guid: c438f8c9ea201e74b8a8113f8c46e37d, type: 3}
+  - {fileID: 8300000, guid: e24e0073a350680409aa7834eeeceadb, type: 3}
+  - {fileID: 8300000, guid: ee1417b89ee620047848c42b92d7af5d, type: 3}
+  - {fileID: 8300000, guid: a21bc4d4cae2ee0439707b620dc93cd0, type: 3}
+  - {fileID: 8300000, guid: 9a6047e2a208e35418276c820ff726b3, type: 3}
+  - {fileID: 8300000, guid: 7d74998cefb4d554882f2635c9b2cb37, type: 3}
+  - {fileID: 8300000, guid: b477ebcb1ef71494886c53ce87c9d919, type: 3}
+  - {fileID: 8300000, guid: 07f79632a9531be49b4a9fcde9018fae, type: 3}
+--- !u!114 &8270910442972453911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7903175597512562551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd438dd108a0f284aa931a2da434f1d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 1
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 1
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_IgnoreTag: 
+  m_UseImpactDirection: 0
+  m_ScaleImpactWithMass: 0
+  m_ScaleImpactWithSpeed: 0
 --- !u!4 &7936561779221067104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8904140475197111382, guid: 6276b1090f8de0e4ab774ba6a579356d, type: 3}

@@ -4,12 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using VInspector;
 
 /// <summary>
 /// Player가 BossRoom에 진입함을 감지하는 객체
 /// </summary>
 public class BossRoom : MonoBehaviour
 {
+    [Tab("Settings")]
+    // ReSharper disable once InvalidXmlDocComment
     /// <summary>
     /// 곰 보스
     /// </summary>
@@ -68,11 +71,14 @@ public class BossRoom : MonoBehaviour
     /// Boss가 죽을 때 Invoke시킬 UnityEvent
     /// </summary>
     [SerializeField] public UnityEvent OnBossDied = null;
+
+
+    [Tab("SoundClips")] 
+    [SerializeField] private List<AudioClip> despawnSounds;
     
     private void Awake()
     {
         // 플레이어가 보스룸에 진입할 때 실행시킬 함수들을 _onPlayerEntered에 추가
-        _onPlayerEntered?.AddListener(DespawnAirGrounds);
         _onPlayerEntered?.AddListener(ActivateBoss);
         _onPlayerEntered?.AddListener(ReplaceCameraBoarderIntoBossRoomCameraBorder);
         _onPlayerEntered?.AddListener(ActivatePhysicalBorders);
@@ -169,6 +175,11 @@ public class BossRoom : MonoBehaviour
     public void SpawnAirGrounds()
     {
         AirGround.SetActive(true);
+        
+        foreach (Transform child in AirGround.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
     }
     
     /// <summary>
@@ -176,7 +187,13 @@ public class BossRoom : MonoBehaviour
     /// </summary>
     public void DespawnAirGrounds()
     {
+        foreach (Transform child in AirGround.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+        
         AirGround.SetActive(false);
+        DespawnSounds();
     }
     
     /// <summary>
@@ -201,6 +218,8 @@ public class BossRoom : MonoBehaviour
             Destroy(rock);
         }
         SpawnedRocks.Clear();
+
+        DespawnSounds();
     }
     
     #endregion
@@ -212,6 +231,12 @@ public class BossRoom : MonoBehaviour
     {
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         player._handledItem.GetOriginItemUI().AddLog(LogForSuppression);
+    }
+
+    private void DespawnSounds()
+    {
+        int rand = Random.Range(0, despawnSounds.Count);
+        Managers.Sound.Play(despawnSounds[rand]);
     }
     
 }

@@ -28,12 +28,12 @@ public class TreeController : EntityController
         {
             WhenDestroy(target);
             _collider.enabled = false;
-            Destroy(gameObject, 0.5f);
+            Destroy(gameObject);
             return;
         }
         
         // 사운드 재생
-        Managers.Sound.Play(OnHitSound[Random.Range(0, OnHitSound.Length)], volume: 0.3f);
+        Managers.Sound.Play(OnHitSound[Random.Range(0, OnHitSound.Length)], volume: 0.2f);
     }
     
     protected override void WhenDestroy(Handled_Item target)
