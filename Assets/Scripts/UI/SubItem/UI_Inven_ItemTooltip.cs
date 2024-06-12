@@ -48,6 +48,10 @@ public class UI_Inven_ItemTooltip : UI_Base
     {
         // 툴팁 타이틀 색을 아이템 퀄리티에 비례하게
         ItemName.text = targetItem.Name;
+        if (targetItem.ReinforceCount != 0)
+        {
+            ItemName.text += $"+{targetItem.ReinforceCount}";
+        }
         Color NameColor = new Color();
         switch (targetItem.Quality)
         {
