@@ -12,9 +12,10 @@ public class UI_Merchant_PlayerInven : UI_Popup, ICatcher
     [SerializeField] private List<UI_Inven_Item> visualizedItems = new List<UI_Inven_Item>();
     private List<ItemData> _itemDataList = new List<ItemData>();
     [SerializeField] public GameObject VisualizedLayer;
-    [SerializeField] public Confirm_Player ConfirmPlayer;
+    [SerializeField] public Confirm_Player ConfirmBuy;
     private UI_Inven_ItemTooltip tooltip;
     public UI_Merchant merchant;
+    public bool isBuyActive=false;
     public UI_Inven_Item CatchedItem { get; set; } // CatchedItem 필드 추가
     
 
@@ -165,5 +166,23 @@ public class UI_Merchant_PlayerInven : UI_Popup, ICatcher
         EnablePickupItem();
 
         Managers.UI.ClosePopupUI();
+    }
+
+    // Confirm_Merchant를 활성화하는 메서드
+    public void ActivateConfirmBuy()
+    {
+        if (ConfirmBuy != null)
+        {
+            ConfirmBuy.gameObject.SetActive(true);
+        }
+    }
+
+    // Confirm_Merchant를 비활성화하는 메서드
+    public void DeactivateConfirmBuy()
+    {
+        if (ConfirmBuy != null)
+        {
+            ConfirmBuy.gameObject.SetActive(false);
+        }
     }
 }

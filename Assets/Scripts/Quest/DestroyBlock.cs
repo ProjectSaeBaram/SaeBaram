@@ -14,6 +14,7 @@ public class DestroyBlock : QuestData
             QuestCompleted = new UnityEvent();
         }
         instance = this;
+        this.QuestCompleted.AddListener(() => CompleteQuest());
     }
 
     public static DestroyBlock GetInstance()
@@ -36,5 +37,10 @@ public class DestroyBlock : QuestData
         qs++;
         QuestCompleted.Invoke(); // 퀘스트 완료 이벤트 호출
         Debug.Log("벽 부수기 퀘스트 완료!");
+    }
+
+    public void CompleteQuest()
+    {
+        Managers.Repute.AddRepute(20);
     }
 }
