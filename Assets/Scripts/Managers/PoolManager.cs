@@ -126,7 +126,7 @@ public class PoolManager
     /// </summary>
     /// <param name="original">Original GameObject</param>
     /// <param name="count">Pool의 크기</param>
-    public void CreatePool(GameObject original, int count = 5)
+    public void CreatePool(GameObject original, int count = 10)
     {
         Pool pool = new Pool();
         pool.Init(original, count);
