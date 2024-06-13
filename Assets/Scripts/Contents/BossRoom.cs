@@ -201,6 +201,8 @@ public class BossRoom : MonoBehaviour
     /// </summary>
     public void SpawnFallingRocks()
     {
+        if (SpawnedRocks.Count != 0) DespawnFallingRocks();
+        
         foreach (Transform position in RockSpawnPositions)
         {
             GameObject rock = Instantiate(RockPrefab, position.position, Quaternion.identity, null);

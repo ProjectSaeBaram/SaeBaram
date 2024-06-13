@@ -20,7 +20,7 @@ public class Managers : MonoBehaviour
     private SoundManager _sound = new SoundManager();
     private UIManager _ui = new UIManager();
     private CraftingManager _crafting = new CraftingManager();
-    private ReputeManager _repute=new ReputeManager();
+    private ReputeManager _repute = new ReputeManager();
     
     public static DataManager Data => Instance._data;
     public static GameManagerEx Game => Instance._game;
