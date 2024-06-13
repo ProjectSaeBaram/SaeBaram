@@ -232,7 +232,7 @@ public class BossRoom : MonoBehaviour
     private void AddLogToPlayersWeapon()
     {
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        player._handledItem.GetOriginItemUI().AddLog(LogForSuppression);
+        player._handledItem.GetOriginItemUI()?.AddLog(LogForSuppression);
     }
 
     private void DespawnSounds()

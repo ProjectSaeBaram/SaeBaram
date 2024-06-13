@@ -853,8 +853,8 @@ PolygonCollider2D:
     m_Paths:
     - - {x: -16000, y: 1000}
       - {x: -16000, y: -500}
-      - {x: 4000, y: -500}
-      - {x: 4000, y: 1000}
+      - {x: 22000, y: -500}
+      - {x: 22000, y: 1000}
   m_UseDelaunayMesh: 0
 --- !u!1 &598980056
 GameObject:
@@ -50355,7 +50355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6138017707382750469, guid: 75c1b18b3774385489c4419bf411f825, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00047873126
+      value: -0.00045637952
       objectReference: {fileID: 0}
     - target: {fileID: 6138017707382750469, guid: 75c1b18b3774385489c4419bf411f825, type: 3}
       propertyPath: m_LocalPosition.y
