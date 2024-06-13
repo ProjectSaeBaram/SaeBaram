@@ -16,11 +16,15 @@ public class FallingRockController : MonoBehaviour, IInteractable
 
     private int _regularOrder = 1;                  // 평소 SpriteRenderer의 SortingOrder
     private int _playerConcealingOrder = 200;       // 플레이어를 숨기고 있는 동안의 SortingOrder
+
+    private Color _concealingColor = new Color(1, 1, 1, 0.5f);          // 플레이어를 숨기고 있는 동안의 Sprite Color
+    private Color _regularColor = Color.white;                                  // 평상시의 Sprite Color
     
     /// <summary>
     /// 충돌 시 추락을 멈출 Ground Layer
     /// </summary>
     private int GroundLayer;
+    
     
     void Start()
     {
@@ -107,6 +111,8 @@ public class FallingRockController : MonoBehaviour, IInteractable
     {
         // 플레이어를 가리도록
         _spriteRenderer.sortingOrder = _playerConcealingOrder;
+
+        _spriteRenderer.color = _concealingColor;
     }
 
     /// <summary>
@@ -116,5 +122,7 @@ public class FallingRockController : MonoBehaviour, IInteractable
     {
         // 플레이어를 다시 드러내도록
         _spriteRenderer.sortingOrder = _regularOrder;
+
+        _spriteRenderer.color = _regularColor;
     }
 }
