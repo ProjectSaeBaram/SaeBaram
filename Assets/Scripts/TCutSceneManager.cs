@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class TCutSceneManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class TCutSceneManager : MonoBehaviour
     private Coroutine coroutineHandler;
     private bool isSpacePressed;
     public event Action<KeyCode> OnKeyPressed;
+    private TextMeshProUGUI displayText;
 
     [System.Serializable]
     public class CharacterScript
@@ -39,6 +41,17 @@ public class TCutSceneManager : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(0, 0);
         Image buttonImage = buttonObject.AddComponent<Image>();
         buttonImage.color = Color.white;
+
+        // TextMeshProUGUI 표시를 위한 컴포넌트 추가
+        GameObject textObject = new GameObject("DisplayText");
+        textObject.transform.SetParent(canvas.transform);
+        displayText = textObject.AddComponent<TextMeshProUGUI>();
+        RectTransform textRect = textObject.GetComponent<RectTransform>();
+        textRect.sizeDelta = new Vector2(800, 200);
+        textRect.anchoredPosition = new Vector2(0, -100);
+        displayText.fontSize = 24;
+        displayText.alignment = TextAlignmentOptions.Center;
+        displayText.color = Color.black;
 
         fetchDataButton.onClick.AddListener(OnFetchDataButtonClicked);
 
@@ -79,6 +92,7 @@ public class TCutSceneManager : MonoBehaviour
         foreach (var script in characterScripts)
         {
             Debug.Log($"Index: {script.index}, Name: {script.name}, Script: {script.script}");
+            displayText.text = $"Index: {script.index}, Name: {script.name}, Script: {script.script}";
             coroutineHandler = StartCoroutine(DelayCoroutine());
 
             // 사용자가 스페이스 키를 눌렀다면 바로 다음 스크립트로 넘어갑니다.
