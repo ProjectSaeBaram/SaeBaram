@@ -11,7 +11,6 @@ public class TCutSceneManager : MonoBehaviour
     private CharacterScript[] characterScripts;
     private Coroutine coroutineHandler;
     private bool isSpacePressed;
-    public event Action<KeyCode> OnKeyPressed;
     private TextMeshProUGUI displayText;
 
     [System.Serializable]
@@ -25,8 +24,6 @@ public class TCutSceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OnKeyPressed += HandleKeyPressed;
-
         GameObject canvasObject = new GameObject("Canvas");
         Canvas canvas = canvasObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -73,7 +70,6 @@ public class TCutSceneManager : MonoBehaviour
         {
             Debug.Log("Space key pressed");
             isSpacePressed = true;
-            OnKeyPressed?.Invoke(KeyCode.Space);
         }
     }
 
@@ -132,18 +128,6 @@ public class TCutSceneManager : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogError(ex);
-        }
-    }
-
-    // 키 입력 이벤트 핸들러
-    void HandleKeyPressed(KeyCode keyCode)
-    {
-        Debug.Log($"HandleKeyPressed invoked with key: {keyCode}");
-        if (coroutineHandler != null)
-        {
-            StopCoroutine(coroutineHandler);
-            coroutineHandler = null;
-            Debug.Log("Coroutine stopped");
         }
     }
 
