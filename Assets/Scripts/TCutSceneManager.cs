@@ -9,6 +9,7 @@ public class TCutSceneManager : MonoBehaviour
     private Task fetchDataTask;
     private CharacterScript[] characterScripts;
     private Coroutine coroutineHandler;
+    private bool isSpacePressed;
     public event Action<KeyCode> OnKeyPressed;
 
     [System.Serializable]
@@ -55,16 +56,11 @@ public class TCutSceneManager : MonoBehaviour
         }
 
         // 키보드 입력 감지
-        if (Input.anyKeyDown)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
-            {
-                if (Input.GetKeyDown(keyCode))
-                {
-                    Debug.Log($"Key pressed: {keyCode}");
-                    OnKeyPressed?.Invoke(keyCode);
-                }
-            }
+            Debug.Log("Space key pressed");
+            isSpacePressed = true;
+            OnKeyPressed?.Invoke(KeyCode.Space);
         }
     }
 
@@ -75,7 +71,7 @@ public class TCutSceneManager : MonoBehaviour
 
         Debug.Log("Executed");
 
-        coroutineHandler = StartCoroutine(ScriptCoroutine());
+        StartCoroutine(ScriptCoroutine());
     }
 
     IEnumerator ScriptCoroutine()
@@ -83,8 +79,28 @@ public class TCutSceneManager : MonoBehaviour
         foreach (var script in characterScripts)
         {
             Debug.Log($"Index: {script.index}, Name: {script.name}, Script: {script.script}");
-            yield return new WaitForSeconds(1f);
+            coroutineHandler = StartCoroutine(DelayCoroutine());
+
+            // 사용자가 스페이스 키를 눌렀다면 바로 다음 스크립트로 넘어갑니다.
+            while (coroutineHandler != null && !isSpacePressed)
+            {
+                yield return null;
+            }
+
+            // 스페이스 키를 감지하면 다음 스크립트로 넘어가도록 플래그를 초기화합니다.
+            isSpacePressed = false;
         }
+    }
+
+    IEnumerator DelayCoroutine()
+    {
+        float timer = 0f;
+        while (timer < 5f && !isSpacePressed)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        coroutineHandler = null; // DelayCoroutine이 완료되면 null로 설정합니다.
     }
 
     private async Task FetchDataAsync()
