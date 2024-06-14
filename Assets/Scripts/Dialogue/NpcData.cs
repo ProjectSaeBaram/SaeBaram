@@ -11,7 +11,7 @@ using VInspector;
 public class NpcData : MonoBehaviour
 {
     [Tab("Visual Cue")]
-    [SerializeField] private GameObject[] visualCue;
+    [SerializeField] public GameObject[] visualCue;
     [Tab("NPC Inform")]
     [SerializeField] private int npcId;
     [SerializeField] private string npcName;
@@ -65,10 +65,31 @@ public class NpcData : MonoBehaviour
         {
             cue.SetActive(false);
         }
-       
 
-        
-       
+        if (isMerchant)
+        {
+            D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
+        }
+        else
+        {
+            switch (PlayerController.GetInstance().RState)
+            {
+                case ReputeState.Good:
+                    D_path = Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+                    break;
+                case ReputeState.Bad:
+                    D_path = Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+                    break;
+                case ReputeState.Normal:
+                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+                    break;
+                default:
+                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
+                    break;
+            }
+        }
+
+
     }
 
     public int GetNpcId()
@@ -76,23 +97,7 @@ public class NpcData : MonoBehaviour
         return this.npcId;
     }
 
-    private void FixedUpdate()
-    {
-        if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
-        {
-            if (PlayerController.GetInstance().GetInteractPressed())
-            {
-                DialogueManager.GetInstance().GetTalk2(dialogue,this);
-            }
-        }
-        else
-        {
-
-        }
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void Update()
     {
         if (isMerchant)
         {
@@ -117,6 +122,47 @@ public class NpcData : MonoBehaviour
             }
         }
         dialogue = Resources.Load(D_path) as TextAsset;
+
+        if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
+        {
+            if (PlayerController.GetInstance().GetInteractPressed())
+            {
+                DialogueManager.GetInstance().GetTalk2(dialogue,this);
+            }
+        }
+        else
+        {
+
+        }
+
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        //if (isMerchant)
+        //{
+        //    D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
+        //}
+        //else
+        //{
+        //    switch (PlayerController.GetInstance().RState)
+        //    {
+        //        case ReputeState.Good:
+        //            D_path = Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+        //            break;
+        //        case ReputeState.Bad:
+        //            D_path = Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+        //            break;
+        //        case ReputeState.Normal:
+        //            D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
+        //            break;
+        //        default:
+        //            D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
+        //            break;
+        //    }
+        //}
+        //dialogue = Resources.Load(D_path) as TextAsset;
 
         QuestManager.GetInstance().CheckRequirement();
         if (collider.gameObject.tag == "Player") 

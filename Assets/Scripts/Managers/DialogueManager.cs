@@ -72,13 +72,18 @@ public class DialogueManager : MonoBehaviour
 
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
-        Time.timeScale = 0;
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.DisableExceptInteract();
         npcdata = npc;
         npcdata.SetMerchant(false);
         currentStory = new Story(dialogue.text);
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
+        foreach (GameObject cue in npc.visualCue)
+        {
+            cue.SetActive(false);
+        }
         //태그 초기화
         popup.displayNameText.text = "???";
         ContinueStory();
@@ -90,9 +95,10 @@ public class DialogueManager : MonoBehaviour
     {
         //dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
-        popup.dialoguePanel.SetActive(false);
         popup.dialogueText.text = "";
-        Time.timeScale = 1;
+        popup.dialoguePanel.SetActive(false);
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.EnableExceptInter();
     }
 
     private void ContinueStory()
