@@ -10,7 +10,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Load Globals JSON")]
     [SerializeField] private TextAsset loadGlobalsJSON;
     [Header("NPC Data")]
-    [SerializeField] private Dictionary<int, int> NpcTalkIndex;                //npc 별 대화인덱스 저장할 변수
+    [SerializeField] private Dictionary<int, int> npcDindex;                //npc 별 대화인덱스 저장할 변수
     private NpcData npcdata;
     private Story currentStory;                                     //Ink 로 생성된 텍스트를 받아올 Class변수
     [SerializeField] public GameObject[] npcList;
@@ -36,35 +36,26 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        NpcTalkIndex = new Dictionary<int, int>();
+        //TODO : Json으로 저장된 챕터별 npc 아이디와 대화인덱스 변수 가져와서 변수 초기화
+        //dialogueVariables = new DialogueVariables(loadGlobalsJSON);
     }
+
 
     public static DialogueManager GetInstance()
     {
         return instance;
     }
 
-    public void LoadTalkIndex(Dictionary<int, int> loadedTalkIndex)
-    {
-        NpcTalkIndex = loadedTalkIndex ?? new Dictionary<int, int>();
-    }
-
-    public Dictionary<int, int> GetTalkIndex()
-    {
-        return new Dictionary<int, int>(NpcTalkIndex);
-    }
-
-
     public int GetQuestIndex(int id)
     {
-        return NpcTalkIndex.ContainsKey(id) ? NpcTalkIndex[id] : 0;
+        return npcDindex[id];
     }
-
-    public void SetQuestIndex(int id, int idx)
+    
+    public void setQuestIndex(int id,int idx)
     {
-        NpcTalkIndex[id] = idx;
+        npcDindex[id] = idx;
     }
-
+    
 
     private void Update()
     {
@@ -211,14 +202,14 @@ public class DialogueManager : MonoBehaviour
         {
             if (npcdata.questId.Length > 0)
             {
-                QuestState qs = QuestManager.GetInstance().CheckState(npcdata.questId[npcdata.TalkIndex]);
+                QuestState qs = QuestManager.GetInstance().CheckState(npcdata.questId[npcdata.DialogueIndex]);
                 if (qs == QuestState.CAN_START)
                 {
-                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.TalkIndex], npcdata);
+                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
                     //qpanel.questlist.AddQuest(QuestManager.GetInstance().GetQuestData(npcdata.questId[npcdata.questIndex]));
                 }else if (qs == QuestState.CAN_FINISH)
                 {
-                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.TalkIndex], npcdata);
+                    QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
                 }
             }
 

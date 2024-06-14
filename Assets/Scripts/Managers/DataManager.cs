@@ -53,23 +53,6 @@ public class LogData
 }
 
 /// <summary>
-/// 세션 데이터 
-/// </summary>
-[Serializable]
-public class SessionData
-{
-    public int Gold;
-    public int Experience;
-    public int QuestIndex;
-    public Dictionary<int, int> TalkIndex;
-    public int Repute;
-}
-/// <summary>
-/// 퀘스트 데이터 
-/// </summary>
-
-
-/// <summary>
 /// 데이터를 관리하는 매니저.
 /// </summary>
 public class DataManager
@@ -78,10 +61,6 @@ public class DataManager
     /// 저장 경로 
     /// </summary>
     private string _defaultPath;
-    /// <summary>
-    /// 세션 데이터 저장 경로
-    /// </summary>
-    private string _defaultPath_session;
 
     /// <summary>
     /// 아이템 코드 데이터베이스 스크립터블 오브젝트
@@ -102,7 +81,7 @@ public class DataManager
     /// 아이템 정보를 캐싱하는 ushort 배열
     /// </summary>
     private ushort[] InventoryTable;
-
+    
     /// <summary>
     /// 퀵슬롯 아이템 정보를 캐싱하는 ushort 배열
     /// </summary>
@@ -112,7 +91,7 @@ public class DataManager
     /// 인벤토리 내 전체 아이템들의 로그를 저장하는 객체
     /// </summary>
     private EntireLog EntireLog_Inventory;
-
+    
     /// <summary>
     /// 퀵슬롯 내 아이템들의 로그를 저장하는 객체
     /// </summary>
@@ -133,20 +112,20 @@ public class DataManager
     /// Item의 id가 BOUNDARY보다 크거나 같으면 Tool, 보다 작으면 Ingredient.
     /// </summary>
     public readonly int BOUNDARY = 128;
-
+    
     /// <summary>
     /// 게임이 꺼질 때 + NotebookPopup이 꺼질 때 Invoke되는 UnityAction
     /// 인벤토리 아이템 저장용
     /// </summary>
     public UnityAction OnClose = null;
-
+    
     /// <summary>
     /// 게임이 꺼질 때 Invoke되는 UnityAction
     /// 퀵슬롯 아이템 저장용
     /// </summary>
     public UnityAction OnCloseQ = null;
 
-
+   
 
     /// <summary>
     /// 게임이 시작할 때 데이터를 로드하는 초기화 메서드. 
@@ -157,11 +136,6 @@ public class DataManager
     {
         // 데이터 저장 기본 경로
         _defaultPath = Application.persistentDataPath + "/";
-        // 세션 데이터 저장 경로
-        _defaultPath_session= Application.persistentDataPath + "/SessionData.json";
-
-
-
 
         // 아이템 코드 딕셔너리 초기화
         itemCodeDatabase = Managers.Resource.Load<ItemCodeDatabase>("Contents/ItemCodeDatabase");
@@ -184,7 +158,7 @@ public class DataManager
 
         // EntireLog를 Json으로부터 불러오기 
         EntireLog_Inventory = LoadEntireLogFromJson(_defaultPath + "/LogsForItems.json");
-
+        
         // EntireLog를 Json으로부터 불러오기 
         EntireLog_Quick = LoadEntireLogFromJson(_defaultPath + "/qLogsForItems.json");
     }
@@ -318,7 +292,7 @@ public class DataManager
             }
             DebugEx.Log("QuickSlot Save Success");
         }
-
+        
         SaveEntireLogIntoJson(_defaultPath + entireLogFileName, EntireLog_Quick);
     }
 
@@ -352,7 +326,7 @@ public class DataManager
             DebugEx.Log($"Exception message : {e}");
         }
     }
-
+    
 
     /// <summary>
     /// 아이템 정보를 인벤토리 팝업에서 읽어갈 수 있도록 변환하는 함수
@@ -437,7 +411,7 @@ public class DataManager
             int numOfReinforce = QuickSlotItems[i] & 3;
 
             // amount = durability * 4 + numOfReinforce              // 뒤 6비트로 갯수를 파악 (숫자를 1~64로 받기위해 + 1)
-
+            
 
             // 지금 읽어온 아이템이 Tool인지, Material인지 구분해야한다.
 
@@ -462,7 +436,7 @@ public class DataManager
 
         return itemDatas;
     }
-
+    
     /// <summary>
     /// 리스트로 입력받은 인벤토리 데이터를 다시 배열로 바꾸는 함수
     /// 이 이후에, SaveInventoryData함수가 호출되어 실제 Disk에 저장된다.
@@ -519,7 +493,7 @@ public class DataManager
         EntireLog_Inventory = _entireLog;
         DebugEx.Log("Exported from InventoryPopup to DataManager");
     }
-
+    
     /// <summary>
     /// 리스트로 입력받은 퀵슬롯 데이터를 다시 배열로 바꾸는 함수
     /// 이 이후에, SaveInventoryData함수가 호출되어 실제 Disk에 저장된다.
@@ -576,22 +550,22 @@ public class DataManager
         EntireLog_Quick = _entireLog;
         DebugEx.Log("Exported from QuickSlots to DataManager");
     }
-
+    
     /// <summary>
     /// 인벤토리에 아이템을 추가하는 함수
     /// </summary>
     public void AddItemInInventory(DroppedItem droppedItem)
     {
         // 인벤토리 내 넣을 수 있는 공간 찾기
-
+        
         int availableSlotIndex = 0;
         for (; availableSlotIndex < NumberOfInventorySlots; availableSlotIndex++)
             if (InventoryTable[availableSlotIndex] == 0) break;
-
+        
         #region 인벤토리에 새로만들어서 넣기
         ushort newItem = 0;
         // TODO : id, itemType, quality, amount, durability, reinforceCount, logs
-
+        
         ushort id = (ushort)droppedItem.ItemId;
         ushort quality = (ushort)droppedItem.Quality;
 
@@ -612,7 +586,7 @@ public class DataManager
             // 재료의 경우, 갯수 (6bit)
             newItem |= (ushort)(droppedItem.Amount & 0x3F); // 마지막 6bit
         }
-
+        
         // 인벤토리 내 비어있는 칸에 아이템 저장 
         InventoryTable[availableSlotIndex] = newItem;
 
@@ -649,7 +623,7 @@ public class DataManager
         droppedItem.InitInfoByUI(item);
         Object.DestroyImmediate(item.gameObject);
     }
-
+    
     #region About ItemLog
 
     public EntireLog LoadEntireLogFromJson(string path)
@@ -688,77 +662,4 @@ public class DataManager
     }
 
     #endregion
-
-    /// <summary>
-    /// 아이템 id로 아이템 타입을 찾는 함수
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public Define.ItemType ItemTypeById(int id)
-    {
-        return (id >= BOUNDARY) ? Define.ItemType.Tool : Define.ItemType.Ingredient;
-    }
-
-
-    public void InitializeSession(SessionManager sessionManager, DialogueManager dialogueManager, ReputeManager reputeManager)
-    {
-        SessionData sessionData = LoadSessionData();
-
-        if (sessionData != null)
-        {
-            sessionManager.Gold = sessionData.Gold;
-            sessionManager.Experience = sessionData.Experience;
-            sessionManager.QuestIndex = sessionData.QuestIndex;
-            sessionManager.Repute = sessionData.Repute;
-            sessionManager.TalkIndex = sessionData.TalkIndex;
-
-            dialogueManager.LoadTalkIndex(sessionData.TalkIndex);
-            reputeManager.SetRepute(sessionData.Repute);
-        }
-        else
-        {
-            sessionManager.Gold = 0;
-            sessionManager.Experience = 0;
-            sessionManager.QuestIndex = 0;
-            sessionManager.Repute = 50;
-
-            sessionManager.TalkIndex.Clear();
-            for (int i = 0; i <= 10; i++)
-            {
-                sessionManager.TalkIndex[i] = 0;
-            }
-
-            reputeManager.Init();
-        }
-    }
-
-    public void SaveSession(SessionManager sessionManager, DialogueManager dialogueManager, ReputeManager reputeManager)
-    {
-        SessionData sessionData = new SessionData
-        {
-            Gold = sessionManager.Gold,
-            Experience = sessionManager.Experience,
-            QuestIndex = sessionManager.QuestIndex,
-            TalkIndex = new Dictionary<int, int>(sessionManager.TalkIndex),
-            Repute = sessionManager.Repute
-        };
-
-        string jsonData = JsonUtility.ToJson(sessionData, true);
-        File.WriteAllText(_defaultPath_session, jsonData);
-        Debug.Log("Session data saved successfully.");
-    }
-
-    private SessionData LoadSessionData()
-    {
-        if (File.Exists(_defaultPath_session))
-        {
-            string jsonData = File.ReadAllText(_defaultPath_session);
-            return JsonUtility.FromJson<SessionData>(jsonData);
-        }
-        else
-        {
-            Debug.LogWarning("Session data file not found.");
-            return null;
-        }
-    }
 }
