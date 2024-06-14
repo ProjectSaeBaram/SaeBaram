@@ -37,11 +37,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     [SerializeField] public int ReinforceCount = 0;     // 아이템의 강화 횟수를 저장하는 필드 (0~3)
     [SerializeField] public Define.ItemType itemType;          // 아이템의 타입을 저장하기 위한 필드
 
-    public ITooltipHandler ToolTipHandler;
-    public ICatcher Catcher;
-    public UI_Popup Popup;
+    public UI_NotebookPopup UINotebookPopup;
     
-    [Header("Logs")] [SerializeField] public List<string> Logs;
+    [Header("Logs")] [SerializeField] public List<string> Logs = new List<string>();
     
     // 드래그 이후 부모 Transform을 저장하기 위함
     [SerializeField] public Transform parentAfterDrag;
@@ -57,10 +55,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         OnValueChange -= RefreshUI;
         OnValueChange += RefreshUI;
+        OnValueChange.Invoke();
         
-        ToolTipHandler = Managers.UI.GetTopPopupUI() as ITooltipHandler;
-        Catcher = Managers.UI.GetTopPopupUI() as ICatcher;
-        Popup = Managers.UI.GetTopPopupUI();
+        UINotebookPopup = Managers.UI.GetTopPopupUI() as UI_NotebookPopup;
 
         _rectTransform = GetComponent<RectTransform>();
         _rectTransform.anchoredPosition = Vector2.zero;
@@ -90,7 +87,9 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemAmountText.gameObject.SetActive(false);
 
         // 로그 받아오기
-        Logs = logs;
+        if (logs != null)
+            Logs = logs;
+        
         
         itemType = Define.ItemType.Tool;
         parentAfterDrag = transform.parent;
@@ -119,8 +118,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemReinforceCount.gameObject.SetActive(false);
         ItemAmountText.text = Amount.ToString();
 
-        // 로그 받아오기
-        Logs = logs;
+        if (logs != null)
+            Logs = logs;
         
         itemType = Define.ItemType.Ingredient;
         parentAfterDrag = transform.parent;
@@ -139,7 +138,16 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         // Get<TextMeshProUGUI>((int)Texts.ItemNameText).text = Name;
         ItemAmountText.text = Amount.ToString();
         ItemReinforceCount.text = ReinforceCount.ToString();
-        DurabilitySlider.value = Durability / maxDurability;
+        
+        // 현재 내구도 (0~1사이 값)
+        float currentDurability = Durability / maxDurability;
+        
+        DurabilitySlider.value = currentDurability;
+        
+        // 현재 내구도 (0~1사이 값)의 비율에 맞춰 green과 red를 섞어 내구도 슬라이더 바에 시각화한다.
+        var block = DurabilitySlider.colors;
+        block.disabledColor = Color.Lerp(Color.red, Color.green, currentDurability);
+        DurabilitySlider.colors = block;
     }
 
     #region Drag and Drop
@@ -186,7 +194,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
             if(hoverd.GetComponent<NotebookBackPanel>() != null)
             {
                 Managers.Data.RemoveItemFromInventory(this);
-                Popup.ClosePopupUI(eventData);
+                UINotebookPopup.ClosePopupUI(eventData);
             }
         }
         
@@ -197,7 +205,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            UI_Inven_Item catchedItem = Catcher.CatchedItem;
+            UI_Inven_Item catchedItem = UINotebookPopup?.CatchedItem;
             if (catchedItem != null && catchedItem?.itemType == Define.ItemType.Ingredient && this.itemType == Define.ItemType.Ingredient && catchedItem.Name == this.Name
                 && catchedItem?.Quality == this.Quality)
             {
@@ -219,7 +227,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     {
                         this.Amount += catchedItem.Amount;
                         DestroyImmediate(catchedItem.gameObject);
-                        catchedItem = null;
+                        // catchedItem = null;
                         OnValueChange.Invoke();
                     
                         // 검색
@@ -229,10 +237,19 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
                     {
                         this.Amount += catchedItem.Amount;
                         DestroyImmediate(catchedItem.gameObject);
-                        catchedItem = null;
+                        // catchedItem = null;
                         OnValueChange.Invoke();
                     }
                 }
+            }
+            
+            // (+ 만약 이 아이템이 QuickSlot에서 꺼내어졌다면, QuickSlot을 갱신하고 캐릭터의 손과 동기화 해야 한다)
+            var item = eventData.pointerDrag.GetComponent<UI_Inven_Item>();
+            if (item != null && item.parentAfterDrag.GetComponent<UI_Inven_Slot>() is UI_Game_QuickSlot)
+            {
+                PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+                if(item.parentAfterDrag.GetComponent<UI_Game_QuickSlot>().SlotIndex == player._handledItem.Index)
+                    player._handledItem.ItemUIReferenceSetter(null);
             }
         }
     }
@@ -285,7 +302,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public void OnPointerClick(PointerEventData eventData)
     {
         // 우클릭인 경우에 동작
-        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && Catcher.CatchedItem == null)
+        if (eventData.button == PointerEventData.InputButton.Right && !isCatched && itemType != Define.ItemType.Tool && UINotebookPopup.CatchedItem == null)
         {
             UI_SeparateIngredientPopup popup = Managers.UI.ShowPopupUI<UI_SeparateIngredientPopup>();
             popup.InitItemReference(this);
@@ -296,7 +313,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         isCatched = true;
         image.color = new Color(1,1,1,0.8f);
-        Catcher.CatchedItem = this;
+        UINotebookPopup.CatchedItem = this;
         image.raycastTarget = false;
     }
 
@@ -315,15 +332,42 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        ToolTipHandler?.ShowToolTip(this, eventData);
+        UINotebookPopup?.ShowToolTip(this, eventData);
         
     }
 
+    
     public void OnPointerExit(PointerEventData eventData)
     {
-        ToolTipHandler?.HideTooltip();
+        UINotebookPopup?.HideTooltip();
     }
     
     #endregion
-    
-}
+
+    /// <summary>
+    /// 아이템의 내구도를 깎는 기능
+    /// </summary>
+    public void DecreaseDurability()
+    {
+        Durability -= 1;
+        // 내구도가 0 이하로 떨어지면 사라지는 기능
+        if (Durability <= 0)
+        {
+            Destroy(this.gameObject);
+            // 퀵슬롯에 있을 때 안전하게 손에서 사라지게 하는 코드
+            PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+            if(parentAfterDrag.GetComponent<UI_Game_QuickSlot>().SlotIndex == player._handledItem.Index)
+                player._handledItem.ItemUIReferenceSetter(null);
+        }
+        OnValueChange.Invoke();
+    }
+
+    /// <summary>
+    /// 로그 추가 기능
+    /// </summary>
+    /// <param name="log"></param>
+    public void AddLog(string log)
+    {
+        Logs.Add(log);
+    }
+}   
