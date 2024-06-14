@@ -346,6 +346,8 @@ public class PlayerController : MonoBehaviour
         // 두 작업이 완료될 때까지 대기
         await waitForQuickSlotGroupTask;
         await findSpriteRenderersTask;
+
+        instance = this;
     }
     
     /// <summary>

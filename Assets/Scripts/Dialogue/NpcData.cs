@@ -55,33 +55,7 @@ public class NpcData : MonoBehaviour
     private void Awake()
     {
         //questIndex = DialogueManager.GetInstance().GetQuestIndex(npcId);
-        switch (PlayerController.GetInstance().RState)
-        {
-            case ReputeState.Good:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(true);
-                }
-                break;
-            case ReputeState.Bad:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(false);
-                }
-                break;
-            case ReputeState.Normal:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(false);
-                }
-                break;
-            default:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(false);
-                }
-                break;
-        }
+       
         DialogueIndex = 0;
         playerInRange = false;
         npcName = this.name;
@@ -125,33 +99,6 @@ public class NpcData : MonoBehaviour
 
     private void Update()
     {
-        switch (PlayerController.GetInstance().RState)
-        {
-            case ReputeState.Good:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(true);
-                }
-                break;
-            case ReputeState.Bad:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(false);
-                }
-                break;
-            case ReputeState.Normal:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(false);
-                }
-                break;
-            default:
-                if (isGood)
-                {
-                    this.gameObject.SetActive(false);
-                }
-                break;
-        }
         if (isMerchant)
         {
             D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
