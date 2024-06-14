@@ -387,4 +387,32 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         Debug.LogWarning("Catcher를 찾지 못했습니다. 상위 객체를 확인하세요.");
     }
 
+    /// <summary>
+    /// 아이템의 내구도를 깎는 기능
+    /// </summary>
+    public void DecreaseDurability()
+    {
+        Durability -= 1;
+        // 내구도가 0 이하로 떨어지면 사라지는 기능
+        if (Durability <= 0)
+        {
+            Destroy(this.gameObject);
+            // 퀵슬롯에 있을 때 안전하게 손에서 사라지게 하는 코드
+            PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+            if (parentAfterDrag.GetComponent<UI_Game_QuickSlot>().SlotIndex == player._handledItem.Index)
+                player._handledItem.ItemUIReferenceSetter(null);
+        }
+        OnValueChange.Invoke();
+    }
+
+    /// <summary>
+    /// 로그 추가 기능
+    /// </summary>
+    /// <param name="log"></param>
+    public void AddLog(string log)
+    {
+        Logs.Add(log);
+    }
+
+
 }

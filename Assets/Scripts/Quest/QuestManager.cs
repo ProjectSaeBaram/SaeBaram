@@ -43,7 +43,7 @@ public class QuestManager : MonoBehaviour
         Debug.Log(questList[id].qs);
         if (questList[questIndex].qs == QuestState.FINISHED)
         {
-            AdvanceIndex(npc);
+           // AdvanceIndex(npc);
             return;
         }      
 
@@ -57,7 +57,7 @@ public class QuestManager : MonoBehaviour
         Debug.Log(questList[id].qs);
         if (questList[questIndex].qs == QuestState.FINISHED)
         {
-            AdvanceIndex(id);
+           // AdvanceIndex(id);
             return;
         }
 
@@ -95,29 +95,29 @@ public class QuestManager : MonoBehaviour
     {
         return questIndex + questActionIndex;
     }
-    public void AdvanceIndex(NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
-    {
-        if (npc.questId.Length >= (npc.TalkIndex+1))
-        {
-            npc.TalkIndex++;
-            DialogueManager.GetInstance().SetQuestIndex(npc.GetNpcId(), npc.TalkIndex);
-        }
-        //else        //더 퀘스트가 없다면
-        //{
-        //    npc.DialogueIndex = 99;
-        //    DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.DialogueIndex);
-        //}
-        PlayerController.GetInstance().IncreaseQuestIdx();
-    }
-    public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
-    {
-        questIndex += 10;
-        if (questNpc[qid].questId.Length>1)
-        {
-            questNpc[qid].TalkIndex++;
-        }
-        questActionIndex = 0;
-    }
+    //public void AdvanceIndex(NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
+    //{
+    //    if (npc.questId.Length >= (npc.TalkIndex+1))
+    //    {
+    //        npc.TalkIndex++;
+    //        DialogueManager.GetInstance().SetQuestIndex(npc.GetNpcId(), npc.TalkIndex);
+    //    }
+    //    //else        //더 퀘스트가 없다면
+    //    //{
+    //    //    npc.DialogueIndex = 99;
+    //    //    DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.DialogueIndex);
+    //    //}
+    //    PlayerController.GetInstance().IncreaseQuestIdx();
+    //}
+    //public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
+    //{
+    //    questIndex += 10;
+    //    if (questNpc[qid].questId.Length>1)
+    //    {
+    //        questNpc[qid].TalkIndex++;
+    //    }
+    //    questActionIndex = 0;
+    //}
 
     public NpcData GetNpcId(int questId)
     {

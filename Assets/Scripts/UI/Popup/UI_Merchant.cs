@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VInspector;
 
-public class UI_Merchant : UI_Popup,ICatcher, ITooltipHandler
+public class UI_Merchant : UI_Popup, ICatcher, ITooltipHandler
 {
     [Tab("Merchant UI")]
     [SerializeField] private UI_Merchant_MerchantInven merchantInventory;
@@ -16,18 +16,16 @@ public class UI_Merchant : UI_Popup,ICatcher, ITooltipHandler
     public UI_Inven_Item CatchedItem { get; set; }
 
 
-private void Start()
+    private void Start()
     {
         PlayerController _player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         _player.Disableall();
         Ex_Button.onClick.AddListener(() => CloseMerchant());
         //Player_panel.InitInventory(this,);
         Player_panel.merchant = this;
-        merchantInventory.merchant= this;
         Player_panel.InitInventory(Player_panel.VisualizedLayer, tooltip);
+        
 
-        // 상점 UI 초기화
-        merchantInventory.InitShopInventory(merchantInventory.VisualizedLayer, tooltip);
     }
 
     public void CloseMerchant()
@@ -49,25 +47,5 @@ private void Start()
         tooltip.gameObject.SetActive(false);
         tooltip.UnsetPointerEventData();
 
-    }
-
-    public void ActivateConfirmMerchant()
-    {
-        merchantInventory.ActivateConfirmSell();
-    }
-
-    public void DeactivateConfirmMerchant()
-    {
-        merchantInventory.DeactivateConfirmSell();
-    }
-
-    public void ActivateConfirmPlayer()
-    {
-        Player_panel.ActivateConfirmBuy();
-    }
-
-    public void DeactivateConfirmPlayer()
-    {
-        Player_panel.DeactivateConfirmBuy();
     }
 }

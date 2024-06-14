@@ -78,6 +78,7 @@ public class DialogueManager : MonoBehaviour
         npcdata.SetMerchant(false);
         currentStory = new Story(dialogue.text);
         dialogueIsPlaying = true;
+        Managers.UI.ShowPopupUI<UI_DialoguePopup>();
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
         foreach (GameObject cue in npc.visualCue)
