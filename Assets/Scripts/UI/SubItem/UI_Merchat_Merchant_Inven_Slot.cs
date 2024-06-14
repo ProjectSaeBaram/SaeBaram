@@ -1,18 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
 
 public class UI_Merchat_Merchant_Inven_Slot : UI_Inven_Slot
 {
-    
     public UI_Merchant UIMerchant;
-  
-
-  
-
+    
     public override void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -32,7 +23,6 @@ public class UI_Merchat_Merchant_Inven_Slot : UI_Inven_Slot
             }
         }
     }
-
 
     public void SetUIMerchant(UI_Merchant uiMerchant)
     {

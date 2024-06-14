@@ -110,8 +110,10 @@ public class TCutSceneManager : MonoBehaviour
 
             // 사용자가 스페이스 키를 눌렀다면 바로 다음 스크립트로 넘어갑s니다.
             while (coroutineHandler != null && !isSpacePressed)
+            {
                 yield return null;
-            
+            }
+
             // 스페이스 키를 감지하면 다음 스크립트로 넘어가도록 플래그를 초기화합니다.
             isSpacePressed = false;
             

@@ -89,6 +89,8 @@ public class TestMobController : MobController
     {
         patrolPointA = pointA;
         patrolPointB = pointB;
+#if UNITY_EDITOR
         EditorUtility.SetDirty(this); // 에디터에서 변경사항을 감지하도록 설정
+#endif
     }
 }

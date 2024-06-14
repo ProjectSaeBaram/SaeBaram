@@ -11,7 +11,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 49e735908f67f9c4db646413788ed287
-  - enabled: 1
-    path: Assets/Scenes/BossTestScene.unity
-    guid: 79e349dbb43876949b3709c97b3764fa
   m_configObjects: {}
