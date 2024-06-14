@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Dictionary<int, int> npcDindex;                //npc 별 대화인덱스 저장할 변수
     private NpcData npcdata;
     private Story currentStory;                                     //Ink 로 생성된 텍스트를 받아올 Class변수
+    [SerializeField] public GameObject[] npcList;
 
     private const string SPEAKER_TAG = "speaker";                   //테그값들 테그값 : 변수
     private const string PORTRAIT_TAG = "portrait";
@@ -37,7 +38,6 @@ public class DialogueManager : MonoBehaviour
         instance = this;
         //TODO : Json으로 저장된 챕터별 npc 아이디와 대화인덱스 변수 가져와서 변수 초기화
         //dialogueVariables = new DialogueVariables(loadGlobalsJSON);
-
     }
 
 
@@ -72,13 +72,18 @@ public class DialogueManager : MonoBehaviour
 
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
-        Time.timeScale = 0;
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.DisableExceptInteract();
         npcdata = npc;
         npcdata.SetMerchant(false);
         currentStory = new Story(dialogue.text);
         dialogueIsPlaying = true;
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
+        foreach (GameObject cue in npc.visualCue)
+        {
+            cue.SetActive(false);
+        }
         //태그 초기화
         popup.displayNameText.text = "???";
         ContinueStory();
@@ -90,9 +95,10 @@ public class DialogueManager : MonoBehaviour
     {
         //dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
-        popup.dialoguePanel.SetActive(false);
         popup.dialogueText.text = "";
-        Time.timeScale = 1;
+        popup.dialoguePanel.SetActive(false);
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.EnableExceptInter();
     }
 
     private void ContinueStory()
@@ -217,5 +223,14 @@ public class DialogueManager : MonoBehaviour
         DebugEx.Log(choice);
     }
 
-
+    public void setvisibleNpc()
+    {
+        foreach (var npc in npcList)
+        {
+            if (npc.GetComponent<NpcData>().isGood && Managers.Game.GetPlayer().GetComponent<PlayerController>().RState == ReputeState.Good)
+            {
+                npc.gameObject.SetActive(true);
+            }
+        }
+    }
 }

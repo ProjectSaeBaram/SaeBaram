@@ -57,12 +57,12 @@ public class Managers : MonoBehaviour
             go = new GameObject {name = "@Managers"};
             go.AddComponent<Managers>();
         }
-        GameObject go2 = GameObject.Find("DialogueManager");
-        if (go2 == null)
-        {
-            go2 = new GameObject { name = "DialogueManager" };
-            go2.AddComponent<DialogueManager>();
-        }
+        //GameObject go2 = GameObject.Find("DialogueManager");
+        //if (go2 == null)
+        //{
+        //    go2 = new GameObject { name = "DialogueManager" };
+        //    go2.AddComponent<DialogueManager>();
+        //}
         DontDestroyOnLoad(go);
         s_instance = go.GetComponent<Managers>();
         
