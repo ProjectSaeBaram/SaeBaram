@@ -13,6 +13,7 @@ public class UI_Merchant : UI_Popup, ICatcher, ITooltipHandler
     [SerializeField] private Button Ex_Button;
     [SerializeField] private UI_Inven_ItemTooltip tooltip;
 
+
     public UI_Inven_Item CatchedItem { get; set; }
 
 
@@ -24,8 +25,8 @@ public class UI_Merchant : UI_Popup, ICatcher, ITooltipHandler
         //Player_panel.InitInventory(this,);
         Player_panel.merchant = this;
         Player_panel.InitInventory(Player_panel.VisualizedLayer, tooltip);
-        
 
+        merchantInventory.showValue(DialogueManager.GetInstance().isGood);
     }
 
     public void CloseMerchant()

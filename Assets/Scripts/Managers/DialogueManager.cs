@@ -26,7 +26,8 @@ public class DialogueManager : MonoBehaviour
     public UI_Merchant ui_merchant;
     public QuestLayer qpanel;
     public PlayerController playerController;
-    
+    [SerializeField] public bool isGood = false;
+
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
     private DialogueVariables dialogueVariables;
@@ -76,6 +77,7 @@ public class DialogueManager : MonoBehaviour
         player.DisableExceptInteract();
         npcdata = npc;
         npcdata.SetMerchant(false);
+        isGood = npc.isGood;
         currentStory = new Story(dialogue.text);
         dialogueIsPlaying = true;
         Managers.UI.ShowPopupUI<UI_DialoguePopup>();

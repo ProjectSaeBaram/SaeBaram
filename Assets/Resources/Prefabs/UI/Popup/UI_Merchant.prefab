@@ -839,6 +839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc3d3aed67b82934ca4349f59ff35cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MerchantValue: {fileID: 0}
 --- !u!1 &2163325596416488402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,12 +1266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7a4dc221ede2443b7f1a6290fdea70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConfirmSell: {fileID: 0}
-  itemSlots: []
-  visualizedItems: []
-  VisualizedLayer: {fileID: 0}
-  tooltip: {fileID: 0}
-  merchant: {fileID: 0}
+  Merchant_value: {fileID: 1663647317390070850}
+  value_Button: {fileID: 1728845682935361378}
 --- !u!1 &3472668548315872324
 GameObject:
   m_ObjectHideFlags: 0

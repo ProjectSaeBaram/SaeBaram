@@ -34,15 +34,9 @@ public class NpcData : MonoBehaviour
     private static string Chap_Normal= "Dialogue/Normal/Chap";
     [SerializeField] public int ChapNum;
 
-    private static NpcData instance;
 
     public bool playerInRange;
-
-    public static NpcData GetInstance()
-    {
-        return instance;
-    }
-    
+ 
     public bool GetMerchant()
     {
         return this.isMerchant;
@@ -133,6 +127,7 @@ public class NpcData : MonoBehaviour
                 }
             }
         }
+
         Debug.Log(D_path);
     }
 
