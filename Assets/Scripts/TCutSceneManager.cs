@@ -24,6 +24,8 @@ public class TCutSceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        TMP_FontAsset sam3KRFont = Resources.Load<TMP_FontAsset>("Fonts/Sam3KRFont SDF");
+
         GameObject canvasObject = new GameObject("Canvas");
         Canvas canvas = canvasObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -49,6 +51,7 @@ public class TCutSceneManager : MonoBehaviour
         displayText.fontSize = 24;
         displayText.alignment = TextAlignmentOptions.Center;
         displayText.color = Color.black;
+        displayText.font = sam3KRFont;
 
         fetchDataButton.onClick.AddListener(OnFetchDataButtonClicked);
 
