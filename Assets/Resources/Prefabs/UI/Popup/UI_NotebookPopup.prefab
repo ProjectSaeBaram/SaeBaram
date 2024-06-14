@@ -2601,7 +2601,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VisualizedLayer: {fileID: 0}
-  CatchedItem: {fileID: 0}
   uiInvenItemTooltip: {fileID: 0}
   _quickSlotGroup: {fileID: 0}
   itemSlots: []

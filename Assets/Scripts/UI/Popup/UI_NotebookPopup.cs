@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UI_NotebookPopup : UI_Popup
+public class UI_NotebookPopup : UI_Popup, ITooltipHandler,ICatcher
 {
     public enum GameObjects
     {
@@ -48,7 +48,10 @@ public class UI_NotebookPopup : UI_Popup
     // 현재 시각화된 Layer
     [SerializeField] public GameObject VisualizedLayer;
 
-    [SerializeField] public UI_Inven_Item CatchedItem = null;
+    //[SerializeField] public UI_Inven_Item CatchedItem = null;
+
+    // ICatcher 구현
+    public UI_Inven_Item CatchedItem { get; set; } // ICatcher에서 요구하는 선택된 아이템 필드
 
     [FormerlySerializedAs("uiItemTooltip")] [SerializeField] private UI_Inven_ItemTooltip uiInvenItemTooltip;
 
@@ -144,6 +147,7 @@ public class UI_NotebookPopup : UI_Popup
     [SerializeField] private List<UI_Inven_Slot> itemSlots = new List<UI_Inven_Slot>();
     [SerializeField] private List<UI_Inven_Item> visualizedItems = new List<UI_Inven_Item>();
     private List<ItemData> _itemDataList = new List<ItemData>();
+
 
     /// <summary>
     /// 인벤토리가 열릴 때, 아이템을 불러들여 시각화하는 기능

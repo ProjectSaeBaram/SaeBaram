@@ -23,10 +23,10 @@ public class DialogueManager : MonoBehaviour
     private const string BAD_TAG = "bad";
     private const string DIALOGUE_TAG = "Dialogue";
     public UI_DialoguePopup popup;
-    public UI_Merchant ui_merchant;
     public QuestLayer qpanel;
     public PlayerController playerController;
-    
+    [SerializeField] public bool isGood = false;
+
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
     private DialogueVariables dialogueVariables;
@@ -76,8 +76,10 @@ public class DialogueManager : MonoBehaviour
         player.DisableExceptInteract();
         npcdata = npc;
         npcdata.SetMerchant(false);
+        isGood = npc.isGood;
         currentStory = new Story(dialogue.text);
         dialogueIsPlaying = true;
+        Managers.UI.ShowPopupUI<UI_DialoguePopup>();
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
         foreach (GameObject cue in npc.visualCue)
@@ -141,10 +143,10 @@ public class DialogueManager : MonoBehaviour
                     popup.layoutAnimator.Play(tagvalue);
                     break;
                 case GOOD_TAG:
-                    Debug.Log("Good+"+tagvalue);
+                    //Debug.Log("Good+"+tagvalue);
                     break;
                 case BAD_TAG:
-                    Debug.Log("Bad+"+tagvalue);
+                    //Debug.Log("Bad+"+tagvalue);
                     break;
                 case DIALOGUE_TAG:              //퀘스트, 상점 구분
                     if (tagvalue == "Merchant")
@@ -227,6 +229,10 @@ public class DialogueManager : MonoBehaviour
             if (npc.GetComponent<NpcData>().isGood && Managers.Game.GetPlayer().GetComponent<PlayerController>().RState == ReputeState.Good)
             {
                 npc.gameObject.SetActive(true);
+            }
+            else
+            {
+                npc.gameObject.SetActive(false);
             }
         }
     }

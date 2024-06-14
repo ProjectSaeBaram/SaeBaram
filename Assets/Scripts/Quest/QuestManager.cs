@@ -30,8 +30,9 @@ public class QuestManager : MonoBehaviour
     void GenerateData()
     {
         questList.Add(0, new DestroyBlock("코인 모으기", 1000, "할아버지", 0, QuestState.REQUIREMENTS_NOT_MET, 10, "튜토리얼"));
-        
-        EntitiyBlock.GetInstance().BlockDead.AddListener(DestroyBlock.GetInstance().updateQuest);
+
+        EntitiyBlock.GetInstance().BlockDead.AddListener(() => UpdateQuestState(0));
+
 
     }
 
@@ -42,7 +43,7 @@ public class QuestManager : MonoBehaviour
         Debug.Log(questList[id].qs);
         if (questList[questIndex].qs == QuestState.FINISHED)
         {
-            AdvanceIndex(npc);
+           // AdvanceIndex(npc);
             return;
         }      
 
@@ -56,7 +57,7 @@ public class QuestManager : MonoBehaviour
         Debug.Log(questList[id].qs);
         if (questList[questIndex].qs == QuestState.FINISHED)
         {
-            AdvanceIndex(id);
+           // AdvanceIndex(id);
             return;
         }
 
@@ -68,7 +69,6 @@ public class QuestManager : MonoBehaviour
             if (PlayerController.GetInstance().GetquestIdex() >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED && questList[i].qs!=QuestState.IN_PROGRESS))
             {
                 questList[i].qs = QuestState.CAN_START;
-                Debug.Log(questList[i].qs);
             }
         }
     }
@@ -77,10 +77,13 @@ public class QuestManager : MonoBehaviour
     {
         return questList[id].qs;
     }
-    
-    public void updateState(int id)
+
+    public void UpdateQuestState(int questId)
     {
-        questList[id].updateQuest();
+        if (questList.ContainsKey(questId))
+        {
+            questList[questId].updateQuest();
+        }
     }
 
     public int getnpcId(int id)
@@ -91,29 +94,29 @@ public class QuestManager : MonoBehaviour
     {
         return questIndex + questActionIndex;
     }
-    public void AdvanceIndex(NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
-    {
-        if (npc.questId.Length >= (npc.DialogueIndex+1))
-        {
-            npc.DialogueIndex++;
-            DialogueManager.GetInstance().setQuestIndex(npc.GetNpcId(), npc.DialogueIndex);
-        }
-        //else        //더 퀘스트가 없다면
-        //{
-        //    npc.DialogueIndex = 99;
-        //    DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.DialogueIndex);
-        //}
-        PlayerController.GetInstance().IncreaseQuestIdx();
-    }
-    public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
-    {
-        questIndex += 10;
-        if (questNpc[qid].questId.Length>1)
-        {
-            questNpc[qid].DialogueIndex++;
-        }
-        questActionIndex = 0;
-    }
+    //public void AdvanceIndex(NpcData npc)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
+    //{
+    //    if (npc.questId.Length >= (npc.TalkIndex+1))
+    //    {
+    //        npc.TalkIndex++;
+    //        DialogueManager.GetInstance().SetQuestIndex(npc.GetNpcId(), npc.TalkIndex);
+    //    }
+    //    //else        //더 퀘스트가 없다면
+    //    //{
+    //    //    npc.DialogueIndex = 99;
+    //    //    DialogueManager.GetInstance().setQuestIndex(npc.npcId, npc.DialogueIndex);
+    //    //}
+    //    PlayerController.GetInstance().IncreaseQuestIdx();
+    //}
+    //public void AdvanceIndex(int qid)      //스토리 진행에 따라 다음 퀘스트가 진행될 수 있게 인덱스 값 증가
+    //{
+    //    questIndex += 10;
+    //    if (questNpc[qid].questId.Length>1)
+    //    {
+    //        questNpc[qid].TalkIndex++;
+    //    }
+    //    questActionIndex = 0;
+    //}
 
     public NpcData GetNpcId(int questId)
     {
@@ -121,10 +124,14 @@ public class QuestManager : MonoBehaviour
     }
 
 
-
-    public QuestData GetQuestData(int questId)
+    public void LoadQuestData(Dictionary<int, QuestData> loadedQuestData)
     {
-        return questList[questId].getQuestData();
+        questList = loadedQuestData ?? new Dictionary<int, QuestData>();
+    }
+
+    public Dictionary<int, QuestData> GetQuestData()
+    {
+        return new Dictionary<int, QuestData>(questList);
     }
 
     //public int GetcurrentActionIndex(int questId)

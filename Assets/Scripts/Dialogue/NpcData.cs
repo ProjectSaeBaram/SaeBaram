@@ -34,15 +34,9 @@ public class NpcData : MonoBehaviour
     private static string Chap_Normal= "Dialogue/Normal/Chap";
     [SerializeField] public int ChapNum;
 
-    private static NpcData instance;
 
     public bool playerInRange;
-
-    public static NpcData GetInstance()
-    {
-        return instance;
-    }
-    
+ 
     public bool GetMerchant()
     {
         return this.isMerchant;
@@ -59,7 +53,7 @@ public class NpcData : MonoBehaviour
         DialogueIndex = 0;
         playerInRange = false;
         npcName = this.name;
-        foreach(GameObject cue in visualCue)
+        foreach (GameObject cue in visualCue)
         {
             cue.SetActive(false);
         }
@@ -132,7 +126,6 @@ public class NpcData : MonoBehaviour
                 }
             }
         }
-        Debug.Log(D_path);
     }
 
     private void OnTriggerExit2D(Collider2D collider)

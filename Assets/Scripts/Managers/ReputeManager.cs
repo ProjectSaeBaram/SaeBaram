@@ -15,7 +15,7 @@ public class ReputeManager
     {
         ReputeScore = 50;
         ReputeState = SetReputeState(ReputeScore);
-        DebugEx.Log("현재 평판 점수 : " + ReputeScore + " 평판도 " + GetReputeState(ReputeState));
+        DebugEx.Log("현재 평판 수치 : " + ReputeScore + " 평판 " + GetReputeState(ReputeState));
 
     }
 
