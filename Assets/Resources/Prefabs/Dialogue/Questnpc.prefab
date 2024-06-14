@@ -152,12 +152,15 @@ MonoBehaviour:
   npcName: 
   isNpc: 0
   npcPortrait: []
-  dialogue: []
-  loc: 
+  dialogue: {fileID: 0}
+  isMerchant: 0
   questId: 
-  questIndex: 0
+  DialogueIndex: 0
   qs: 0
   playerController: {fileID: 908189072290955293, guid: 67087b5bc904d9244a0a7f527838c92f, type: 3}
+  questActionIndex: 0
+  D_path: 
+  ChapNum: 0
   playerInRange: 0
 --- !u!1 &8195449954198852215
 GameObject:

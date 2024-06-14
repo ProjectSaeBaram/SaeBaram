@@ -15,7 +15,50 @@ MonoBehaviour:
   sceneDatas_byGuid:
     keys:
     - 49e735908f67f9c4db646413788ed287
+    - 79e349dbb43876949b3709c97b3764fa
     values:
     - goDatas_byGlobalId:
-        keys: []
-        values: []
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-49e735908f67f9c4db646413788ed287-297242054-0
+        - globalObjectIdString: GlobalObjectId_V1-2-49e735908f67f9c4db646413788ed287-460403597-0
+        - globalObjectIdString: GlobalObjectId_V1-2-49e735908f67f9c4db646413788ed287-1277837103-0
+        - globalObjectIdString: GlobalObjectId_V1-2-49e735908f67f9c4db646413788ed287-826990331-0
+        - globalObjectIdString: GlobalObjectId_V1-2-49e735908f67f9c4db646413788ed287-8055870297413718714-1791151470
+        values:
+        - colorIndex: 6
+          iconNameOrGuid: 
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: 
+        - colorIndex: 8
+          iconNameOrGuid: 
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-652908910-0
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-303531407-0
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-394277628-0
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-1263422757-0
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-751036891-0
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-968818250-0
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-219777582-0
+        - globalObjectIdString: GlobalObjectId_V1-2-79e349dbb43876949b3709c97b3764fa-8055870297413718714-1295931818905575241
+        values:
+        - colorIndex: 7
+          iconNameOrGuid: 
+        - colorIndex: 4
+          iconNameOrGuid: Canvas Icon
+        - colorIndex: 4
+          iconNameOrGuid: Canvas Icon
+        - colorIndex: 6
+          iconNameOrGuid: Folder Icon
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: Folder Icon
+        - colorIndex: 6
+          iconNameOrGuid: 
+        - colorIndex: 8
+          iconNameOrGuid: 

@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3542006443276486442}
   - component: {fileID: 8513250393304829888}
-  - component: {fileID: 2641398256569886864}
+  - component: {fileID: 3468592343855651912}
   - component: {fileID: 7418571740459893024}
-  - component: {fileID: 132513117091021358}
+  - component: {fileID: 7860041841749882002}
   m_Layer: 11
   m_Name: Tree
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 134, y: -281, z: 0}
-  m_LocalScale: {x: 79.33016, y: 162.69159, z: 100}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,9 +75,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.55751574, g: 1, b: 0.4292453, a: 1}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: -1360453270, guid: 649c450a97d42904a8719b49fd67dfc0, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -86,9 +86,9 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!61 &2641398256569886864
-BoxCollider2D:
+  m_SpriteSortPoint: 1
+--- !u!60 &3468592343855651912
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -122,16 +122,87 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 2.34, y: 3.33}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.22999999, y: 0.14}
+      - {x: 0.22999999, y: 0.45}
+      - {x: 0.22, y: 0.47}
+      - {x: 0.19999999, y: 0.94}
+      - {x: 0.25, y: 0.94}
+      - {x: 0.42999998, y: 0.96999997}
+      - {x: 0.55, y: 1.02}
+      - {x: 0.59999996, y: 1.0799999}
+      - {x: 0.76, y: 1.09}
+      - {x: 0.84999996, y: 1.14}
+      - {x: 0.96999997, y: 1.23}
+      - {x: 1.02, y: 1.31}
+      - {x: 1.02, y: 1.42}
+      - {x: 1.09, y: 1.4399999}
+      - {x: 1.16, y: 1.52}
+      - {x: 1.17, y: 1.5799999}
+      - {x: 1.17, y: 1.9499999}
+      - {x: 1.13, y: 2.1}
+      - {x: 1.15, y: 2.21}
+      - {x: 1.12, y: 2.37}
+      - {x: 1.14, y: 2.44}
+      - {x: 1.05, y: 2.56}
+      - {x: 1, y: 2.6399999}
+      - {x: 1.03, y: 2.71}
+      - {x: 0.91999996, y: 2.8899999}
+      - {x: 0.78999996, y: 2.9399998}
+      - {x: 0.71999997, y: 2.9399998}
+      - {x: 0.71999997, y: 3.04}
+      - {x: 0.66999996, y: 3.12}
+      - {x: 0.56, y: 3.11}
+      - {x: 0.53, y: 3.1899998}
+      - {x: 0.48999998, y: 3.23}
+      - {x: 0.29999998, y: 3.28}
+      - {x: 0.16, y: 3.33}
+      - {x: -0.25, y: 3.33}
+      - {x: -0.37, y: 3.27}
+      - {x: -0.45999998, y: 3.1999998}
+      - {x: -0.55, y: 3.1799998}
+      - {x: -0.69, y: 3.03}
+      - {x: -0.82, y: 3.06}
+      - {x: -0.88, y: 3.01}
+      - {x: -0.98999995, y: 2.71}
+      - {x: -1.0799999, y: 2.6299999}
+      - {x: -1.17, y: 2.51}
+      - {x: -1.17, y: 2.48}
+      - {x: -1.14, y: 2.3899999}
+      - {x: -1.17, y: 2.32}
+      - {x: -1.17, y: 1.55}
+      - {x: -1.12, y: 1.42}
+      - {x: -0.94, y: 1.29}
+      - {x: -0.79999995, y: 1.27}
+      - {x: -0.79999995, y: 1.1899999}
+      - {x: -0.76, y: 1.09}
+      - {x: -0.61, y: 1.02}
+      - {x: -0.42999998, y: 0.96999997}
+      - {x: -0.24, y: 0.96999997}
+      - {x: -0.17, y: 0.93}
+      - {x: -0.17, y: 0.53}
+      - {x: -0.14, y: 0.51}
+      - {x: -0.14, y: 0.22999999}
+      - {x: -0.17, y: 0.22}
+      - {x: -0.22999999, y: 0.14999999}
+      - {x: -0.29999998, y: 0.13}
+      - {x: -0.39, y: 0.11}
+      - {x: -0.41, y: 0.089999996}
+      - {x: -0.41, y: 0.06}
+      - {x: -0.38, y: 0}
+      - {x: 0.38, y: 0}
+      - {x: 0.41, y: 0.03}
+      - {x: 0.42, y: 0.07}
+      - {x: 0.34, y: 0.13}
+  m_UseDelaunayMesh: 1
 --- !u!114 &7418571740459893024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,8 +215,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11fca42e47c4c47b9823ada6c4cd3b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: 2641398256569886864}
-  _audioSource: {fileID: 132513117091021358}
+  EntityType: 0
+  currentHp: 20
+  maxHp: 20
+  _collider: {fileID: 3468592343855651912}
   OnHitSound:
   - {fileID: 8300000, guid: 3cbf532db5fdca24197fefb9cf5d2586, type: 3}
   - {fileID: 8300000, guid: 491be1a1662855e49ab9692b3fe38009, type: 3}
@@ -154,100 +227,16 @@ MonoBehaviour:
   OnDestroySound:
   - {fileID: 8300000, guid: 3e2d54e1ebf9b55428dd043f0567be1f, type: 3}
   - {fileID: 8300000, guid: 915022d1371091642b3b55d7c315078a, type: 3}
-  EmptyAudioSource: {fileID: 2289715471213167532, guid: c21ae16669c4cc5429106958be008e75, type: 3}
---- !u!82 &132513117091021358
-AudioSource:
+--- !u!114 &7860041841749882002
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5941621124934690057}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 951.0681
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80648692b2eb21140ae27726033c13e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParticleToSpawn: {fileID: 4543724850335190816, guid: ec947e7086475624699a25d013269ca8, type: 3}

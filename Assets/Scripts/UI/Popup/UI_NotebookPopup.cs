@@ -326,19 +326,25 @@ public class UI_NotebookPopup : UI_Popup
         // 인벤토리의 데이터 저장
         Managers.Data.OnClose?.Invoke();    // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.
         
+        // 시간은 다시 흘러간다
         Time.timeScale = 1;
+        
+        // 데이터 저장 UnityAction 관리
         Managers.Data.OnClose -= ExportInventoryData;
         Managers.Data.OnClose -= Managers.Data.SaveInventoryData;
 
         if (CatchedItem != null)
             Managers.Data.RemoveItemFromInventory(CatchedItem);
         
-        // 아이템 제거
+        // 아이템 제거 & 손에 들고있던 아이템은 드랍
         for (int i = 0; i < numberOfItemSlots; i++)
         {
+            // // 인벤 슬롯의 아이템이 슬롯 안에 없으면,
+            // if (itemSlots[i]?.item.transform.parent != itemSlots[i].transform)
+            // {
+            //     Managers.Data.RemoveItemFromInventory(itemSlots[i].item);
+            // }
             DestroyImmediate(itemSlots[i].gameObject);
-            // itemSlots[i] = null;
-            // visualizedItems[i] = null;
         }
         
         itemSlots.Clear();

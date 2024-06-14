@@ -64,7 +64,7 @@ MonoBehaviour:
   - id: 139
     itemImage: {fileID: 1341545868, guid: ee0a3cfc8f1b19642ab020300b936065, type: 3}
   - id: 140
-    itemImage: {fileID: 0}
+    itemImage: {fileID: 990661468, guid: ee0a3cfc8f1b19642ab020300b936065, type: 3}
   - id: 252
     itemImage: {fileID: -675814193, guid: ee0a3cfc8f1b19642ab020300b936065, type: 3}
   - id: 253
