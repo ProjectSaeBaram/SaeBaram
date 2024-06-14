@@ -41,7 +41,7 @@ public class FallingRockController : MonoBehaviour, IInteractable
     {
         if (!hasLanded && ((1 << collision.gameObject.layer) & GroundLayer) != 0)
         {
-            DebugEx.LogWarning("Landed!");
+            // DebugEx.LogWarning("Landed!");
             
             // 바위가 지면에 착지하면 낙하를 멈춤
             hasLanded = true;

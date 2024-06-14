@@ -63,33 +63,6 @@ public class NpcData : MonoBehaviour
         {
             cue.SetActive(false);
         }
-        if (isMerchant)
-        {
-            D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
-        
-        }
-        else
-        {
-            switch (PlayerController.GetInstance().RState)
-            {
-                case ReputeState.Good:
-                    D_path = Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-                    break;
-                case ReputeState.Bad:
-                    D_path = Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-                    break;
-                case ReputeState.Normal:
-                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-                    break;
-                default:
-                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
-                    break;
-            }
-        }
-
-
-
-
     }
 
     public int GetNpcId()
@@ -140,11 +113,10 @@ public class NpcData : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-     
         QuestManager.GetInstance().CheckRequirement();
-        if (collider.gameObject.tag == "Player") 
+        if (collider.gameObject.CompareTag("Player")) 
         {
-            playerInRange =true;
+            playerInRange = true;
             
             if (questId.Length > 0)          //퀘스트아이디가 있을 때
             {
@@ -165,7 +137,7 @@ public class NpcData : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Player")
+        if (collider.gameObject.CompareTag("Player"))
         {
             playerInRange=false;
             foreach(var c in visualCue)

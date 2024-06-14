@@ -13,6 +13,14 @@ public class TCutSceneManager : MonoBehaviour
     private bool isSpacePressed;
     private TextMeshProUGUI displayText;
 
+    [SerializeField] private CinemachineBlendController _cinemachineBlendController;
+    [SerializeField] private BossRoom _bossRoom;
+    
+    enum Speaker {
+        곰,
+        가온,
+    }
+    
     [System.Serializable]
     public class CharacterScript
     {
@@ -20,10 +28,11 @@ public class TCutSceneManager : MonoBehaviour
         public string name;
         public string script;
     }
-
-    // Start is called before the first frame update
+    
     void Start()
     {
+        Debug.Log("TCutSceneManager Initiated");
+        
         TMP_FontAsset sam3KRFont = Resources.Load<TMP_FontAsset>("Fonts/Sam3KRFont SDF");
 
         GameObject canvasObject = new GameObject("Canvas");
@@ -31,15 +40,6 @@ public class TCutSceneManager : MonoBehaviour
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObject.AddComponent<CanvasScaler>();
         canvasObject.AddComponent<GraphicRaycaster>();
-
-        GameObject buttonObject = new GameObject("FetchDataButton");
-        Button fetchDataButton = buttonObject.AddComponent<Button>();
-        RectTransform rectTransform = buttonObject.AddComponent<RectTransform>();
-        rectTransform.SetParent(canvas.transform);
-        rectTransform.sizeDelta = new Vector2(200, 50);
-        rectTransform.anchoredPosition = new Vector2(0, 0);
-        Image buttonImage = buttonObject.AddComponent<Image>();
-        buttonImage.color = Color.white;
 
         // TextMeshProUGUI 표시를 위한 컴포넌트 추가
         GameObject textObject = new GameObject("DisplayText");
@@ -52,13 +52,8 @@ public class TCutSceneManager : MonoBehaviour
         displayText.alignment = TextAlignmentOptions.Center;
         displayText.color = Color.black;
         displayText.font = sam3KRFont;
-
-        fetchDataButton.onClick.AddListener(OnFetchDataButtonClicked);
-
-        Debug.Log("Start method completed");
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         // 비동기 작업 완료 확인
@@ -69,15 +64,17 @@ public class TCutSceneManager : MonoBehaviour
         }
 
         // 키보드 입력 감지
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Space key pressed");
-            isSpacePressed = true;
-        }
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     Debug.Log("Space key pressed");
+        //     isSpacePressed = true;
+        // }
     }
 
-    private async void OnFetchDataButtonClicked()
+    public async void TriggerCutScene()
     {
+        // Time.timeScale = 0;
+        
         // 비동기 작업 시작
         await FetchDataAsync();
 
@@ -93,16 +90,33 @@ public class TCutSceneManager : MonoBehaviour
             Debug.Log($"Index: {script.index}, Name: {script.name}, Script: {script.script}");
             displayText.text = $"Index: {script.index}, Name: {script.name}, Script: {script.script}";
             coroutineHandler = StartCoroutine(DelayCoroutine());
-
-            // 사용자가 스페이스 키를 눌렀다면 바로 다음 스크립트로 넘어갑니다.
-            while (coroutineHandler != null && !isSpacePressed)
+            
+            // 카메라 조작
+            if (Enum.TryParse(script.name, out Speaker speaker))
             {
-                yield return null;
+                switch (speaker)
+                {
+                    case Speaker.곰:
+                        _cinemachineBlendController.LookBear();
+                        break;
+                    case Speaker.가온:
+                        _cinemachineBlendController.LookPlayer();
+                        break;
+                    default:
+                        DebugEx.LogWarning("Speaker Unidentified!");
+                        break;
+                }
             }
 
+            // 사용자가 스페이스 키를 눌렀다면 바로 다음 스크립트로 넘어갑s니다.
+            while (coroutineHandler != null && !isSpacePressed)
+                yield return null;
+            
             // 스페이스 키를 감지하면 다음 스크립트로 넘어가도록 플래그를 초기화합니다.
             isSpacePressed = false;
+            
         }
+        _bossRoom.EngageStart();
     }
 
     IEnumerator DelayCoroutine()
