@@ -59,37 +59,10 @@ public class NpcData : MonoBehaviour
         DialogueIndex = 0;
         playerInRange = false;
         npcName = this.name;
-        foreach(GameObject cue in visualCue)
+        foreach (GameObject cue in visualCue)
         {
             cue.SetActive(false);
         }
-        if (isMerchant)
-        {
-            D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
-        
-        }
-        else
-        {
-            switch (PlayerController.GetInstance().RState)
-            {
-                case ReputeState.Good:
-                    D_path = Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-                    break;
-                case ReputeState.Bad:
-                    D_path = Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-                    break;
-                case ReputeState.Normal:
-                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-                    break;
-                default:
-                    D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
-                    break;
-            }
-        }
-
-
-
-
     }
 
     public int GetNpcId()
