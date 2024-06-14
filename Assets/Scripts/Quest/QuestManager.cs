@@ -69,7 +69,6 @@ public class QuestManager : MonoBehaviour
             if (PlayerController.GetInstance().GetquestIdex() >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED && questList[i].qs!=QuestState.IN_PROGRESS))
             {
                 questList[i].qs = QuestState.CAN_START;
-                Debug.Log(questList[i].qs);
             }
         }
     }

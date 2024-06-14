@@ -127,8 +127,6 @@ public class NpcData : MonoBehaviour
                 }
             }
         }
-
-        Debug.Log(D_path);
     }
 
     private void OnTriggerExit2D(Collider2D collider)

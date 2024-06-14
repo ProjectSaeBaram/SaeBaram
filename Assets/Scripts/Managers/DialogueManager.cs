@@ -23,7 +23,6 @@ public class DialogueManager : MonoBehaviour
     private const string BAD_TAG = "bad";
     private const string DIALOGUE_TAG = "Dialogue";
     public UI_DialoguePopup popup;
-    public UI_Merchant ui_merchant;
     public QuestLayer qpanel;
     public PlayerController playerController;
     [SerializeField] public bool isGood = false;
@@ -233,6 +232,10 @@ public class DialogueManager : MonoBehaviour
             if (npc.GetComponent<NpcData>().isGood && Managers.Game.GetPlayer().GetComponent<PlayerController>().RState == ReputeState.Good)
             {
                 npc.gameObject.SetActive(true);
+            }
+            else
+            {
+                npc.gameObject.SetActive(false);
             }
         }
     }
