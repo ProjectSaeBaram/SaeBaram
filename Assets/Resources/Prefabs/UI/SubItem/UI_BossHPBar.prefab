@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 7077030152574664955}
   - component: {fileID: 4161447073729999901}
   - component: {fileID: 7127331348871871591}
-  - component: {fileID: -7482772850883602119}
+  - component: {fileID: 8283190260712539863}
   m_Layer: 5
   m_Name: UI_BossHPBar
   m_TagString: Untagged
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-7482772850883602119
+--- !u!114 &8283190260712539863
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,9 +161,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5430435247405578807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7bb5b2c49825642a46350fa4b4949e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a06855ef0875324e92ba912fb0526e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BackGround: {fileID: 7127331348871871591}
   CurrentHPImage: {fileID: 765033883695470623}
-  CurrentHP: 100
+  CurrentHP: 0

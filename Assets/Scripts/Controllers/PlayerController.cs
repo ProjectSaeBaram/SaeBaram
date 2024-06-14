@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
 
         public void Exit()
         {
-            _playerController._handledItem.ColliderDeactivate();
+            _playerController._handledItem?.ColliderDeactivate();
         }
         ~PlayerAttackState() { DebugEx.LogWarning($"Finalize {this}");}
 

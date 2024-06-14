@@ -91,8 +91,6 @@ public class DialogueManager : MonoBehaviour
         ContinueStory();
     }
 
-
-
     private void ExitDialogueMode()
     {
         //dialogueVariables.StopListening(currentStory);
@@ -105,11 +103,10 @@ public class DialogueManager : MonoBehaviour
 
     private void ContinueStory()
     {
-        
-        if (currentStory.canContinue)                   //더 보여줄 이야기가 있다면
+        if (currentStory.canContinue) //더 보여줄 이야기가 있다면
         {
-            popup.dialogueText.text = currentStory.Continue();            //한줄 출력
-            DisplayChoices();                                       //선택이 있으면 선택출력
+            popup.dialogueText.text = currentStory.Continue();  // 한줄 출력
+            DisplayChoices();                                   // 선택이 있으면 선택출력
             //태그관리
             HandleTags(currentStory.currentTags);
         }

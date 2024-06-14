@@ -2,6 +2,7 @@ using Cinemachine;
 using Controllers.Mob.Boss;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using VInspector;
@@ -17,8 +18,10 @@ public class BossRoom : MonoBehaviour
     /// 곰 보스
     /// </summary>
     [SerializeField] private BearBossController BearController;
+    [SerializeField] private DummyBearBossController DummyBearController;
     
-    [Header("Camera Control")]
+    [Header("Camera Control")] 
+    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
     [SerializeField] private CinemachineConfiner2D cinemachineConfiner2D;
     [SerializeField] private PolygonCollider2D originCameraBorder;
     [SerializeField] private PolygonCollider2D bossRoomCameraBorder;
@@ -28,8 +31,9 @@ public class BossRoom : MonoBehaviour
     /// </summary>
     [SerializeField] private BoxCollider2D bossRoomPhysicalBorder1;
     [SerializeField] private BoxCollider2D bossRoomPhysicalBorder2;
-    
 
+    [SerializeField] private CinemachineBlendController _cinemachineBlendController;
+    
     /// <summary>
     /// 보스 격파 시, 아이템에 추가될 로그
     /// </summary>
@@ -61,6 +65,8 @@ public class BossRoom : MonoBehaviour
     /// </summary>
     private UI_BossHPBar bossHpBar;
     
+    [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup;
+    
     /// <summary>
     /// Player가 BossRoom에 진입할 때 Invoke시킬 UnityEvent
     /// </summary>
@@ -79,9 +85,12 @@ public class BossRoom : MonoBehaviour
     private void Awake()
     {
         // 플레이어가 보스룸에 진입할 때 실행시킬 함수들을 _onPlayerEntered에 추가
-        _onPlayerEntered?.AddListener(ActivateBoss);
+        _onPlayerEntered?.AddListener(ActivateDummyBoss);
         _onPlayerEntered?.AddListener(ReplaceCameraBoarderIntoBossRoomCameraBorder);
         _onPlayerEntered?.AddListener(ActivatePhysicalBorders);
+        _onPlayerEntered?.AddListener(AddPlayerIntoCinemachineTargetGroup);
+        _onPlayerEntered?.AddListener(DisableEnterEvents);
+        // _onPlayerEntered?.AddListener();
         
         // 보스가 토벌될 때 실행시킬 함수들을 OnBossDied에 추가
         OnBossDied?.AddListener(ReplaceCameraBoarderIntoOriginCameraBorder);
@@ -103,10 +112,46 @@ public class BossRoom : MonoBehaviour
     
     #region AboutRoomEntrance
 
+    void DisableEnterEvents()
+    {
+        _onPlayerEntered?.RemoveAllListeners();
+    }
+    
+    void ActivateDummyBoss()
+    {
+        // 더미 보스 활성화
+        DummyBearController.gameObject.SetActive(true);
+        
+        // 플레이어 컨트롤 비활성화
+        Managers.Game.GetPlayer().GetComponent<PlayerController>().Disableall();
+    }
+    
     /// <summary>
-    /// 보스 활성화
+    /// 더미 보스 비활성화,
+    /// 진짜 보스 활성화,
+    /// 플레이어 활성화
     /// </summary>
-    void ActivateBoss()
+    public void EngageStart()
+    {
+        // 더미 보스 비활성화
+        DummyBearController.gameObject.SetActive(false);
+        
+        // 진짜 보스 활성화
+        ActivateBoss();
+        
+        // 플레이어 활성화
+        Managers.Game.GetPlayer().GetComponent<PlayerController>().Enableall();
+        
+        // 카메라 조정
+        _cinemachineBlendController.Exit();
+        
+        // TODO 다이얼로그 UI 비활성화
+    }
+    
+    /// <summary>
+    /// 진짜 보스 활성화
+    /// </summary>
+    public void ActivateBoss()
     {
         // 보스 활성화
         BearController.gameObject.SetActive(true);
@@ -240,5 +285,37 @@ public class BossRoom : MonoBehaviour
         int rand = Random.Range(0, despawnSounds.Count);
         Managers.Sound.Play(despawnSounds[rand]);
     }
+
+    /// <summary>
+    /// BossRoom에 진입할 때 플레이어와 곰을 모두 비추기 위한 함수
+    /// </summary>
+    private void AddPlayerIntoCinemachineTargetGroup()
+    {
+        CinemachineTargetGroup.Target playerTarget = new CinemachineTargetGroup.Target { target = Managers.Game.GetPlayer().transform, weight = 1};
+        _cinemachineTargetGroup.m_Targets[1] = playerTarget;
+
+        cinemachineVirtualCamera.Follow = _cinemachineTargetGroup.transform;
+        cinemachineVirtualCamera.LookAt = _cinemachineTargetGroup.transform;
+
+        StartCoroutine(CutSceneEnd());
+    }
+
+    private float delay = 5.0f;
     
+    /// <summary>
+    /// 2초 딜레이 후에, 카메라를 원상복구 시키기 위한 함수 
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator CutSceneEnd()
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        
+        // 카메라 원상복구
+        cinemachineVirtualCamera.Follow = Managers.Game.GetPlayer().transform;
+        cinemachineVirtualCamera.LookAt = null;
+        
+        // TODO 곰 포커스
+        
+        
+    }
 }

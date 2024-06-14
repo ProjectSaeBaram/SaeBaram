@@ -1,11 +1,5 @@
-using JetBrains.Annotations;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using VInspector;
 
 public class NpcData : MonoBehaviour
@@ -107,11 +101,10 @@ public class NpcData : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-     
         QuestManager.GetInstance().CheckRequirement();
-        if (collider.gameObject.tag == "Player") 
+        if (collider.gameObject.CompareTag("Player")) 
         {
-            playerInRange =true;
+            playerInRange = true;
             
             if (questId.Length > 0)          //퀘스트아이디가 있을 때
             {
@@ -131,7 +124,7 @@ public class NpcData : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Player")
+        if (collider.gameObject.CompareTag("Player"))
         {
             playerInRange=false;
             foreach(var c in visualCue)
