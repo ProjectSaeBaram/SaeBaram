@@ -52628,7 +52628,7 @@ PrefabInstance:
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[0]
       value: 
-      objectReference: {fileID: -1886493791, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+      objectReference: {fileID: -741521311, guid: 164594482f6ae4840bcb574fb8fae4bc, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[1]
       value: 

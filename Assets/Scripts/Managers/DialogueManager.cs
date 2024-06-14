@@ -141,6 +141,7 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case PLAYER_TAG:
                     popup.portraitImage.sprite = playerController.getplayerPortrait(int.Parse(tagvalue));
+
                     break;
                 case LAYOUT_TAG:
                     popup.layoutAnimator.Play(tagvalue);

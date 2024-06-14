@@ -85,7 +85,28 @@ public class UI_SeparateIngredientPopup : UI_Popup
 
     void Confirm()
     {
-        DebugEx.Log("구매!");
+        // 분리된 아이템이 마우스 커서에 생겨야 한다.
+        UI_Inven_Item item = Managers.UI.MakeSubItem<UI_Inven_Item>();
+
+        // 재료는 로그 x
+        item.IngredientInit(_originItem.Name, _originItem.Quality, int.Parse(_inputField.text), null);
+
+        // 원본 아이템은 갯수를 깎고
+        _originItem.Amount -= int.Parse(_inputField.text);
+        _originItem.OnValueChange?.Invoke();
+
+        ClosePopupUI(null);
+        item.parentPanel = _originItem.parentPanel;
+        item.parentAfterDrag = _originItem.parentAfterDrag;
+
+        if (_catcher != null)
+        {
+            item.ToolTipHandler = _catcher as ITooltipHandler;
+            item.Catcher = _catcher;
+        }
+
+        item.transform.SetParent(item.parentPanel.transform);
+        item.Catched();
     }
 
     void Deny()

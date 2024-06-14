@@ -47,6 +47,7 @@ public class UI_DialoguePopup : UI_Popup
         instance = this;
         DialogueManager.GetInstance().popup = this;
         //dialoguePanel.SetActive(false);
+        //portraitImage.SetNativeSize();
     }
     private void Start()
     {
