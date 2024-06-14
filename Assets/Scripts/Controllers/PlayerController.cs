@@ -239,6 +239,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public bool isQuestPanelActive;
     [SerializeField] public ReputeState RState;
     [SerializeField] public UnityAction OnInteract;
+    [SerializeField] public bool isPlaying;
     private bool interactPressed;
     private static PlayerController instance;
     public static PlayerController GetInstance() { return instance; }
@@ -333,6 +334,7 @@ public class PlayerController : MonoBehaviour
         interactPressed = false;
         instance = this;
         RState = Managers.Repute.GetRepute();
+        isPlaying = false;
     }
     
     private async void Start()
@@ -543,7 +545,10 @@ public class PlayerController : MonoBehaviour
     {
         // DebugEx.Log($"MovePerformed");
 
-        inputVector.x = context.ReadValue<Vector2>().x;
+        inputVector.x = isPlaying==true? 0:context.ReadValue<Vector2>().x;
+        inputVector.y= isPlaying == true ? context.ReadValue<Vector2>().y :0 ;
+
+
     }
     void MoveCanCeled(InputAction.CallbackContext context)
     {
@@ -848,7 +853,8 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
         _playerInputActions.PlayerAction.Click.started += OnClick;
-        _playerInputActions.Enable();   
+        _playerInputActions.Enable();
+     
     }
     
     private void OnDisable()
@@ -871,7 +877,6 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
         _playerInputActions.PlayerAction.Click.started -= OnClick;
         _playerInputActions.Disable();
-                
         DestructStatesObjects();
     }
 
@@ -896,7 +901,10 @@ public class PlayerController : MonoBehaviour
 
     public void DisableExceptInteract()
     {
-        _playerInputActions.PlayerAction.Move.Disable();
+        isPlaying = true;
+        _playerInputActions.PlayerAction.Move.started -= MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed -= MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled -= MoveCanCeled;
         _playerInputActions.PlayerAction.RunningSwitch.started -= RunningSwitchEnter;
         _playerInputActions.PlayerAction.RunningSwitch.canceled -= RunningSwitchExit;
         _playerInputActions.PlayerAction.Jump.started -= JumpStarted;
@@ -911,18 +919,54 @@ public class PlayerController : MonoBehaviour
 
     public void Disableall()
     {
+        _playerInputActions.PlayerAction.Move.started -= MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed -= MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled -= MoveCanCeled;
+        _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
+        _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
+        _playerInputActions.PlayerAction.Jump.started += JumpStarted;
+        _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
+        _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
+        _playerInputActions.PlayerAction.Interact.started += InteractStarted;
+        _playerInputActions.PlayerAction.Interact.performed += InteractPerformed;
+        _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
+        _playerInputActions.PlayerAction.WeaponChange.performed += OnUpperNumberKeyPressed;
+        _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
+        _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
+        _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+        _playerInputActions.PlayerAction.Click.started += OnClick;
         _playerInputActions.Disable();
     }
 
     public void Enableall()
     {
+        _playerInputActions.PlayerAction.Move.started += MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
+        _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
+        _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
+        _playerInputActions.PlayerAction.Jump.started += JumpStarted;
+        _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
+        _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
+        _playerInputActions.PlayerAction.Interact.started += InteractStarted;
+        _playerInputActions.PlayerAction.Interact.performed += InteractPerformed;
+        _playerInputActions.PlayerAction.Interact.canceled += InteractCanceled;
+        _playerInputActions.PlayerAction.WeaponChange.performed += OnUpperNumberKeyPressed;
+        _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
+        _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
+        _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+        _playerInputActions.PlayerAction.Click.started += OnClick;
         _playerInputActions.Enable();
     }
 
 
-    public void EnableExceptInter()
+    public void EnableExceptInteract()
     {
+        isPlaying = true;
         _playerInputActions.PlayerAction.Move.Enable();
+        _playerInputActions.PlayerAction.Move.started += MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
         _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
         _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
         _playerInputActions.PlayerAction.Jump.started += JumpStarted;
@@ -932,6 +976,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+
     }
 
 

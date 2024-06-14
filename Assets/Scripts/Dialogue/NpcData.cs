@@ -109,6 +109,8 @@ public class NpcData : MonoBehaviour
     {
      
         QuestManager.GetInstance().CheckRequirement();
+       
+        DialogueManager.GetInstance().EscapeBtn = GameObject.Find("EscapeButton");
         if (collider.gameObject.tag == "Player") 
         {
             playerInRange =true;
@@ -127,6 +129,7 @@ public class NpcData : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collider)

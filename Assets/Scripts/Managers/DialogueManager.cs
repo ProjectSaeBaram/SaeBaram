@@ -25,11 +25,13 @@ public class DialogueManager : MonoBehaviour
     public UI_DialoguePopup popup;
     public QuestLayer qpanel;
     public PlayerController playerController;
+    public bool isChoicezero;
     [SerializeField] public bool isGood = false;
 
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
-    private DialogueVariables dialogueVariables;
+    [SerializeField]public GameObject EscapeBtn;
+
 
     public static DialogueManager instance;
 
@@ -80,7 +82,8 @@ public class DialogueManager : MonoBehaviour
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        player.DisableExceptInteract();
+        //player.DisableExceptInteract();
+        player.isPlaying = true;
         npcdata = npc;
         npcdata.SetMerchant(false);
         isGood = npc.isGood;
@@ -89,10 +92,12 @@ public class DialogueManager : MonoBehaviour
         Managers.UI.ShowPopupUI<UI_DialoguePopup>();
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
+        EscapeBtn.gameObject.SetActive(false);
         foreach (GameObject cue in npc.visualCue)
         {
             cue.SetActive(false);
         }
+        isChoicezero = false;
         //태그 초기화
         popup.displayNameText.text = "???";
         popup.portraitImage.sprite= null;
@@ -107,8 +112,15 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         popup.dialogueText.text = "";
         popup.dialoguePanel.SetActive(false);
+        EscapeBtn.gameObject.SetActive(true);
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        player.EnableExceptInter();
+        //player.EnableExceptInteract();
+        player.isPlaying =false;
+        if (npcdata.GetMerchant()&& isChoicezero)
+        {
+            Managers.UI.CloseAllPopupUI();
+            Managers.UI.ShowPopupUI<UI_Merchant>();
+        }
     }
 
     private void ContinueStory()
@@ -224,16 +236,11 @@ public class DialogueManager : MonoBehaviour
                 }
             }
 
-            if (npcdata.GetMerchant())
-            {
-                Managers.UI.CloseAllPopupUI();
-                Managers.UI.ShowPopupUI<UI_Merchant>();
-            }
+            isChoicezero = true;
         }
-
+        
         // 선택지 선택 후 스토리를 계속 진행
         currentStory.ChooseChoiceIndex(choice);
-        ContinueStory();
     }
 
     public void setvisibleNpc()

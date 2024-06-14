@@ -52034,7 +52034,7 @@ PrefabInstance:
     - target: {fileID: 3220560041892770841, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b7ec1550da7560744a0881da4ed027b1, type: 3}
+      objectReference: {fileID: 21300000, guid: ff0c29ad79e2c6946ace4013db80dfdc, type: 3}
     - target: {fileID: 3220560041892770841, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -52053,19 +52053,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Size.y
-      value: 1.5763148
+      value: 1.3448012
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Offset.x
-      value: -0.017152756
+      value: -0.017152786
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Offset.y
-      value: 0.7118426
+      value: 0.028874904
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -52073,7 +52073,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.14
+      value: 1.23
       objectReference: {fileID: 0}
     - target: {fileID: 4701892988368579987, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -52101,7 +52101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8175303610426114463, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -301.1
+      value: -236
       objectReference: {fileID: 0}
     - target: {fileID: 8175303610426114463, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -52177,20 +52177,28 @@ PrefabInstance:
       objectReference: {fileID: 4900000, guid: ff846b80ffc74f141be3195ad44ea1d5, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.size
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 541784390, guid: c12af60922fc07b4aaa0f2ee22fa934a, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[1]
       value: 
-      objectReference: {fileID: -1886493791, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+      objectReference: {fileID: -1834994490, guid: c12af60922fc07b4aaa0f2ee22fa934a, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[2]
       value: 
-      objectReference: {fileID: -1886493791, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+      objectReference: {fileID: -1777633607, guid: c12af60922fc07b4aaa0f2ee22fa934a, type: 3}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: npcPortrait.Array.data[3]
+      value: 
+      objectReference: {fileID: -502968437, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: npcPortrait.Array.data[4]
+      value: 
+      objectReference: {fileID: 309035113, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -52529,6 +52537,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrandPa
       objectReference: {fileID: 0}
+    - target: {fileID: 2658469230373732653, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8175303610426114463, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_LocalScale.x
       value: 100
@@ -52623,20 +52635,28 @@ PrefabInstance:
       objectReference: {fileID: 4900000, guid: ff846b80ffc74f141be3195ad44ea1d5, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.size
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[0]
       value: 
-      objectReference: {fileID: -741521311, guid: 164594482f6ae4840bcb574fb8fae4bc, type: 3}
+      objectReference: {fileID: -134253416, guid: 164594482f6ae4840bcb574fb8fae4bc, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[1]
       value: 
-      objectReference: {fileID: -1886493791, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+      objectReference: {fileID: 904865811, guid: 164594482f6ae4840bcb574fb8fae4bc, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[2]
       value: 
-      objectReference: {fileID: -1886493791, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+      objectReference: {fileID: -741521311, guid: 164594482f6ae4840bcb574fb8fae4bc, type: 3}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: npcPortrait.Array.data[3]
+      value: 
+      objectReference: {fileID: 309385298, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: npcPortrait.Array.data[4]
+      value: 
+      objectReference: {fileID: 309035113, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
