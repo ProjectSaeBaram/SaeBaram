@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReputeManager : MonoBehaviour
+public class ReputeManager 
 {
     //평판관리 시스템
 
