@@ -63,9 +63,16 @@ public class DialogueManager : MonoBehaviour
         {
             return;
         }
-        if (currentStory.currentChoices.Count==0 && playerController.GetInteractPressed())
+        // 상호작용 키를 눌렀을 때의 동작을 수정
+        if (currentStory.currentChoices.Count == 0 && playerController.GetInteractPressed())
         {
+            // 선택지가 없을 때만 ContinueStory를 호출
             ContinueStory();
+        }
+        else if (currentStory.currentChoices.Count > 0 && playerController.GetInteractPressed())
+        {
+            // 선택지가 있을 때 첫 번째 선택지를 자동으로 선택
+            makeChoice(0);
         }
     }
 
@@ -88,6 +95,7 @@ public class DialogueManager : MonoBehaviour
         }
         //태그 초기화
         popup.displayNameText.text = "???";
+        popup.portraitImage.sprite= null;
         ContinueStory();
     }
 
@@ -200,7 +208,7 @@ public class DialogueManager : MonoBehaviour
 
     public void makeChoice(int choice)
     {
-        currentStory.ChooseChoiceIndex(choice);
+        // 퀘스트 상태를 업데이트하거나 상점 UI를 열 수 있는지 확인
         if (choice == 0)
         {
             if (npcdata.questId.Length > 0)
@@ -209,21 +217,23 @@ public class DialogueManager : MonoBehaviour
                 if (qs == QuestState.CAN_START)
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
-                    //qpanel.questlist.AddQuest(QuestManager.GetInstance().GetQuestData(npcdata.questId[npcdata.questIndex]));
-                }else if (qs == QuestState.CAN_FINISH)
+                }
+                else if (qs == QuestState.CAN_FINISH)
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
                 }
             }
 
-            if(npcdata.GetMerchant())
+            if (npcdata.GetMerchant())
             {
                 Managers.UI.CloseAllPopupUI();
                 Managers.UI.ShowPopupUI<UI_Merchant>();
             }
         }
+
+        // 선택지 선택 후 스토리를 계속 진행
+        currentStory.ChooseChoiceIndex(choice);
         ContinueStory();
-        DebugEx.Log(choice);
     }
 
     public void setvisibleNpc()

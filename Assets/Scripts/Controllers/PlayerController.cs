@@ -784,6 +784,7 @@ public class PlayerController : MonoBehaviour
         FlipImageToCursor(Input.mousePosition);
         
         ChangeState(_attackState);
+        
     }
     
     /// <summary>
@@ -895,9 +896,7 @@ public class PlayerController : MonoBehaviour
 
     public void DisableExceptInteract()
     {
-        _playerInputActions.PlayerAction.Move.started -= MoveStarted;
-        _playerInputActions.PlayerAction.Move.performed -= MovePerformed;
-        _playerInputActions.PlayerAction.Move.canceled -= MoveCanCeled;
+        _playerInputActions.PlayerAction.Move.Disable();
         _playerInputActions.PlayerAction.RunningSwitch.started -= RunningSwitchEnter;
         _playerInputActions.PlayerAction.RunningSwitch.canceled -= RunningSwitchExit;
         _playerInputActions.PlayerAction.Jump.started -= JumpStarted;
@@ -907,7 +906,6 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Escape.started -= PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started -= OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
-        _playerInputActions.PlayerAction.Click.performed -= OnClick;
     }
 
 
@@ -924,9 +922,7 @@ public class PlayerController : MonoBehaviour
 
     public void EnableExceptInter()
     {
-        _playerInputActions.PlayerAction.Move.started += MoveStarted;
-        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
-        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
+        _playerInputActions.PlayerAction.Move.Enable();
         _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
         _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
         _playerInputActions.PlayerAction.Jump.started += JumpStarted;
@@ -936,8 +932,8 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
-        _playerInputActions.PlayerAction.Click.performed += OnClick;
     }
+
 
 
     #endregion

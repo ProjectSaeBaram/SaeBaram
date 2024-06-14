@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 1711536412118531228}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.48192644, z: 1.3577605}
+  m_LocalScale: {x: 0.36825344, y: 0.35494214, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4028115148451509393}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_text: "\uD018\uC2A4\uD2B8\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4b5b8df99b6638b46b5b955f592ceb75, type: 2}
-  m_sharedMaterial: {fileID: 1113955708725755724, guid: 4b5b8df99b6638b46b5b955f592ceb75, type: 2}
+  m_sharedMaterial: {fileID: 768640348447164609, guid: 4b5b8df99b6638b46b5b955f592ceb75, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -313,7 +313,7 @@ RectTransform:
   m_GameObject: {fileID: 8795501270182085044}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.71552, y: 2.81736, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7582726104506060860}
@@ -323,7 +323,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 593.6896, y: 817.47363}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4392927098397558560
@@ -422,4 +422,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 6498938609803709459}
   QuestCheck: {fileID: 942287129251854088}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 0}
