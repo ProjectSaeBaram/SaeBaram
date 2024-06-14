@@ -19,6 +19,7 @@ public class NpcData : MonoBehaviour
     [SerializeField] public Sprite[] npcPortrait;
     [SerializeField] private TextAsset dialogue;
     [SerializeField] private bool isMerchant;
+    [SerializeField] public bool isGood=false;
     [Tab("Quest Inform")]
     [SerializeField] public int[] questId;
     [SerializeField] public int DialogueIndex;                     //여러퀘스트를 가지고있을때 지금 진행가능한 퀘스트번호 
@@ -32,9 +33,6 @@ public class NpcData : MonoBehaviour
     private static string Chap_Other= "Dialogue/Other/Chap";
     private static string Chap_Normal= "Dialogue/Normal/Chap";
     [SerializeField] public int ChapNum;
-
-    [Tab("Merchant")]
-    //[SerializeField] private GameObject
 
     private static NpcData instance;
 
@@ -57,7 +55,33 @@ public class NpcData : MonoBehaviour
     private void Awake()
     {
         //questIndex = DialogueManager.GetInstance().GetQuestIndex(npcId);
-        
+        switch (PlayerController.GetInstance().RState)
+        {
+            case ReputeState.Good:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(true);
+                }
+                break;
+            case ReputeState.Bad:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(false);
+                }
+                break;
+            case ReputeState.Normal:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(false);
+                }
+                break;
+            default:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(false);
+                }
+                break;
+        }
         DialogueIndex = 0;
         playerInRange = false;
         npcName = this.name;
@@ -65,10 +89,10 @@ public class NpcData : MonoBehaviour
         {
             cue.SetActive(false);
         }
-
         if (isMerchant)
         {
             D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
+        
         }
         else
         {
@@ -90,6 +114,8 @@ public class NpcData : MonoBehaviour
         }
 
 
+
+
     }
 
     public int GetNpcId()
@@ -99,6 +125,33 @@ public class NpcData : MonoBehaviour
 
     private void Update()
     {
+        switch (PlayerController.GetInstance().RState)
+        {
+            case ReputeState.Good:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(true);
+                }
+                break;
+            case ReputeState.Bad:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(false);
+                }
+                break;
+            case ReputeState.Normal:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(false);
+                }
+                break;
+            default:
+                if (isGood)
+                {
+                    this.gameObject.SetActive(false);
+                }
+                break;
+        }
         if (isMerchant)
         {
             D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
@@ -140,30 +193,7 @@ public class NpcData : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        //if (isMerchant)
-        //{
-        //    D_path = Chap_Other + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
-        //}
-        //else
-        //{
-        //    switch (PlayerController.GetInstance().RState)
-        //    {
-        //        case ReputeState.Good:
-        //            D_path = Chap_Good + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-        //            break;
-        //        case ReputeState.Bad:
-        //            D_path = Chap_Bad + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-        //            break;
-        //        case ReputeState.Normal:
-        //            D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + (DialogueIndex * 5 + questActionIndex).ToString();
-        //            break;
-        //        default:
-        //            D_path = Chap_Normal + ChapNum.ToString() + "/" + npcName + "/" + npcName + "0";
-        //            break;
-        //    }
-        //}
-        //dialogue = Resources.Load(D_path) as TextAsset;
-
+     
         QuestManager.GetInstance().CheckRequirement();
         if (collider.gameObject.tag == "Player") 
         {

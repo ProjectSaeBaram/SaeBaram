@@ -332,7 +332,7 @@ public class PlayerController : MonoBehaviour
         _localScale = transform.localScale;
         interactPressed = false;
         instance = this;
-        RState = Managers.Repute.SetReputeState(Managers.Repute.GetRepute());
+        RState = Managers.Repute.GetRepute();
     }
     
     private async void Start()

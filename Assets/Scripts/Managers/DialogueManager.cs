@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Dictionary<int, int> npcDindex;                //npc 별 대화인덱스 저장할 변수
     private NpcData npcdata;
     private Story currentStory;                                     //Ink 로 생성된 텍스트를 받아올 Class변수
+    [SerializeField] public GameObject[] npcList;
 
     private const string SPEAKER_TAG = "speaker";                   //테그값들 테그값 : 변수
     private const string PORTRAIT_TAG = "portrait";
@@ -37,7 +38,6 @@ public class DialogueManager : MonoBehaviour
         instance = this;
         //TODO : Json으로 저장된 챕터별 npc 아이디와 대화인덱스 변수 가져와서 변수 초기화
         //dialogueVariables = new DialogueVariables(loadGlobalsJSON);
-
     }
 
 
@@ -223,5 +223,14 @@ public class DialogueManager : MonoBehaviour
         DebugEx.Log(choice);
     }
 
-
+    public void setvisibleNpc()
+    {
+        foreach (var npc in npcList)
+        {
+            if (npc.GetComponent<NpcData>().isGood && Managers.Game.GetPlayer().GetComponent<PlayerController>().RState == ReputeState.Good)
+            {
+                npc.gameObject.SetActive(true);
+            }
+        }
+    }
 }

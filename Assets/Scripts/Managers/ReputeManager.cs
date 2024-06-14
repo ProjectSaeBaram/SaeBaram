@@ -53,9 +53,9 @@ public class ReputeManager : MonoBehaviour
 
     }
 
-    public int GetRepute()
+    public ReputeState GetRepute()
     {
-        return this.ReputeScore;
+        return this.ReputeState;
     }
 
 
@@ -68,6 +68,12 @@ public class ReputeManager : MonoBehaviour
     {
         ReputeScore = Mathf.Min(ReputeScore + score, 100);
         ReputeState = SetReputeState(ReputeScore);
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.RState = ReputeState;
+        if (ReputeState == ReputeState.Good)
+        {
+            DialogueManager.GetInstance().setvisibleNpc();
+        }
         DebugEx.Log("현재 평판 점수 : " + ReputeScore + "평판도 " + GetReputeState(ReputeState));
     }
 

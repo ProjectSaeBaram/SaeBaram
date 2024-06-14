@@ -42,5 +42,6 @@ public class DestroyBlock : QuestData
     public void CompleteQuest()
     {
         Managers.Repute.AddRepute(20);
+        
     }
 }
