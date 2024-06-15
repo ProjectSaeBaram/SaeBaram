@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,6 +10,7 @@ public class EntitiyBlock : EntityInfo
     public UnityEvent BlockDead;
     public static EntitiyBlock Instance;
     public NpcData npc;
+    
     private void Awake()
     {
         EHp = 100;
