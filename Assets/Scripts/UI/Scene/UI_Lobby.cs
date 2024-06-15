@@ -38,7 +38,7 @@ public class UI_Lobby : UI_Scene
 
     void Settings(PointerEventData data)
     {
-        // Managers.UI.ShowPopupUI<UI_SettingsPopup>();
+        Managers.UI.ShowPopupUI<UI_SettingsPopup>();
     }
 
     public void ExitGame(PointerEventData data)
