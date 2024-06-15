@@ -24,7 +24,7 @@ public class UI_SettingsPopup : UI_Popup
 
     enum Toggles
     {
-        ResolutionToggle,
+        FullScreenToggle,
     }
 
     enum Buttons
@@ -39,7 +39,7 @@ public class UI_SettingsPopup : UI_Popup
         Bind<TMP_Dropdown>(typeof(Dropdowns));
         Bind<Toggle>(typeof(Toggles));
         
-        Toggle toggle = Get<Toggle>((int)Toggles.ResolutionToggle);
+        Toggle toggle = Get<Toggle>((int)Toggles.FullScreenToggle);
         toggle.onValueChanged.AddListener(FullScreenBtn);
         
         Get<TMP_Dropdown>((int)Dropdowns.ResolutionDropdown).onValueChanged.AddListener(DropboxOptionChanged);
