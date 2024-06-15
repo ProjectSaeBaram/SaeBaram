@@ -73,7 +73,7 @@ public class DialogueManager : MonoBehaviour
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        player.DisableExceptInteract();
+        player.isPlaying = true;
         npcdata = npc;
         npcdata.SetMerchant(false);
         isGood = npc.isGood;
@@ -88,6 +88,7 @@ public class DialogueManager : MonoBehaviour
         }
         //태그 초기화
         popup.displayNameText.text = "???";
+        popup.portraitImage.sprite = null;
         ContinueStory();
     }
 
@@ -98,7 +99,7 @@ public class DialogueManager : MonoBehaviour
         popup.dialogueText.text = "";
         popup.dialoguePanel.SetActive(false);
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        player.EnableExceptInter();
+        player.isPlaying = false;
     }
 
     private void ContinueStory()

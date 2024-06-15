@@ -64,7 +64,8 @@ public class QuestManager : MonoBehaviour
     public void CheckRequirement()             //진행 순서가 맞아진다면 시작가능한 퀘스트 체크
     {
         for (int i = 0; i < questList.Count; i ++){
-            if (PlayerController.GetInstance().GetquestIdex() >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED && questList[i].qs!=QuestState.IN_PROGRESS))
+            if (PlayerController.GetInstance().GetquestIdex() >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED && 
+                questList[i].qs!=QuestState.IN_PROGRESS&& questList[i].qs!=QuestState.CAN_FINISH))
             {
                 questList[i].qs = QuestState.CAN_START;
             }
