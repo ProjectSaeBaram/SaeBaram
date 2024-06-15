@@ -26,7 +26,7 @@ public class WallController : EntityController
         DebugEx.LogWarning($"{damage} damage Dealt!");
         
         // 만약 나를 때린 아이템이 품질 상(3)의 드릴이면, 바로 깨진다.
-AD        if (target._itemStats.id == 140 && target.GetOriginItemUI().Quality == 3)
+        if (target._itemStats.id == 140 && target.GetOriginItemUI().Quality == 3)
         {
             damage = currentHp;
         }
