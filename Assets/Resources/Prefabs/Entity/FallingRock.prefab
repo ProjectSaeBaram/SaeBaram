@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 8945450048411247812}
-  gravityScaleFactor: 15
+  gravityScaleFactor: 45
   damage: 10
   hasLanded: 0
   playerHiding: 0
