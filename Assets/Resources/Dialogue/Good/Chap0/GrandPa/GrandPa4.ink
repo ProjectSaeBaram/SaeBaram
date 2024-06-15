@@ -1,2 +1,2 @@
-앞에 무서운 곰이 있던데 어떻게 해보거라 #speaker:할아버지#portrait:0
+이제 어디로 가니? 벽 뒤에는 곰이 있으니 조심하고 #speaker:할아버지 #portrait:1
 ->END

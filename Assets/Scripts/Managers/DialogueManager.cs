@@ -102,13 +102,13 @@ public class DialogueManager : MonoBehaviour
         ContinueStory();
     }
 
-
+   
 
     private void ExitDialogueMode()
     {
-        //dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
         popup.dialogueText.text = "";
+        popup.portraitImage.sprite = null;
         popup.dialoguePanel.SetActive(false);
         foreach (var quick in QuickSlot)
         {
