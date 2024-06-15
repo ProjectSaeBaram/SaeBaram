@@ -78,6 +78,10 @@ public class UI_NotebookPopup : UI_Popup, ITooltipHandler,ICatcher
 
     public override void Init()
     {
+        base.Init();
+        int currentOrder = GetComponent<Canvas>().sortingOrder;
+        Managers.UI.GetCurrentSceneUI().GetComponent<Canvas>().sortingOrder = currentOrder;
+        
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
@@ -104,6 +108,7 @@ public class UI_NotebookPopup : UI_Popup, ITooltipHandler,ICatcher
     /// </summary>
     void WhenOpened()
     {
+        //DebugEx.LogWarning("WhenOpened!");
         CloseAllLayer();
 
         Get<Image>((int)Images.NoteBook_Background).gameObject.SetActive(true);
@@ -154,6 +159,8 @@ public class UI_NotebookPopup : UI_Popup, ITooltipHandler,ICatcher
     /// </summary>
     public void VisualizeItemsInTheGrid(bool initialize = false)
     {
+        visualizedItems = new List<UI_Inven_Item>();
+        
         // 아이템 슬롯들이 생성되어야하는 곳
         Transform content = Util.FindChild<Transform>(VisualizedLayer, "InventoryContent", true); 
         
@@ -173,9 +180,10 @@ public class UI_NotebookPopup : UI_Popup, ITooltipHandler,ICatcher
         for (int i = 0; i < numberOfItemSlots; i++)
         {
             // 아이템 슬롯
-            UI_Inven_Slot slot = Managers.UI.MakeSubItem<UI_Inven_Slot>(content);
-            slot.SetNotebookPopup(this);
-            itemSlots.Add(slot);
+            //UI_Inven_Slot slot = Managers.UI.MakeSubItem<UI_Inven_Slot>(content);
+            //itemSlots.Add(slot);
+            //slot.SetNotebookPopup(this);
+            UI_Inven_Slot slot = itemSlots[i];
             slot.SlotIndex = i;
             
             // 아이템
@@ -341,22 +349,28 @@ public class UI_NotebookPopup : UI_Popup, ITooltipHandler,ICatcher
             Managers.Data.RemoveItemFromInventory(CatchedItem);
         
         // 아이템 제거 & 손에 들고있던 아이템은 드랍
-        for (int i = 0; i < numberOfItemSlots; i++)
+        // for (int i = 0; i < numberOfItemSlots; i++)
+        // {
+        //     // // 인벤 슬롯의 아이템이 슬롯 안에 없으면,
+        //     // if (itemSlots[i]?.item.transform.parent != itemSlots[i].transform)
+        //     // {
+        //     //     Managers.Data.RemoveItemFromInventory(itemSlots[i].item);
+        //     // }
+        //     DestroyImmediate(itemSlots[i].gameObject);
+        // }
+
+        foreach (var slot in itemSlots)
         {
-            // // 인벤 슬롯의 아이템이 슬롯 안에 없으면,
-            // if (itemSlots[i]?.item.transform.parent != itemSlots[i].transform)
-            // {
-            //     Managers.Data.RemoveItemFromInventory(itemSlots[i].item);
-            // }
-            DestroyImmediate(itemSlots[i].gameObject);
+            if(slot.Item != null)
+                DestroyImmediate(slot.Item.gameObject);
         }
-        
-        itemSlots.Clear();
         visualizedItems.Clear();
         
         // 플레이어 아이템 줍기 기능 활성화 
         EnablePickupItem();
         
         base.ClosePopupUI(action);
+        
+        DebugEx.LogWarning("Notebook Popup Closed!");
     }
 }

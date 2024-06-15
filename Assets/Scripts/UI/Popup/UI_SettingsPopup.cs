@@ -33,6 +33,7 @@ public class UI_SettingsPopup : UI_Popup
     }
     public override void Init()
     {
+        base.Init();
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Dropdown>(typeof(Dropdowns));

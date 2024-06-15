@@ -61,15 +61,16 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         OnValueChange -= RefreshUI;
         OnValueChange += RefreshUI;
-        
-        ToolTipHandler = Managers.UI.GetTopPopupUI() as ITooltipHandler;
-        Catcher = Managers.UI.GetTopPopupUI() as ICatcher;
-        Popup = Managers.UI.GetTopPopupUI();
+
+        if (Managers.UI.GetStackSize() > 0)
+        {
+            ToolTipHandler = Managers.UI.GetTopPopupUI() as ITooltipHandler;
+            Catcher = Managers.UI.GetTopPopupUI() as ICatcher;
+            Popup = Managers.UI.GetTopPopupUI();
+        }
 
         _rectTransform = GetComponent<RectTransform>();
         _rectTransform.anchoredPosition = Vector2.zero;
-
-       
     }
 
     /// <summary>
@@ -209,7 +210,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            UI_Inven_Item catchedItem = Catcher.CatchedItem;
+            UI_Inven_Item catchedItem = Catcher?.CatchedItem;
             if (catchedItem != null && catchedItem?.itemType == Define.ItemType.Ingredient && this.itemType == Define.ItemType.Ingredient && catchedItem.Name == this.Name
                 && catchedItem?.Quality == this.Quality)
             {

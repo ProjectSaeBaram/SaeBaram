@@ -11,6 +11,8 @@ public class UI_Game_QuickSlotGroup : UI_Base
     
     private TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
     private int initializedItemCount = 0;
+
+    [SerializeField] private int currentIndex = 0;
     
     public override void Init()
     {
@@ -29,6 +31,7 @@ public class UI_Game_QuickSlotGroup : UI_Base
         foreach (var slot in _quickSlots)
         {
             slot.OnItemInitialized += OnItemInitializedHandler;
+            slot.OnItemInitialized += () => { WhenQSlotChanged(slot.SlotIndex); };
         }
         
         // 각 슬롯의 Item 값이 초기화되어 있는지 확인
@@ -36,6 +39,12 @@ public class UI_Game_QuickSlotGroup : UI_Base
         {
             OnItemInitializedHandler();
         }
+    }
+
+    public void WhenQSlotChanged(int slotIndex)
+    {
+        if (slotIndex == currentIndex)
+            Managers.Game.GetPlayer().GetComponent<PlayerController>().ChangeItemsInHand(slotIndex + 1);
     }
     
     private void OnItemInitializedHandler()
@@ -105,7 +114,7 @@ public class UI_Game_QuickSlotGroup : UI_Base
     {
         foreach (var quickSlot in _quickSlots) 
         {
-            quickSlot.SetNotebookPopup(notebookPopup); 
+            quickSlot.SetNotebookPopup(notebookPopup);
         }
     }
     
@@ -152,13 +161,13 @@ public class UI_Game_QuickSlotGroup : UI_Base
     
     public UI_Inven_Item ChangeItemInHand(int index)
     {
+        currentIndex = index;
+        
         for (int i = 0; i < 8; i++)
         {
             _quickSlots[i].transform.SetParent(transform);
         }
         _quickSlots[index].transform.SetParent(transform.parent);
-
-        
         
         return _quickSlots[index].Item;
     }

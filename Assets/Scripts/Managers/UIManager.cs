@@ -134,25 +134,20 @@ public class UIManager
     /// <summary>
     /// Popup 스택의 최상단 팝업을 닫는 함수.
     /// </summary>
-    public void ClosePopupUI()
+     public void ClosePopupUI()
     {
         if (_popupStack.Count == 0)
             return;
 
-        UI_Popup popup = _popupStack.Pop();
-        Managers.Resource.Destroy(popup.gameObject);
+        UI_Popup popup = _popupStack.Peek();
+        DebugEx.Log($"Closing popup of type {popup.GetType().Name}");
 
+        _popupStack.Pop();
+        Managers.Resource.Destroy(popup.gameObject);
+        popup = null;
         _order--;
     }
     
-    /// <summary>
-    /// Popup 스택의 최상단 팝업을 닫는 함수.
-    /// </summary>
-    public UI_Popup GetTopPopupUI()
-    {
-        return _popupStack.Peek();
-    }
-
     /// <summary>
     /// 특정 팝업을 닫는 함수. 스택의 최상단 Popup이 아니면 닫지 않는다.
     /// </summary>
@@ -167,15 +162,49 @@ public class UIManager
         
         ClosePopupUI();
     }
-
+    
+    // 특정 팝업을 제거하는 메소드
+    public void RemovePopup(UI_Popup popup)
+    {
+        if (_popupStack.Contains(popup))
+        {
+            _popupStack.Pop();
+            Managers.Resource.Destroy(popup.gameObject);
+            _order--; // 순서 감소
+        }
+    }
+    
     /// <summary>
     /// 모든 Popup UI를 닫는 함수
     /// </summary>
     public void CloseAllPopupUI()
     {
         while (_popupStack.Count > 0)
-            ClosePopupUI();
+        {
+            UI_Popup popup = _popupStack.Peek();
+            popup.ClosePopupUI(null);
+        }
     }
+    
+    /// <summary>
+    /// Popup 스택의 최상단 팝업을 받는 함수.
+    /// 스택이 비어있으면 null
+    /// </summary>
+    public UI_Popup GetTopPopupUI()
+    {
+        return _popupStack.Count == 0 ? null : _popupStack.Peek();
+    }
+
+    /// <summary>
+    /// PopupStack에 들어간 팝업의 갯수를 반환
+    /// </summary>
+    /// <returns></returns>
+    public int GetStackSize()
+    {
+        DebugEx.LogWarning($"Current Stack Size : {_popupStack.Count}");
+        return _popupStack.Count;
+    }
+    
     
     /// <summary>
     /// 현재 Scene에서 활성화된 SceneUI에 대한 Getter

@@ -16,6 +16,7 @@ MonoBehaviour:
     keys:
     - 49e735908f67f9c4db646413788ed287
     - 79e349dbb43876949b3709c97b3764fa
+    - aac33dbd25c65ff409152df8c99fc768
     values:
     - goDatas_byGlobalId:
         keys:
@@ -61,6 +62,27 @@ MonoBehaviour:
           iconNameOrGuid: 
         - colorIndex: 6
           iconNameOrGuid: Folder Icon
+        - colorIndex: 6
+          iconNameOrGuid: 
+        - colorIndex: 8
+          iconNameOrGuid: 
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-aac33dbd25c65ff409152df8c99fc768-460403597-0
+        - globalObjectIdString: GlobalObjectId_V1-2-aac33dbd25c65ff409152df8c99fc768-1100590068-0
+        - globalObjectIdString: GlobalObjectId_V1-2-aac33dbd25c65ff409152df8c99fc768-297242054-0
+        - globalObjectIdString: GlobalObjectId_V1-2-aac33dbd25c65ff409152df8c99fc768-1277837103-0
+        - globalObjectIdString: GlobalObjectId_V1-2-aac33dbd25c65ff409152df8c99fc768-826990331-0
+        - globalObjectIdString: GlobalObjectId_V1-2-aac33dbd25c65ff409152df8c99fc768-8055870297413718714-1791151470
+        values:
+        - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 3
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: 
+        - colorIndex: 6
+          iconNameOrGuid: 
         - colorIndex: 6
           iconNameOrGuid: 
         - colorIndex: 8
