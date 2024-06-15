@@ -30,7 +30,7 @@ public class DialogueManager : MonoBehaviour
 
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
-    [SerializeField]public GameObject EscapeBtn;
+    [SerializeField]public GameObject[] QuickSlot=new GameObject[3];
 
 
     public static DialogueManager instance;
@@ -71,11 +71,6 @@ public class DialogueManager : MonoBehaviour
             // 선택지가 없을 때만 ContinueStory를 호출
             ContinueStory();
         }
-        else if (currentStory.currentChoices.Count > 0 && playerController.GetInteractPressed())
-        {
-            // 선택지가 있을 때 첫 번째 선택지를 자동으로 선택
-            makeChoice(0);
-        }
     }
 
 
@@ -92,7 +87,10 @@ public class DialogueManager : MonoBehaviour
         Managers.UI.ShowPopupUI<UI_DialoguePopup>();
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
-        EscapeBtn.gameObject.SetActive(false);
+       foreach (var quick in QuickSlot)
+        {
+            quick.gameObject.SetActive(false);
+        }
         foreach (GameObject cue in npc.visualCue)
         {
             cue.SetActive(false);
@@ -112,7 +110,10 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         popup.dialogueText.text = "";
         popup.dialoguePanel.SetActive(false);
-        EscapeBtn.gameObject.SetActive(true);
+        foreach (var quick in QuickSlot)
+        {
+            quick.gameObject.SetActive(true);
+        }
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         //player.EnableExceptInteract();
         player.isPlaying =false;

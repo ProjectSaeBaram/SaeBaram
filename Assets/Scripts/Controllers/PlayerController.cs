@@ -916,6 +916,25 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.PickupItem.started -= PickupStarted;
     }
 
+    public void EnableExceptInteract()
+    {
+        isPlaying = true;
+        _playerInputActions.PlayerAction.Move.Enable();
+        _playerInputActions.PlayerAction.Move.started += MoveStarted;
+        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
+        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
+        _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
+        _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
+        _playerInputActions.PlayerAction.Jump.started += JumpStarted;
+        _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
+        _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
+        _playerInputActions.PlayerAction.WeaponChange.performed += OnUpperNumberKeyPressed;
+        _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
+        _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
+        _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
+
+    }
+
 
     public void Disableall()
     {
@@ -960,24 +979,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void EnableExceptInteract()
-    {
-        isPlaying = true;
-        _playerInputActions.PlayerAction.Move.Enable();
-        _playerInputActions.PlayerAction.Move.started += MoveStarted;
-        _playerInputActions.PlayerAction.Move.performed += MovePerformed;
-        _playerInputActions.PlayerAction.Move.canceled += MoveCanCeled;
-        _playerInputActions.PlayerAction.RunningSwitch.started += RunningSwitchEnter;
-        _playerInputActions.PlayerAction.RunningSwitch.canceled += RunningSwitchExit;
-        _playerInputActions.PlayerAction.Jump.started += JumpStarted;
-        _playerInputActions.PlayerAction.Jump.performed += JumpPerformed;
-        _playerInputActions.PlayerAction.Jump.canceled += JumpCanceled;
-        _playerInputActions.PlayerAction.WeaponChange.performed += OnUpperNumberKeyPressed;
-        _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
-        _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
-        _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
-
-    }
+   
 
 
 

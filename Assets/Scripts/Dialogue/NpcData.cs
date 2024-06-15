@@ -109,8 +109,9 @@ public class NpcData : MonoBehaviour
     {
      
         QuestManager.GetInstance().CheckRequirement();
-       
-        DialogueManager.GetInstance().EscapeBtn = GameObject.Find("EscapeButton");
+        DialogueManager.GetInstance().QuickSlot[0] = GameObject.Find("QuickSlotGroup");
+        DialogueManager.GetInstance().QuickSlot[1] = GameObject.Find("QuickSlot_Background");
+        DialogueManager.GetInstance().QuickSlot[2] = GameObject.Find("QuickSlot_Front");
         if (collider.gameObject.tag == "Player") 
         {
             playerInRange =true;
