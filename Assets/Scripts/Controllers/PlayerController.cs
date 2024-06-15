@@ -695,7 +695,7 @@ public class PlayerController : MonoBehaviour
         {
             currentHp = 0;
             
-            // TODO 게임 오버 팝업 등장
+            Managers.UI.ShowPopupUI<UI_GameOver>();
             DebugEx.LogWarning("Game Over!");
         }
     }

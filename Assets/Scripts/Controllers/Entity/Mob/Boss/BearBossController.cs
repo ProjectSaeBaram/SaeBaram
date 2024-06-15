@@ -34,7 +34,7 @@ namespace Controllers.Mob.Boss
         public BossRoom bossRoom;
         
         // 피격 이펙트 시각화를 위한 필드들
-        private List<SpriteRenderer> spriteRenderers;            // 스프라이트 렌더러 리스트
+        [SerializeField] private List<SpriteRenderer> spriteRenderers;            // 스프라이트 렌더러 리스트
         private MaterialPropertyBlock propertyBlock;            // 머티리얼 프로퍼티 블록
 
         public List<BoxCollider2D> MeleeAttackAreas;            // 근접 공격 collider들
@@ -58,13 +58,6 @@ namespace Controllers.Mob.Boss
             
             // EntityType 설정
             EntityType = Define.ItemMainStatType.Attack;        
-            
-            // 모든 자식 객체의 SpriteRenderer를 찾아서 리스트에 추가
-            spriteRenderers = new List<SpriteRenderer>();
-            foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
-            {
-                spriteRenderers.Add(sr);
-            }
             
             // 시작 State는 Idle로
             ChangeState(new IdleState(0.0f));

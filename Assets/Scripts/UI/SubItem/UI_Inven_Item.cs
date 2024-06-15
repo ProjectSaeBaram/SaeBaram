@@ -44,7 +44,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     public bool isPlayer=false;
     public bool isMerchant=false;
     
-    [Header("Logs")] [SerializeField] public List<string> Logs;
+    [Header("Logs")] [SerializeField] public List<string> Logs = new List<string>();
     
     // 드래그 이후 부모 Transform을 저장하기 위함
     [SerializeField] public Transform parentAfterDrag;
@@ -61,6 +61,7 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
     {
         OnValueChange -= RefreshUI;
         OnValueChange += RefreshUI;
+        OnValueChange.Invoke();
 
         if (Managers.UI.GetStackSize() > 0)
         {
@@ -127,7 +128,8 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemAmountText.text = Amount.ToString();
 
         // 로그 받아오기
-        Logs = logs;
+        if (logs != null)
+            Logs = logs;
         
         itemType = Define.ItemType.Ingredient;
         parentAfterDrag = transform.parent;
@@ -147,6 +149,16 @@ public class UI_Inven_Item : UI_Base, IBeginDragHandler, IDragHandler, IEndDragH
         ItemAmountText.text = Amount.ToString();
         ItemReinforceCount.text = ReinforceCount.ToString();
         DurabilitySlider.value = Durability / maxDurability;
+        
+        // 현재 내구도 (0~1사이 값)
+        float currentDurability = Durability / maxDurability;
+        
+        DurabilitySlider.value = currentDurability;
+        
+        // 현재 내구도 (0~1사이 값)의 비율에 맞춰 green과 red를 섞어 내구도 슬라이더 바에 시각화한다.
+        var block = DurabilitySlider.colors;
+        block.disabledColor = Color.Lerp(Color.red, Color.green, currentDurability);
+        DurabilitySlider.colors = block;
     }
 
     #region Drag and Drop
