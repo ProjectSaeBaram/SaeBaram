@@ -9,15 +9,15 @@ public abstract class EntityController : MonoBehaviour
     
     public virtual void GetHit(Handled_Item target, int damage)
     {
-        // 내 체력을 깎는다
-        // 체력이 0 밑으로 떨어지면, 죽는다
         
         DebugEx.LogWarning($"{damage} damage Dealt!");
         
-        // 내가 아이템 떨굴 것들 떨구고
+        // 내 체력을 깎는다
+        // 체력이 0 밑으로 떨어지면, 죽는다
         currentHp -= damage;
         if (currentHp <= 0)
         {
+            // 내가 아이템 떨굴 것들 떨구고
             WhenDestroy(target);
             Destroy(gameObject, 0.4f);
         }
@@ -30,7 +30,8 @@ public abstract class EntityController : MonoBehaviour
     
     /// <summary>
     /// id에 해당하는 아이템을 생성하는 함수
-    /// 이때, 퀄리티는 무작위로 설정
+    /// 이때, 퀄리티는 무작위로 설정한다.
+    /// EntityController를 상속받는 클래스의 GetHit안에서 호출할 것.
     /// </summary>
     /// <param name="itemId"></param>
     protected void DropItem(int itemId)

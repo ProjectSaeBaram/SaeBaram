@@ -25,13 +25,11 @@ public class DialogueManager : MonoBehaviour
     public UI_DialoguePopup popup;
     public QuestLayer qpanel;
     public PlayerController playerController;
-    public bool isChoicezero;
     [SerializeField] public bool isGood = false;
 
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
-    [SerializeField]public GameObject[] QuickSlot=new GameObject[3];
-
+    private DialogueVariables dialogueVariables;
 
     public static DialogueManager instance;
 
@@ -65,10 +63,8 @@ public class DialogueManager : MonoBehaviour
         {
             return;
         }
-        // 상호작용 키를 눌렀을 때의 동작을 수정
-        if (currentStory.currentChoices.Count == 0 && playerController.GetInteractPressed())
+        if (currentStory.currentChoices.Count==0 && playerController.GetInteractPressed())
         {
-            // 선택지가 없을 때만 ContinueStory를 호출
             ContinueStory();
         }
     }
@@ -77,8 +73,7 @@ public class DialogueManager : MonoBehaviour
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        //player.DisableExceptInteract();
-        player.isPlaying = true;
+        player.DisableExceptInteract();
         npcdata = npc;
         npcdata.SetMerchant(false);
         isGood = npc.isGood;
@@ -87,50 +82,31 @@ public class DialogueManager : MonoBehaviour
         Managers.UI.ShowPopupUI<UI_DialoguePopup>();
         popup.dialoguePanel.SetActive(true);
         //dialogueVariables.StartListening(currentStory);
-       foreach (var quick in QuickSlot)
-        {
-            quick.gameObject.SetActive(false);
-        }
         foreach (GameObject cue in npc.visualCue)
         {
             cue.SetActive(false);
         }
-        isChoicezero = false;
         //태그 초기화
         popup.displayNameText.text = "???";
-        popup.portraitImage.sprite= null;
         ContinueStory();
     }
 
-   
-
     private void ExitDialogueMode()
     {
+        //dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
         popup.dialogueText.text = "";
-        popup.portraitImage.sprite = null;
         popup.dialoguePanel.SetActive(false);
-        foreach (var quick in QuickSlot)
-        {
-            quick.gameObject.SetActive(true);
-        }
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
-        //player.EnableExceptInteract();
-        player.isPlaying =false;
-        if (npcdata.GetMerchant()&& isChoicezero)
-        {
-            Managers.UI.CloseAllPopupUI();
-            Managers.UI.ShowPopupUI<UI_Merchant>();
-        }
+        player.EnableExceptInter();
     }
 
     private void ContinueStory()
     {
-        
-        if (currentStory.canContinue)                   //더 보여줄 이야기가 있다면
+        if (currentStory.canContinue) //더 보여줄 이야기가 있다면
         {
-            popup.dialogueText.text = currentStory.Continue();            //한줄 출력
-            DisplayChoices();                                       //선택이 있으면 선택출력
+            popup.dialogueText.text = currentStory.Continue();  // 한줄 출력
+            DisplayChoices();                                   // 선택이 있으면 선택출력
             //태그관리
             HandleTags(currentStory.currentTags);
         }
@@ -221,7 +197,7 @@ public class DialogueManager : MonoBehaviour
 
     public void makeChoice(int choice)
     {
-        // 퀘스트 상태를 업데이트하거나 상점 UI를 열 수 있는지 확인
+        currentStory.ChooseChoiceIndex(choice);
         if (choice == 0)
         {
             if (npcdata.questId.Length > 0)
@@ -230,18 +206,21 @@ public class DialogueManager : MonoBehaviour
                 if (qs == QuestState.CAN_START)
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
-                }
-                else if (qs == QuestState.CAN_FINISH)
+                    //qpanel.questlist.AddQuest(QuestManager.GetInstance().GetQuestData(npcdata.questId[npcdata.questIndex]));
+                }else if (qs == QuestState.CAN_FINISH)
                 {
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
                 }
             }
 
-            isChoicezero = true;
+            if(npcdata.GetMerchant())
+            {
+                Managers.UI.CloseAllPopupUI();
+                Managers.UI.ShowPopupUI<UI_Merchant>();
+            }
         }
-        
-        // 선택지 선택 후 스토리를 계속 진행
-        currentStory.ChooseChoiceIndex(choice);
+        ContinueStory();
+        DebugEx.Log(choice);
     }
 
     public void setvisibleNpc()

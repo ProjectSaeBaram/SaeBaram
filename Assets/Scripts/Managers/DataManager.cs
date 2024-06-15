@@ -192,6 +192,10 @@ public class DataManager
     /// </summary>
     public void MakeItemTest()
     {
+        // 모두 빈값으로 채우기
+        for (int i = 0; i < NumberOfInventorySlots; i++)
+            InventoryTable[i] = (ushort)0;
+        
         // 테스트용 더미 데이터 
         InventoryTable[0] = (ushort)0;
         InventoryTable[1] = (ushort)57663;            // 종결옵 돌 단검 (퀄리티 최상, 풀내구도, 풀강)
@@ -200,9 +204,10 @@ public class DataManager
         InventoryTable[4] = (ushort)16575;            // 돌 재료 (중간 퀄리티, 63개)
         InventoryTable[5] = (ushort)16636;            // 철 재료 (중간 퀄리티, 63개)
 
-        // 나머지는 빈값으로 채우기
-        for (int i = 6; i < NumberOfInventorySlots; i++)
-            InventoryTable[i] = (ushort)0;
+        InventoryTable[28] = (ushort)9020;            // 시연용 드릴 (최하 퀄리티)
+        InventoryTable[29] = (ushort)58172;           // 시연용 드릴 (최상 퀄리티)
+        
+        
 
         DebugEx.Log("makeItemTest ============== ");
         for (int i = 0; i < NumberOfInventorySlots; i++)
@@ -645,7 +650,7 @@ public class DataManager
 
                 // 테스트 데이터 생성용
                 string testData =
-                    "{\n    \"logs\": [\n        {\n            \"index\": 1,\n            \"data\": [\n                {\n                    \"log\": \"첫번째 챕터 보스를 잡은 무기\"\n                },\n                {\n                    \"log\": \"첫번째로 만든 무기\"\n                }\n            ]\n        },\n        {\n            \"index\": 2,\n            \"data\": [\n                {\n                    \"log\": \"테스트 성공!\"\n                }\n            ]\n        }\n    ]\n}";
+                    "{\n    \"logs\": [\n        {\n            \"index\": 1,\n            \"data\": [\n                {\n                    \"log\": \"내가 첫번째로 만든 무기\"\n                }\n            ]\n        },\n        {\n            \"index\": 2,\n            \"data\": [\n                {\n                    \"log\": \"주인 모를 고물 활이다\"\n                }\n            ]\n        },\n        {\n            \"index\": 29,\n            \"data\": [\n                {\n                    \"log\": \"이 드릴이라면 어쩌면...!\"\n                }\n            ]\n        }\n    ]\n}";
                 //return new EntireLog_Inventory();
                 return JsonUtility.FromJson<EntireLog>(testData);
             }

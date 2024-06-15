@@ -1,5 +1,7 @@
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.UI;
+
 /// <summary>
 /// 게임 씬을 관리하는 샘플 클래스.
 /// BaseScene을 상속받아 게임 씬에 특화된 초기화 및 정리 로직을 구현.
@@ -45,7 +47,8 @@ public class GameScene : BaseScene
     void SpawnPlayer()
     {
         GameObject player = Managers.Game.Spawn(Define.WorldObject.Player, "Player");
-        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.Follow = player.transform;     // virtual camera의 Follow에 플레이어 등록
+        CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        virtualCamera.Follow = player.transform; // virtual camera의 Follow에 플레이어 등록
     }
 
     /// <summary>

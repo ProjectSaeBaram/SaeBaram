@@ -33,6 +33,7 @@ public class UI_SeparateIngredientPopup : UI_Popup
 
     public override void Init()
     {
+        base.Init();
         Bind<Image>(typeof(Images));
         Bind<TMP_InputField>(typeof(InputFields));
         Bind<Button>(typeof(Buttons));

@@ -87,6 +87,10 @@ public class Handled_Item : MonoBehaviour
         _uiInvenItem.DecreaseDurability();
     }
 
+    /// <summary>
+    /// 외부에서 아이템의 좀 더 디테일한 정보를 알기위해 사용가능한 함수
+    /// </summary>
+    /// <returns></returns>
     public UI_Inven_Item GetOriginItemUI()
     {
         return _uiInvenItem;

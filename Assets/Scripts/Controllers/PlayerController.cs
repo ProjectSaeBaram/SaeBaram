@@ -2,6 +2,7 @@ using Controllers.Entity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -204,7 +205,7 @@ public class PlayerController : MonoBehaviour
 
         public void Exit()
         {
-            _playerController._handledItem.ColliderDeactivate();
+            _playerController._handledItem?.ColliderDeactivate();
         }
         ~PlayerAttackState() { DebugEx.LogWarning($"Finalize {this}");}
 
@@ -434,12 +435,14 @@ public class PlayerController : MonoBehaviour
         ChangeItemsInHand(int.Parse(context.control.name));
     }
 
-    void ChangeItemsInHand(int keyNumber)
+    public void ChangeItemsInHand(int keyNumber)
     {
         int targetIndex = keyNumber - 1;
 
-        for (int i = 0; i < _rightHandBone.childCount; i++)
-            _rightHandBone.GetChild(i).gameObject.SetActive(false);
+        foreach (Transform child in _rightHandBone.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
         
         UI_Inven_Item handledUIItem = _quickSlotGroup.ChangeItemInHand(targetIndex);
 
@@ -447,6 +450,8 @@ public class PlayerController : MonoBehaviour
         
         _handledItem.ItemUIReferenceSetter(handledUIItem);
         _handledItem.gameObject.SetActive(true);
+        
+        DebugEx.LogWarning("Change Items In Hand!");
     }
     
     private void FixedUpdate()
@@ -734,16 +739,13 @@ public class PlayerController : MonoBehaviour
 
     void PauseOrResume(InputAction.CallbackContext context)
     {
-        // if (Managers.UI.FindPopup<UI_PausePopup>() == null)
-        // {
-        //     Managers.UI.ShowPopupUI<UI_PausePopup>();
-        // }
-        // else
-        // {
-        //     Managers.UI.CloseAllPopupUI();
-        //     Time.timeScale = 1.0f;
-        // }
+        // 1. 뭐든지 열려있으면 다 닫기
+        // 2. 아무것도 없으면 열기
 
+        if (Managers.UI.GetStackSize() > 0)
+            Managers.UI.CloseAllPopupUI();
+        else
+            Managers.UI.ShowPopupUI<UI_PausePopup>();
     }
 
     #endregion
@@ -764,15 +766,16 @@ public class PlayerController : MonoBehaviour
 
     void OpenOrCloseNotebook(InputAction.CallbackContext context)
     {
-        
         // 노트북 팝업이 열려있으면 닫고, 
         // 열려있지 않으면 열기
+        
         UI_NotebookPopup notebookPopup = FindObjectOfType<UI_NotebookPopup>();
         if(notebookPopup == null)
             Managers.UI.ShowPopupUI<UI_NotebookPopup>();
         else
         {
-            notebookPopup.ClosePopupUI(null);
+            Managers.UI.CloseAllPopupUI();
+            //notebookPopup.ClosePopupUI(null);
         }
     }
     

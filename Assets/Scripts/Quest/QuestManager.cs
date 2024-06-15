@@ -29,11 +29,9 @@ public class QuestManager : MonoBehaviour
 
     void GenerateData()
     {
-        questList.Add(0, new DestroyBlock("벽 부수기", 1000, "할아버지", 0, QuestState.REQUIREMENTS_NOT_MET, 10, "튜토리얼 마을"));
+        questList.Add(0, new DestroyBlock("코인 모으기", 1000, "할아버지", 0, QuestState.REQUIREMENTS_NOT_MET, 10, "튜토리얼"));
 
-        EntitiyBlock.GetInstance().BlockDead.AddListener(() => UpdateQuestState(0));
-
-       
+        //EntitiyBlock.GetInstance().BlockDead.AddListener(() => UpdateQuestState(0));
     }
 
     public void AdvanceQuest(int id,NpcData npc)            //퀘스트 진행상황 업데이트
@@ -66,11 +64,10 @@ public class QuestManager : MonoBehaviour
     public void CheckRequirement()             //진행 순서가 맞아진다면 시작가능한 퀘스트 체크
     {
         for (int i = 0; i < questList.Count; i ++){
-            if (PlayerController.GetInstance().GetquestIdex() >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED && questList[i].qs!=QuestState.IN_PROGRESS && questList[i].qs != QuestState.CAN_FINISH))
+            if (PlayerController.GetInstance().GetquestIdex() >= questList[i].Indexrequirment && (questList[i].qs!=QuestState.FINISHED && questList[i].qs!=QuestState.IN_PROGRESS))
             {
                 questList[i].qs = QuestState.CAN_START;
             }
-
         }
     }
 

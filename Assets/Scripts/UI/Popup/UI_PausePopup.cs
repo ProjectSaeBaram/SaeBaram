@@ -18,6 +18,7 @@ public class UI_PausePopup : UI_Popup
 
     public override void Init()
     {
+        base.Init();
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
         
@@ -31,8 +32,10 @@ public class UI_PausePopup : UI_Popup
 
     public override void ClosePopupUI(PointerEventData action)
     {
-        Managers.UI.ClosePopupUI(this);
         Time.timeScale = 1.0f;
+        
+        base.ClosePopupUI(action);
+        DebugEx.LogWarning("PausePopup Closed!");
     }
     
     void BacktoMainMenu(PointerEventData action)
@@ -40,6 +43,7 @@ public class UI_PausePopup : UI_Popup
         // TODO 데이터 저장
         //Managers.Data.SaveData();
         Managers.Scene.ChangeScene(Define.Scene.LobbyScene);
+        Time.timeScale = 1.0f;
     }
     
     void Settings(PointerEventData action)
@@ -54,6 +58,7 @@ public class UI_PausePopup : UI_Popup
 #else
         Application.Quit(); // 어플리케이션 종료
 #endif
+        Time.timeScale = 1.0f;
     }
     
 }

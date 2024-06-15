@@ -77,6 +77,8 @@ public class UI_Inven_Slot : UI_Base, IDropHandler, IPointerClickHandler
         if (Item != null)
         {
             Item.ToolTipHandler = uiNotebookPopup;
+            Item.Catcher = uiNotebookPopup;
+            Item.Popup = uiNotebookPopup;
         }
     }
 }

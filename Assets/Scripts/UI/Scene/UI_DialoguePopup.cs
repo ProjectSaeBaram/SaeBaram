@@ -28,7 +28,6 @@ public class UI_DialoguePopup : UI_Popup
 
     public override void Init()
     {
-
         DialoguePopup = this.gameObject;
         dialoguePanel = DialoguePopup.transform.GetChild(0).gameObject;
         dialogueText = dialoguePanel.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
