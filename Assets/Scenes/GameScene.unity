@@ -52384,20 +52384,24 @@ PrefabInstance:
       objectReference: {fileID: 4900000, guid: ff846b80ffc74f141be3195ad44ea1d5, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 21300000, guid: 71f07f12ebd45e74f891fad504cf0be9, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[1]
       value: 
-      objectReference: {fileID: -1886493791, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+      objectReference: {fileID: 309385298, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[2]
       value: 
-      objectReference: {fileID: -1886493791, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+      objectReference: {fileID: -319908078, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: npcPortrait.Array.data[3]
+      value: 
+      objectReference: {fileID: -502968437, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
