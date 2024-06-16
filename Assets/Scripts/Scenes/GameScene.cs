@@ -13,12 +13,10 @@ public class GameScene : BaseScene
     /// BaseScene의 Init 메서드를 호출하여 기본적인 초기화를 수행한 후,
     /// 게임 씬에 필요한 추가적인 초기화 작업을 여기에서 수행.
     /// </summary>
-    /// 
 
     protected override void Init()
     {
         base.Init(); // 상위 클래스의 초기화 메서드 호출
-
         // 현재 씬의 타입을 게임 씬으로 설정.
         SceneType = Define.Scene.GameScene;
         // 게임 씬에 필요한 UI를 표시합니다. 여기서는 인벤토리 UI를 예로 들고 있음.

@@ -31,6 +31,12 @@ public class UI_SettingsPopup : UI_Popup
     {
         UpdateSettingBtn,
     }
+
+    enum Scrollbars
+    {
+        SoundScrollbar,
+    }
+    
     public override void Init()
     {
         base.Init();
@@ -38,6 +44,7 @@ public class UI_SettingsPopup : UI_Popup
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Dropdown>(typeof(Dropdowns));
         Bind<Toggle>(typeof(Toggles));
+        Bind<Scrollbar>(typeof(Scrollbars));
         
         Toggle toggle = Get<Toggle>((int)Toggles.FullScreenToggle);
         toggle.onValueChanged.AddListener(FullScreenBtn);
@@ -50,6 +57,15 @@ public class UI_SettingsPopup : UI_Popup
         
         GetImage((int)Images.Background).gameObject.AddUIEvent(ClosePopupUI);
         GetButton((int)Buttons.UpdateSettingBtn).gameObject.AddUIEvent(UpdateSettingBtn);
+
+        if (PlayerPrefs.HasKey("GlobalSoundVolume"))
+        {
+            Get<Scrollbar>((int)Scrollbars.SoundScrollbar).value = PlayerPrefs.GetFloat("GlobalSoundVolume");
+        }
+        else
+        {
+            Get<Scrollbar>((int)Scrollbars.SoundScrollbar).value = Managers.Sound.GlobalSoundVolume;
+        }
     }
 
     /// <summary>

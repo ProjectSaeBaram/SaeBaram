@@ -8,6 +8,11 @@ using UnityEngine;
 public class SoundManager
 {
     /// <summary>
+    /// 설정에서 지정 가능한 
+    /// </summary>
+    public float GlobalSoundVolume = 1.0f;
+    
+    /// <summary>
     /// 모든 영역에서 사용되는 AudioSource 컴포넌트들을 담는 배열.
     /// 여기에 담기는 AudioSource는 각각 배경음악, 효과음을 담당한다.
     /// </summary>
@@ -82,9 +87,11 @@ public class SoundManager
                 audioSource.Stop();
             
             audioSource.pitch = pitch;
-            audioSource.volume = volume;
+            audioSource.volume = volume * GlobalSoundVolume;
             audioSource.clip = audioClip;
             audioSource.Play();
+
+            DebugEx.LogWarning($"GlobalSoundVolume is {GlobalSoundVolume}");
         }
         else
         {
@@ -93,7 +100,7 @@ public class SoundManager
             AudioSource audioSource = poolable.GetComponent<AudioSource>();
 
             audioSource.pitch = pitch;
-            audioSource.volume = volume;
+            audioSource.volume = volume * GlobalSoundVolume;
             audioSource.PlayOneShot(audioClip);
 
             // 재생이 끝난 후 풀에 반환
@@ -103,6 +110,9 @@ public class SoundManager
             // audioSource.pitch = pitch;
             // audioSource.volume = volume;
             // audioSource.PlayOneShot(audioClip);
+            
+            DebugEx.LogWarning($"GlobalSoundVolume is {GlobalSoundVolume}");
+
         }
     }
     
@@ -155,5 +165,13 @@ public class SoundManager
             audioSource.Stop();
         }
         _audioClips.Clear();
+    }
+
+    public void ChangeGlobalSoundVolume()
+    {
+        AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];
+        audioSource.volume = GlobalSoundVolume;
+        
+        PlayerPrefs.SetFloat("GlobalSoundVolume", GlobalSoundVolume);
     }
 }

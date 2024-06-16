@@ -617,8 +617,8 @@ RectTransform:
   m_GameObject: {fileID: 859989306831406432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6328666705734635920}
   m_Father: {fileID: 0}
@@ -704,7 +704,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questlist: {fileID: 9068109484683859406}
-  Questpop: {fileID: 4375606865377495263}
+  Tab_Todo: {fileID: 0}
+  Tab_Todo_Text: {fileID: 0}
+  Tab_Finished: {fileID: 0}
+  Tab_Finished_Text: {fileID: 0}
   infoPanel: {fileID: 4227098078315996505}
 --- !u!1 &1181193460689995266
 GameObject:
@@ -951,6 +954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 878155752866602597}
   QuestCheck: {fileID: 8828248728151349195}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &1840514799786537137
 GameObject:
@@ -1448,6 +1452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 8207673082156717522}
   QuestCheck: {fileID: 7028992136847076223}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &2981992717959528754
 GameObject:
@@ -1929,6 +1934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 6730865259609717966}
   QuestCheck: {fileID: 3284315800469533365}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &3802217051088312668
 GameObject:
@@ -2217,6 +2223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 7509401473779619649}
   QuestCheck: {fileID: 6799869912287811015}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &4114556639468573153
 GameObject:
@@ -2700,6 +2707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 7165193376671547866}
   QuestCheck: {fileID: 7654202172221730512}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &4620924673542019077
 GameObject:
@@ -3142,6 +3150,7 @@ MonoBehaviour:
   questLoc: {fileID: 5496504320601312808}
   npcName: {fileID: 1103565727473236701}
   questState: {fileID: 3463394811776313284}
+  questReward: {fileID: 0}
 --- !u!1 &5532541996771429591
 GameObject:
   m_ObjectHideFlags: 0
@@ -3413,6 +3422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 8697897233223679781}
   QuestCheck: {fileID: 3520532842378344115}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &5900816981136121078
 GameObject:
@@ -3737,6 +3747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 2302758699662416766}
   QuestCheck: {fileID: 4462164247363848074}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &6340968864523230451
 GameObject:
@@ -3875,6 +3886,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 1646817240869582663}
   QuestCheck: {fileID: 2234682162657108880}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &7115339822540508457
 GameObject:
@@ -4013,6 +4025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 2093486737355643879}
   QuestCheck: {fileID: 4787752585029747844}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &7135210232124761326
 GameObject:
@@ -4419,6 +4432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 5327605400083057143}
   QuestCheck: {fileID: 3010875218425551293}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
 --- !u!1 &7383858928076715856
 GameObject:
@@ -5325,4 +5339,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestName: {fileID: 6415065844330433065}
   QuestCheck: {fileID: 4982911558059529831}
+  QuestCheckBox: {fileID: 0}
   QuestInfoPanel: {fileID: 4227098078315996505}
