@@ -27,6 +27,7 @@ public class DialogueManager : MonoBehaviour
     public PlayerController playerController;
     [SerializeField] public bool isGood = false;
     [SerializeField] public GameObject UI_game;
+    [SerializeField] public bool ischecked;
 
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
@@ -39,6 +40,7 @@ public class DialogueManager : MonoBehaviour
         instance = this;
         //TODO : Json으로 저장된 챕터별 npc 아이디와 대화인덱스 변수 가져와서 변수 초기화
         //dialogueVariables = new DialogueVariables(loadGlobalsJSON);
+       
     }
 
 
@@ -89,6 +91,7 @@ public class DialogueManager : MonoBehaviour
         }
         UI_game.SetActive(false);
         //태그 초기화
+        ischecked = false;
         popup.displayNameText.text = "???";
         popup.portraitImage.sprite = null;
         ContinueStory();
@@ -103,7 +106,7 @@ public class DialogueManager : MonoBehaviour
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         player.isPlaying = false;
         UI_game.SetActive(true);
-        if (npcdata.GetMerchant())
+        if (npcdata.GetMerchant()&& ischecked)
         {
             Managers.UI.CloseAllPopupUI();
             Managers.UI.ShowPopupUI<UI_Merchant>();
@@ -227,10 +230,9 @@ public class DialogueManager : MonoBehaviour
                     QuestManager.GetInstance().AdvanceQuest(npcdata.questId[npcdata.DialogueIndex], npcdata);
                 }
             }
+            ischecked = true;
 
-          
         }
-        ContinueStory();
         DebugEx.Log(choice);
     }
 
