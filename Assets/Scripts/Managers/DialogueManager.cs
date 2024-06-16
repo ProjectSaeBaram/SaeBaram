@@ -11,7 +11,7 @@ public class DialogueManager : MonoBehaviour
     [Header("NPC Data")]
     [SerializeField] private Dictionary<int, int> npcDindex;                //npc 별 대화인덱스 저장할 변수
     private NpcData npcdata;
-    private Story currentStory;                                     //Ink 로 생성된 텍스트를 받아올 Class변수
+    public Story currentStory;                                     //Ink 로 생성된 텍스트를 받아올 Class변수
     [SerializeField] public GameObject[] npcList;
 
     private const string SPEAKER_TAG = "speaker";                   //테그값들 테그값 : 변수
@@ -230,8 +230,8 @@ public class DialogueManager : MonoBehaviour
                 }
             }
             ischecked = true;
-
         }
+        ContinueStory();
     }
 
     public void setvisibleNpc()
