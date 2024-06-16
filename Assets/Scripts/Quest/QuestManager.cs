@@ -29,7 +29,7 @@ public class QuestManager : MonoBehaviour
 
     void GenerateData()
     {
-        questList.Add(0, new DestroyBlock("코인 모으기", 1000, "할아버지", 0, QuestState.REQUIREMENTS_NOT_MET, 10, "튜토리얼"));
+        questList.Add(0, new DestroyBlock("벽 부수기", 1000, "할아버지", 0, QuestState.REQUIREMENTS_NOT_MET, 10, "튜토리얼 마을"));
 
         //EntitiyBlock.GetInstance().BlockDead.AddListener(() => UpdateQuestState(0));
     }

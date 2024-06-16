@@ -34,6 +34,10 @@ public class QuestLayer : UI_Popup
         Tab_Finished.GetComponent<Button>().onClick.AddListener(() => DisplayFinished());
         questlist.gameObject.SetActive(true);
         infoPanel.gameObject.SetActive(true);
+        questlist.RefreshquestList();
+        DisplayTodo();
+        DisplayQuest();
+        DisplayTodo();
     }
 
     public void DisplayTodo()
