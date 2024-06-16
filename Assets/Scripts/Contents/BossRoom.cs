@@ -124,6 +124,7 @@ public class BossRoom : MonoBehaviour
         
         // 플레이어 컨트롤 비활성화
         Managers.Game.GetPlayer().GetComponent<PlayerController>().Disableall();
+        
     }
     
     /// <summary>
@@ -145,7 +146,8 @@ public class BossRoom : MonoBehaviour
         // 카메라 조정
         _cinemachineBlendController.Exit();
         
-        // TODO 다이얼로그 UI 비활성화
+        // TODO 다이얼로그 UI
+        
     }
     
     /// <summary>
@@ -313,9 +315,5 @@ public class BossRoom : MonoBehaviour
         // 카메라 원상복구
         cinemachineVirtualCamera.Follow = Managers.Game.GetPlayer().transform;
         cinemachineVirtualCamera.LookAt = null;
-        
-        // TODO 곰 포커스
-        
-        
     }
 }

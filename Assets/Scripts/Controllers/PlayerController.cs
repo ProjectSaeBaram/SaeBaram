@@ -550,10 +550,8 @@ public class PlayerController : MonoBehaviour
     {
         // DebugEx.Log($"MovePerformed");
 
-        inputVector.x = isPlaying==true? 0:context.ReadValue<Vector2>().x;
-        inputVector.y= isPlaying == true ? context.ReadValue<Vector2>().y :0 ;
-
-
+        inputVector.x = isPlaying == true? 0:context.ReadValue<Vector2>().x;
+        inputVector.y = isPlaying == true ? context.ReadValue<Vector2>().y : 0;
     }
     void MoveCanCeled(InputAction.CallbackContext context)
     {
@@ -935,7 +933,6 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Escape.started += PauseOrResume;
         _playerInputActions.PlayerAction.OpenNotebook.started += OpenOrCloseNotebook;
         _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
-
     }
 
 
@@ -958,6 +955,9 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.PickupItem.started += PickupStarted;
         _playerInputActions.PlayerAction.Click.started += OnClick;
         _playerInputActions.Disable();
+        
+        inputVector = Vector2.zero;
+        ChangeState(_idleState);
     }
 
     public void Enableall()
@@ -980,11 +980,6 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.PlayerAction.Click.started += OnClick;
         _playerInputActions.Enable();
     }
-
-
-   
-
-
-
+    
     #endregion
 }
