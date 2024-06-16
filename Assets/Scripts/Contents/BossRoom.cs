@@ -123,7 +123,8 @@ public class BossRoom : MonoBehaviour
         DummyBearController.gameObject.SetActive(true);
         
         // 플레이어 컨트롤 비활성화
-        Managers.Game.GetPlayer().GetComponent<PlayerController>().Disableall();
+        PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
+        player.Disableall();
         
         // Scene UI 비활성화
         Managers.UI.GetCurrentSceneUI().gameObject.SetActive(false);

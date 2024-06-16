@@ -53,6 +53,26 @@ public class DroppedItem : MonoBehaviour
        OnEnable();
    }
    
+   public void InitInfoByValue(int id, int quality, string log)
+   {
+       ItemId = id;
+       Quality = quality;
+       Logs.Add(log); 
+       itemType = Managers.Data.ItemTypeById(ItemId);
+
+       OnEnable();
+   }
+   
+   public void InitInfoByValue(int id, int quality, List<string> log)
+   {
+       ItemId = id;
+       Quality = quality;
+       Logs = log;
+       itemType = Managers.Data.ItemTypeById(ItemId);
+
+       OnEnable();
+   }
+   
    
    /// <summary>
    /// 플레이어가 획득할 때 Call되는 함수

@@ -333,6 +333,10 @@ namespace Controllers.Mob.Boss
             boss.animator.CrossFade("Exhausted", animationTransitionDuration);
             
             boss.bossRoom.OnBossDied?.Invoke();
+            
+            DroppedItem droppedItem = Managers.Game.Spawn(Define.WorldObject.DroppedItem, "Item/DroppedItem").GetComponent<DroppedItem>();
+            droppedItem.transform.position = boss.transform.position + Vector3.up * 30;
+            droppedItem.InitInfoByValue(127, 3, "수상해 보이는 액체다");
         }
     }
 }
