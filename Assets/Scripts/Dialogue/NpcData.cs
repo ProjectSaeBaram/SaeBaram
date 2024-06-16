@@ -102,6 +102,7 @@ public class NpcData : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         QuestManager.GetInstance().CheckRequirement();
+        DialogueManager.GetInstance().UI_game = GameObject.Find("UI_Game");
         if (collider.gameObject.CompareTag("Player")) 
         {
             playerInRange = true;

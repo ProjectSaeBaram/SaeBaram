@@ -95,7 +95,6 @@ public class Managers : MonoBehaviour
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         if (player.isPlaying)
         {
-
            player.isPlaying= false;
         }
         // 인벤토리 데이터를 바이너리 파일로 저장하도록

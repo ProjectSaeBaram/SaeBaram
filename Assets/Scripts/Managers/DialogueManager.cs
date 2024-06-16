@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
     public QuestLayer qpanel;
     public PlayerController playerController;
     [SerializeField] public bool isGood = false;
+    [SerializeField] public GameObject UI_game;
 
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
                                                                     //퀘스트 진행상황은 퀘스트 메니저에서 관리
@@ -86,6 +87,7 @@ public class DialogueManager : MonoBehaviour
         {
             cue.SetActive(false);
         }
+        UI_game.SetActive(false);
         //태그 초기화
         popup.displayNameText.text = "???";
         popup.portraitImage.sprite = null;
@@ -97,9 +99,15 @@ public class DialogueManager : MonoBehaviour
         //dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
         popup.dialogueText.text = "";
-        popup.dialoguePanel.SetActive(false);
+        Managers.UI.ClosePopupUI();
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         player.isPlaying = false;
+        UI_game.SetActive(true);
+        if (npcdata.GetMerchant())
+        {
+            Managers.UI.CloseAllPopupUI();
+            Managers.UI.ShowPopupUI<UI_Merchant>();
+        }
     }
 
     private void ContinueStory()
@@ -136,6 +144,12 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case PORTRAIT_TAG:
                     popup.portraitImage.sprite = npcdata.npcPortrait[int.Parse(tagvalue)];
+                    // 기존 스프라이트의 크기를 가져옵니다.
+                    float originalWidth = popup.portraitImage.sprite.rect.width;
+                    float originalHeight = popup.portraitImage.sprite.rect.height;
+                    // 새로운 크기를 설정합니다.
+                    popup.portraitImage.GetComponent<RectTransform>().sizeDelta = new Vector2(originalWidth, originalHeight);
+
                     break;
                 case PLAYER_TAG:
                     popup.portraitImage.sprite = playerController.getplayerPortrait(int.Parse(tagvalue));
@@ -214,11 +228,7 @@ public class DialogueManager : MonoBehaviour
                 }
             }
 
-            if(npcdata.GetMerchant())
-            {
-                Managers.UI.CloseAllPopupUI();
-                Managers.UI.ShowPopupUI<UI_Merchant>();
-            }
+          
         }
         ContinueStory();
         DebugEx.Log(choice);
