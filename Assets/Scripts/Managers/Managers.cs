@@ -21,6 +21,7 @@ public class Managers : MonoBehaviour
     private UIManager _ui = new UIManager();
     private CraftingManager _crafting = new CraftingManager();
     private ReputeManager _repute = new ReputeManager();
+    private ScriptDialogueManager _scriptDialogue = new ScriptDialogueManager();
     
     public static DataManager Data => Instance._data;
     public static GameManagerEx Game => Instance._game;
@@ -32,6 +33,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI => Instance._ui;
     public static CraftingManager Crafting => Instance._crafting;
     public static ReputeManager Repute => Instance._repute;
+    public static ScriptDialogueManager ScriptDialogue => Instance._scriptDialogue;
     
     void Start()
     {
@@ -74,6 +76,7 @@ public class Managers : MonoBehaviour
         s_instance._crafting.Init();
 
         s_instance._repute.Init();
+        s_instance._scriptDialogue.Init();
     }
 
     /// <summary>
@@ -95,7 +98,7 @@ public class Managers : MonoBehaviour
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         if (player.isPlaying)
         {
-           player.isPlaying= false;
+           player.isPlaying = false;
         }
         // 인벤토리 데이터를 바이너리 파일로 저장하도록
         Managers.Data.OnClose?.Invoke();        // Test할 때 발생하는 오류를 막기 위해 ? (Nullable) 추가.

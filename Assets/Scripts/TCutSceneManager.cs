@@ -16,7 +16,7 @@ public class TCutSceneManager : MonoBehaviour
     [SerializeField] private CinemachineBlendController _cinemachineBlendController;
     [SerializeField] private BossRoom _bossRoom;
     
-    enum Speaker {
+    public enum Speaker {
         곰,
         가온,
     }
@@ -27,31 +27,12 @@ public class TCutSceneManager : MonoBehaviour
         public int index;
         public string name;
         public string script;
+        public string emotion;
     }
     
     void Start()
     {
         Debug.Log("TCutSceneManager Initiated");
-        
-        TMP_FontAsset sam3KRFont = Resources.Load<TMP_FontAsset>("Fonts/Sam3KRFont SDF");
-
-        GameObject canvasObject = new GameObject("Canvas");
-        Canvas canvas = canvasObject.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvasObject.AddComponent<CanvasScaler>();
-        canvasObject.AddComponent<GraphicRaycaster>();
-
-        // TextMeshProUGUI 표시를 위한 컴포넌트 추가
-        GameObject textObject = new GameObject("DisplayText");
-        textObject.transform.SetParent(canvas.transform);
-        displayText = textObject.AddComponent<TextMeshProUGUI>();
-        RectTransform textRect = textObject.GetComponent<RectTransform>();
-        textRect.sizeDelta = new Vector2(800, 200);
-        textRect.anchoredPosition = new Vector2(0, -100);
-        displayText.fontSize = 24;
-        displayText.alignment = TextAlignmentOptions.Center;
-        displayText.color = Color.black;
-        displayText.font = sam3KRFont;
     }
     
     void Update()
@@ -62,13 +43,7 @@ public class TCutSceneManager : MonoBehaviour
             Debug.Log("Data fetch completed");
             fetchDataTask = null; // 완료된 후 다시 확인하지 않도록 설정
         }
-
-        // 키보드 입력 감지
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     Debug.Log("Space key pressed");
-        //     isSpacePressed = true;
-        // }
+        
     }
 
     public async void TriggerCutScene()
@@ -87,8 +62,8 @@ public class TCutSceneManager : MonoBehaviour
     {
         foreach (var script in characterScripts)
         {
-            Debug.Log($"Index: {script.index}, Name: {script.name}, Script: {script.script}");
-            displayText.text = $"Index: {script.index}, Name: {script.name}, Script: {script.script}";
+            Debug.Log($"Index: {script.index}, Name: {script.name}, Script: {script.script}, Emotion : {script.emotion}");
+            //displayText.text = $"Index: {script.index}, Name: {script.name}, Script: {script.script}";
             coroutineHandler = StartCoroutine(DelayCoroutine());
             
             // 카메라 조작
@@ -98,9 +73,11 @@ public class TCutSceneManager : MonoBehaviour
                 {
                     case Speaker.곰:
                         _cinemachineBlendController.LookBear();
+                        Managers.ScriptDialogue.GetTalk(script.index, script.name, script.script, script.emotion);
                         break;
                     case Speaker.가온:
                         _cinemachineBlendController.LookPlayer();
+                        Managers.ScriptDialogue.GetTalk(script.index, script.name, script.script, script.emotion);
                         break;
                     default:
                         DebugEx.LogWarning("Speaker Unidentified!");

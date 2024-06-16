@@ -132,19 +132,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_portrait_0
+      name: "Player_portrait_\uBB34\uD45C\uC815"
       rect:
         serializedVersion: 2
         x: 21
-        y: 422
-        width: 304
-        height: 397
+        y: 423
+        width: 303
+        height: 396
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -157,15 +170,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_portrait_1
+      name: "Player_portrait_\uB534\uC9D3"
       rect:
         serializedVersion: 2
         x: 354
-        y: 422
-        width: 304
-        height: 397
+        y: 423
+        width: 303
+        height: 396
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -178,15 +191,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_portrait_2
+      name: "Player_portrait_\uBBF8\uC18C"
       rect:
         serializedVersion: 2
         x: 687
-        y: 422
+        y: 423
         width: 303
-        height: 397
+        height: 396
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -199,15 +212,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_portrait_3
+      name: "Player_portrait_\uC6C3\uC74C"
       rect:
         serializedVersion: 2
         x: 21
         y: 0
-        width: 304
+        width: 303
         height: 396
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -220,15 +233,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_portrait_4
+      name: "Player_portrait_\uC8FC\uB205"
       rect:
         serializedVersion: 2
         x: 354
         y: 0
-        width: 304
-        height: 396
+        width: 303
+        height: 397
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -241,15 +254,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_portrait_5
+      name: "Player_portrait_\uB180\uB78C"
       rect:
         serializedVersion: 2
         x: 687
         y: 0
         width: 303
-        height: 396
+        height: 397
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -272,12 +285,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Player_portrait_0: -319908078
-      Player_portrait_1: 309385298
-      Player_portrait_2: 309035113
-      Player_portrait_3: -502968437
-      Player_portrait_4: -30588699
-      Player_portrait_5: 284675813
+      "Player_portrait_\uB180\uB78C": 284675813
+      "Player_portrait_\uB534\uC9D3": 309385298
+      "Player_portrait_\uBB34\uD45C\uC815": -319908078
+      "Player_portrait_\uBBF8\uC18C": 309035113
+      "Player_portrait_\uC6C3\uC74C": -502968437
+      "Player_portrait_\uC8FC\uB205": -30588699
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

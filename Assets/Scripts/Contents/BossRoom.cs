@@ -125,6 +125,8 @@ public class BossRoom : MonoBehaviour
         // 플레이어 컨트롤 비활성화
         Managers.Game.GetPlayer().GetComponent<PlayerController>().Disableall();
         
+        // Scene UI 비활성화
+        Managers.UI.GetCurrentSceneUI().gameObject.SetActive(false);
     }
     
     /// <summary>
@@ -146,8 +148,11 @@ public class BossRoom : MonoBehaviour
         // 카메라 조정
         _cinemachineBlendController.Exit();
         
-        // TODO 다이얼로그 UI
+        // 다이얼로그 UI 끄기
+        Managers.UI.ClosePopupUI(Managers.ScriptDialogue.prevPopup);
         
+        // Scene UI 활성화
+        Managers.UI.GetCurrentSceneUI().gameObject.SetActive(true);
     }
     
     /// <summary>

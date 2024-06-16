@@ -941,7 +941,13 @@ MonoBehaviour:
   jumpForced: 0
   shiftToggled: 0
   isInvulnerable: 0
-  playerPortrait: []
+  playerPortrait:
+  - {fileID: 284675813, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+  - {fileID: 309385298, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+  - {fileID: -319908078, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+  - {fileID: 309035113, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+  - {fileID: -502968437, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
+  - {fileID: -30588699, guid: e81bfe38d81314740943830f8f450c1d, type: 3}
   currentHp: 100
   _questManager: {fileID: 0}
   questIdx: 0
