@@ -22,6 +22,18 @@ public class UI_Lobby : UI_Scene
         GetButton((int)Buttons.NewGameBtn).gameObject.AddUIEvent(NewGame);
         GetButton((int)Buttons.SettingsBtn).gameObject.AddUIEvent(Settings);
         GetButton((int)Buttons.ExitGameBtn).gameObject.AddUIEvent(ExitGame);
+        
+        
+        if (PlayerPrefs.HasKey("GlobalSoundVolume"))
+        {
+            Managers.Sound.GlobalSoundVolume = PlayerPrefs.GetFloat("GlobalSoundVolume");
+        }
+        else
+        {
+            Managers.Sound.GlobalSoundVolume = 1;
+        }
+        
+        Managers.Sound.Play("Sounds/Ambience/AMBIENCE_Forest_Wind_14sec_loop_stereo", Define.Sound.Bgm, 0.3f);
     }
 
     void LoadGame(PointerEventData data)

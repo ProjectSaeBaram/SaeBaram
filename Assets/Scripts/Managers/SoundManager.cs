@@ -8,7 +8,7 @@ using UnityEngine;
 public class SoundManager
 {
     /// <summary>
-    /// 설정에서 지정 가능한 
+    /// 설정에서 지정 가능한 글로벌 사운드 볼륨 (0~1)
     /// </summary>
     public float GlobalSoundVolume = 1.0f;
     
