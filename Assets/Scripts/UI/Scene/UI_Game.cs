@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_Game : UI_Scene
@@ -16,7 +17,19 @@ public class UI_Game : UI_Scene
 
         Bind<Button>(typeof(Buttons));
         
-        GetButton((int)Buttons.EscapeButton).gameObject.AddUIEvent((eventData) => Managers.UI.ShowPopupUI<UI_PausePopup>());
+        GetButton((int)Buttons.EscapeButton).gameObject.AddUIEvent(PauseOrResume);
     }
 
+    void PauseOrResume(PointerEventData eventData)
+    {
+        // 1. 뭐든지 열려있으면 다 닫기
+        // 2. 아무것도 없으면 열기
+
+        if (Managers.UI.GetStackSize() > 0)
+            Managers.UI.CloseAllPopupUI();
+        else
+            Managers.UI.ShowPopupUI<UI_PausePopup>();
+    }
 }
+
+
