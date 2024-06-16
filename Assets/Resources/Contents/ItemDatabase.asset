@@ -39,6 +39,8 @@ MonoBehaviour:
     itemImage: {fileID: 1863807134, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
   - id: 12
     itemImage: {fileID: -26076695, guid: abdca699daf85d649a2d17ad15ad7123, type: 3}
+  - id: 127
+    itemImage: {fileID: 21300000, guid: d236d3d1770a1f047bbc056b7d93d17b, type: 3}
   - id: 128
     itemImage: {fileID: 1914159184, guid: ee0a3cfc8f1b19642ab020300b936065, type: 3}
   - id: 129

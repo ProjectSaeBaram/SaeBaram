@@ -39,6 +39,8 @@ MonoBehaviour:
     name: "\uB3D9\uBB3C \uAC00\uC8FD"
   - id: 12
     name: "\uC12C\uC720"
+  - id: 127
+    name: "\uACF0 \uC0D8\uD50C"
   - id: 128
     name: "\uB3CC \uACE1\uAD2D\uC774"
   - id: 129
