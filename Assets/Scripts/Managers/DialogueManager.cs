@@ -1,3 +1,4 @@
+using Controllers.Entity;
 using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,8 +8,6 @@ using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
-    [Header("Load Globals JSON")]
-    [SerializeField] private TextAsset loadGlobalsJSON;
     [Header("NPC Data")]
     [SerializeField] private Dictionary<int, int> npcDindex;                //npc 별 대화인덱스 저장할 변수
     private NpcData npcdata;
@@ -57,23 +56,24 @@ public class DialogueManager : MonoBehaviour
     {
         npcDindex[id] = idx;
     }
-    
 
-    private void Update()
-    {
-        if (!dialogueIsPlaying)
-        {
-            return;
-        }
-        if (currentStory.currentChoices.Count==0 && playerController.GetInteractPressed())
-        {
-            ContinueStory();
-        }
-    }
+
+    //private void Update()
+    //{
+    //    if (!dialogueIsPlaying)
+    //    {
+    //        return;
+    //    }
+    //    if (dialogueIsPlaying&&currentStory.currentChoices.Count == 0 && playerController.GetInteractPressed())
+    //    {
+    //        ContinueStory();
+    //    }
+    //}
 
 
     public void GetTalk2(TextAsset dialogue,NpcData npc)
     {
+
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         player.isPlaying = true;
         npcdata = npc;
@@ -81,8 +81,7 @@ public class DialogueManager : MonoBehaviour
         isGood = npc.isGood;
         currentStory = new Story(dialogue.text);
         dialogueIsPlaying = true;
-        Managers.UI.ShowPopupUI<UI_DialoguePopup>();
-        popup.dialoguePanel.SetActive(true);
+        popup=Managers.UI.ShowPopupUI<UI_DialoguePopup>();
         //dialogueVariables.StartListening(currentStory);
         foreach (GameObject cue in npc.visualCue)
         {
@@ -113,7 +112,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void ContinueStory()
+    public void ContinueStory()
     {
         if (currentStory.canContinue) //더 보여줄 이야기가 있다면
         {
@@ -233,7 +232,6 @@ public class DialogueManager : MonoBehaviour
             ischecked = true;
 
         }
-        DebugEx.Log(choice);
     }
 
     public void setvisibleNpc()
@@ -250,4 +248,6 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }
+
+   
 }

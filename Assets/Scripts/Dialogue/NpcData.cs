@@ -133,5 +133,9 @@ public class NpcData : MonoBehaviour, IInteractable
             DialogueManager.GetInstance().GetTalk2(dialogue,this);
             // }
         }
+        else if(playerInRange&& DialogueManager.GetInstance().dialogueIsPlaying)
+        {
+            DialogueManager.GetInstance().ContinueStory();
+        }
     }
 }
