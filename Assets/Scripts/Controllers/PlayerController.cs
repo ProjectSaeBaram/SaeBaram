@@ -659,6 +659,7 @@ public class PlayerController : MonoBehaviour
     void InteractCanceled(InputAction.CallbackContext context)
     {
         // DebugEx.Log($"InteractCanceled");
+        interactPressed = false;
     }
 
     public bool GetInteractPressed()

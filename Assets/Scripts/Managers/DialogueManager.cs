@@ -26,7 +26,6 @@ public class DialogueManager : MonoBehaviour
     public QuestLayer qpanel;
     public PlayerController playerController;
     [SerializeField] public bool isGood = false;
-    [SerializeField] public GameObject UI_game;
     [SerializeField] public bool ischecked;
 
     public bool dialogueIsPlaying { get; private set; }             //현재 대화창에 진입했는지 확인할 변수
@@ -89,7 +88,7 @@ public class DialogueManager : MonoBehaviour
         {
             cue.SetActive(false);
         }
-        UI_game.SetActive(false);
+        Managers.UI.GetCurrentSceneUI().gameObject.SetActive(false);
         //태그 초기화
         ischecked = false;
         popup.displayNameText.text = "???";
@@ -105,7 +104,8 @@ public class DialogueManager : MonoBehaviour
         Managers.UI.ClosePopupUI();
         PlayerController player = Managers.Game.GetPlayer().GetComponent<PlayerController>();
         player.isPlaying = false;
-        UI_game.SetActive(true);
+        player.Enableall();
+        Managers.UI.GetCurrentSceneUI().gameObject.SetActive(true);
         if (npcdata.GetMerchant()&& ischecked)
         {
             Managers.UI.CloseAllPopupUI();

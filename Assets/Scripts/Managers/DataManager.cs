@@ -203,7 +203,12 @@ public class DataManager
         InventoryTable[3] = (ushort)16511;            // 나무 재료 (중간 퀄리티, 63개)
         InventoryTable[4] = (ushort)16575;            // 돌 재료 (중간 퀄리티, 63개)
         InventoryTable[5] = (ushort)16636;            // 철 재료 (중간 퀄리티, 63개)
-
+        // 동물 가죽, 회로, 철 곡괭이
+        InventoryTable[6] = (ushort)49919;            // 동물 가죽
+        InventoryTable[7] = (ushort)49855;            // 회로
+        InventoryTable[8] = (ushort)57855;            // 철 곡괭이
+        
+        
         InventoryTable[28] = (ushort)9020;            // 시연용 드릴 (최하 퀄리티)
         InventoryTable[29] = (ushort)58172;           // 시연용 드릴 (최상 퀄리티)
         
