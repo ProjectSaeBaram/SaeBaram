@@ -52359,7 +52359,7 @@ PrefabInstance:
     - target: {fileID: 3220560041892770841, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 58f3b5a8c1e7afd44b057333942da504, type: 3}
+      objectReference: {fileID: 21300000, guid: 0a05bef6939a1d948beaa270421e9dd7, type: 3}
     - target: {fileID: 3220560041892770841, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -52378,19 +52378,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Size.y
-      value: 1.6541728
+      value: 1.5532084
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Offset.x
-      value: 0.05005297
+      value: 0.050053
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_Offset.y
-      value: 0.6729136
+      value: 0.10751161
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3417842998907556946, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -52426,7 +52426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8175303610426114463, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -299.3
+      value: -235.2
       objectReference: {fileID: 0}
     - target: {fileID: 8175303610426114463, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -52493,6 +52493,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: visualCue.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: questId.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
@@ -52503,6 +52507,10 @@ PrefabInstance:
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.size
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+      propertyPath: visualCue.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8553003120145340662, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
       propertyPath: npcPortrait.Array.data[0]
@@ -52525,7 +52533,9 @@ PrefabInstance:
       value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8195449954198852215, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
+    - {fileID: 8671616055251361223, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a28f78075aec8d449aa0fccc03c591a9, type: 3}
