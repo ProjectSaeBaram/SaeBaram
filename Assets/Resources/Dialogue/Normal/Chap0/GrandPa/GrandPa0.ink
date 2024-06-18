@@ -1,0 +1,1 @@
+어디가느냐 가온아 #portrait:0#speaker:할아버지
