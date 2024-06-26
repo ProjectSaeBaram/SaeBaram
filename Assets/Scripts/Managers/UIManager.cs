@@ -40,6 +40,10 @@ public class UIManager
         canvas.overrideSorting = true;
         if (sort)
         {
+            if (_popupStack.TryPeek(out var top))
+            {
+                _order = top.GetComponent<Canvas>().sortingOrder + 1;
+            }
             canvas.sortingOrder = _order;
             _order++;
         }

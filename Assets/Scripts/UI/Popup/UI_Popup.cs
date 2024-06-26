@@ -23,9 +23,9 @@ public class UI_Popup : UI_Base
         // Managers.UI.ClosePopupUI를 호출하여 현재 팝업 UI를 닫음.
         // 이 메서드는 상속받는 팝업 UI 클래스에서 오버라이드하여
         // 특정 닫기 동작을 추가하여 구현 가능.
-        //Managers.UI.ClosePopupUI(this);
+        Managers.UI.ClosePopupUI(this);
         
         // UIManager를 통해 팝업 제거를 요청.
-        Managers.UI.RemovePopup(this);
+        //Managers.UI.RemovePopup(this);
     }
 }
